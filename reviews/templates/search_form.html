@@ -1,0 +1,119 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<style>
+    .star-rating {
+        display: flex;
+        flex-direction: row-reverse; /* Reversed direction */
+        justify-content: left; /* Align to the left */
+    }
+
+    .star-rating input[type="radio"] {
+        display: none;
+    }
+
+    .star-rating label {
+        font-size: 40px; /* Adjust the size as needed */
+        color: #ddd; /* Default color for empty stars */
+        cursor: pointer;
+    }
+
+    .star-rating label::before {
+        content: '\2605'; /* Unicode character for a star */
+    }
+
+    
+    .star-rating input[type="radio"]:checked ~ label {
+        color: #ff9b00; /* Color for filled stars */
+    }
+</style>
+<div class="container-fluid">
+    <div class="container-fluid">
+      <div class="card">
+        <div class="card-body">
+            <h5 class="card-title fw-semibold mb-4">Bus Search Results - {% if stop_points %}{{ stop_points|join:", " }}{% else %}No results{% endif %}</h5>
+          <div class="card">
+            <div class="card-body">
+
+<form method="GET" action="{% url 'reviews:review_create' %}">
+    {% csrf_token %}
+    <div class="form-group">
+        <label for="stop_name">Stop Name:</label>
+        <div class="input-group">
+            <input type="text" class="form-control" id="stop_name" name="stop_name" value="{{ request.GET.stop_name }}" aria-label="Stop Name">
+        </div>
+    </div>
+    <div class="form-group mt-2">
+        <button type="submit" class="btn btn-primary">Search</button>
+    </div>
+</form>
+<br/>
+  {% load crispy_forms_tags %}
+  <form method="post" class="custom-form" style="margin-bottom: 10px;">
+    {{ form.full_name|as_crispy_field }}
+    {% csrf_token %}
+    <label for="bus-select">Select a Bus:</label>
+   <select name="bus_id" id="bus-select" class="form-control">
+    {% for bus in buses %}
+      <option value="{{ bus.bus_id }}">{{ bus.bus_id }}</option>
+    {% endfor %}
+  </select>
+   
+    <div class="star-rating">
+        <input type="radio" id="star5" name="rating" value="5">
+        <label for="star5"></label>
+        <input type="radio" id="star4" name="rating" value="4">
+        <label for="star4"></label>
+        <input type="radio" id="star3" name="rating" value="3">
+        <label for="star3"></label>
+        <input type="radio" id="star2" name="rating" value="2">
+        <label for="star2"></label>
+        <input type="radio" id="star1" name="rating" value="1">
+        <label for="star1"></label>
+    </div>
+    {{ form.comment|as_crispy_field }}
+    <button class="btn btn-primary" type="submit">Submit</button>
+  </form>
+  <style>
+    /* Add spacing to form fields */
+    .custom-form .form-group {
+      margin-bottom: 10px; /* Adjust as needed */
+    }
+  </style>
+ 
+  <script>
+    const starRatingInputs = document.querySelectorAll('.star-rating input[type="radio"]');
+    const ratingField = document.querySelector('#id_rating');
+
+    starRatingInputs.forEach(input => {
+        input.addEventListener('click', () => {
+            ratingField.value = input.value;
+        });
+    });
+</script>
+
+<script>
+    // JavaScript code to populate bus options based on selected stop point
+    const stopPointSelect = document.querySelector("#id_stop_point");
+    const busIdSelect = document.querySelector("#id_bus_id");
+
+    stopPointSelect.addEventListener("change", () => {
+        const stopPointId = stopPointSelect.value;
+        busIdSelect.innerHTML = ""; // Clear current options
+
+        // Fetch bus options based on selected stop point and populate the busIdSelect
+        fetch(`/get_buses/${stopPointId}/`)
+            .then(response => response.json())
+            .then(data => {
+                data.forEach(bus => {
+                    const option = document.createElement("option");
+                    option.value = bus.id;
+                    option.textContent = bus.bus_id;
+                    busIdSelect.appendChild(option);
+                });
+            });
+    });
+</script>
+
+
+{% endblock %}

@@ -1,0 +1,96 @@
+{% extends "base.html" %}
+{% block content %}
+<h5 class="card-title fw-semibold mb-4">Search for Route</h5>
+{% load static %}
+{% load crispy_forms_tags %}
+<div class="card">
+  <div class="card-body p-4">
+  <form method="get" class="custom-form" style="margin-bottom: 10px;">
+    {% csrf_token %}
+    <div class="row">
+      <div class="col-md-4">
+        {{ form.from_post_code|as_crispy_field }}
+      </div>
+      <div class="col-md-4">
+        {{ form.to_post_code|as_crispy_field}}
+      </div>
+      <div class="col-md-4">
+        {{ form.date_time|as_crispy_field }}
+      </div>
+      <div class="col-md-4">
+        <button type="submit" class="btn btn-primary">Search</button>
+      </div>
+    </div>
+  </form>
+  </div>
+</div>
+<br>
+<style>
+  /* Add spacing to form fields */
+  .custom-form .form-group {
+    margin-bottom: 10px; /* Adjust as needed */
+  }
+</style>
+<h5 class="card-title fw-semibold mb-4">Favourites</h5>
+    <div class="card">
+      <div class="card-body">
+      <div class="row">
+    <div class="col-sm-6 col-xl-3">
+      <div class="card overflow-hidden rounded-2">
+        <div class="position-relative">
+          <a href="{% url 'reviews:review_create' %}"><img src="{% static 'images/logos/review.svg' %}" class="card-img-top rounded-0"  alt="..."></a>
+          <a href="#" class="bg-primary rounded-circle p-2 text-white d-inline-flex position-absolute bottom-0 end-0 mb-n3 me-3" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Add To Cart"></a>
+        </div>
+        <div class="card-body pt-3 p-4">
+          <h6 class="fw-semibold fs-4">Add Review</h6>
+          <div class="d-flex align-items-center justify-content-between">
+            <!-- Other content here -->
+          </div>
+        </div>
+    </div>
+    </div>
+
+    <div class="col-sm-6 col-xl-3">
+        <div class="card overflow-hidden rounded-2">
+          <div class="position-relative">
+            <a href="#"><img src="{% static 'images/logos/route_plan.png' %}"  class="card-img-top rounded-0"  alt="..."></a>
+            <a href="#" class="bg-primary rounded-circle p-2 text-white d-inline-flex position-absolute bottom-0 end-0 mb-n3 me-3" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Add To Cart"></a>
+          </div>
+          <div class="card-body pt-3 p-4">
+            <h6 class="fw-semibold fs-4">Plan Route</h6>
+            <div class="d-flex align-items-center justify-content-between">
+              <!-- Other content here -->
+            </div>
+          </div>
+      </div>
+    </div>
+
+      <div class="col-sm-6 col-xl-3">
+        <div class="card overflow-hidden rounded-2">
+          <div class="position-relative">
+            <a href="#"><img src="{% static 'images/logos/home.png' %}" class="card-img-top rounded-0" " alt="..."></a>
+            <a href="#" class="bg-primary rounded-circle p-2 text-white d-inline-flex position-absolute bottom-0 end-0 mb-n3 me-3" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Add To Cart"></a>
+          </div>
+          <div class="card-body pt-3 p-4">
+            <h6 class="fw-semibold fs-4">My Home</h6>
+            <div class="d-flex align-items-center justify-content-between">
+              <!-- Other content here -->
+            </div>
+          </div>
+      </div>
+    </div>
+    
+      <div class="col-sm-6 col-xl-3">
+        <div class="card overflow-hidden rounded-2">
+          <div class="position-relative">
+            <a href="#"><img src="{% static 'images/logos/timetable.png' %}" class="card-img-top rounded-0" alt="..."></a>
+            <a href="#" class="bg-primary rounded-circle p-2 text-white d-inline-flex position-absolute bottom-0 end-0 mb-n3 me-3" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Add To Cart"></a>
+          </div>
+          <div class="card-body pt-3 p-4">
+            <h6 class="fw-semibold fs-4">Route Timetable</h6>
+            <div class="d-flex align-items-center justify-content-between">
+              <!-- Other content here -->
+            </div>
+          </div>
+      </div>
+{% endblock %}
