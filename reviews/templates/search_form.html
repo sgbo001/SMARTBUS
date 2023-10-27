@@ -2,30 +2,44 @@
 
 {% block content %}
 <style>
-    .star-rating {
+    /* Style for radio buttons */
+    .radio-rating {
         display: flex;
-        flex-direction: row-reverse; /* Reversed direction */
-        justify-content: left; /* Align to the left */
+        gap: 20px; /* Adjust as needed for spacing between radio buttons */
     }
-
-    .star-rating input[type="radio"] {
-        display: none;
-    }
-
-    .star-rating label {
-        font-size: 40px; /* Adjust the size as needed */
-        color: #ddd; /* Default color for empty stars */
-        cursor: pointer;
-    }
-
-    .star-rating label::before {
-        content: '\2605'; /* Unicode character for a star */
-    }
-
     
-    .star-rating input[type="radio"]:checked ~ label {
-        color: #ff9b00; /* Color for filled stars */
+    .radio-rating input[type="radio"] {
+        display: inline-block;
+        margin-top: 20px;
     }
+    
+    .radio-rating label {
+        font-size: 15px; /* Adjust the size as needed */
+        cursor: pointer;
+        margin-right: 10px;
+    
+    }
+    
+    /* Style for the tooltip (title attribute) */
+    .radio-rating label::before {
+        content: attr(title);
+        display: none;
+        position: absolute;
+        background: #000;
+        color: #fff;
+        padding: 4px px;
+        border-radius: 4px;
+        top: 10px; /* Adjust the position as needed */
+        left: 50%;
+        transform: translateX(-50%);
+        z-index: 1;
+        white-space: nowrap;
+    }
+    
+    .radio-rating label:hover::before {
+        display: block;
+    }
+    
 </style>
 <div class="container-fluid">
     <div class="container-fluid">
@@ -59,18 +73,30 @@
     {% endfor %}
   </select>
    
-    <div class="star-rating">
+  <div class="radio-rating">
+    <strong> <label for="star5" title="Very Early">
         <input type="radio" id="star5" name="rating" value="5">
-        <label for="star5"></label>
+        Very Early
+    </label>
+    <label for="star4" title="Somewhat Early">
         <input type="radio" id="star4" name="rating" value="4">
-        <label for="star4"></label>
+        Somewhat Early
+    </label>
+    <label for="star3" title="On Time">
         <input type="radio" id="star3" name="rating" value="3">
-        <label for="star3"></label>
+        On Time
+    </label>
+    <label for="star2" title="Somewhat Late">
         <input type="radio" id="star2" name="rating" value="2">
-        <label for="star2"></label>
+        Somewhat Late
+    </label>
+    <label for="star1" title="Late">
         <input type="radio" id="star1" name="rating" value="1">
-        <label for="star1"></label>
-    </div>
+        Late
+    </label>
+</div>
+<br>
+
     {{ form.comment|as_crispy_field }}
     <button class="btn btn-primary" type="submit">Submit</button>
   </form>
