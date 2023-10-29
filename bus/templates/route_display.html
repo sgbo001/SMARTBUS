@@ -1,0 +1,49 @@
+{% extends "base1.html" %}
+
+{% block content %}
+{% load static %}
+<style>
+    .image-button {
+        display: flex;
+        align-items: center;
+    }
+</style>
+
+<div class="container-fluid">
+    <div class="container-fluid">
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title fw-semibold mb-4">Bus Search Routes</h5>
+                {% for route in routes.routes %}
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title fw-semibold mb-4">Route {{ forloop.counter }}:</h5>
+                        {% with route_data=route.route_parts %}
+                        {% for leg in route_data %}
+                        <div>
+                            <b>{{ leg.departure_time }}</b> {{ leg.from_point_name }}
+                            <div class="leg-details">
+                                <span class="mode mode-{{ leg.mode }}"></span>
+                                {% if leg.mode == "bus" %}
+                                <img src="{% static 'images/bus.svg' %}" />
+                                <strong>{{ leg.line_name }}</strong>
+                                {% endif %}
+                                {% if leg.mode != "bus" %}
+                                <img src="{% static 'images/walk.svg' %}" alt="{{ leg.mode }}" />
+                                {% endif %}
+                                {{ leg.duration|slice:"3:" }} mins
+                                {% if leg.suggested_bus %}
+                                <p>Suggested Bus Rating: {{ leg.suggested_bus }}</p>
+                                {% endif %}
+                            </div>
+                        </div>
+                        {% endfor %}
+                        {% endwith %}
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

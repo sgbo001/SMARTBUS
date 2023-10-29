@@ -1,154 +1,80 @@
 {% load static %}
-<!doctype html>
-<html lang="en">
-
+<!DOCTYPE html>
+<html style="font-size: 16px;" lang="en">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="utf-8">
+    <meta name="description" content="">
     <title>SMART BUS - Default Title</title>
-  <link rel="shortcut icon" type="image/png" href="{% static 'images/logos/Logo_Blue_Bus.svg' %}" />
-  <link rel="stylesheet" href="{% static 'css/styles.min.css' %}" />
+    <link rel="shortcut icon" type="image/png" href="{% static 'images/logos/Logo_Blue_Bus.svg' %}" />
+    <link rel="stylesheet" href="{% static 'nicepage.css' %}" media="screen">
+    <link rel="stylesheet" href="{% static 'Page-6.css' %}" media="screen">
+    <script class="u-script" type="text/javascript" src="{% static 'jquery-1.9.1.min.js' %}" defer=""></script>
+    <script class="u-script" type="text/javascript" src="{% static 'nicepage.js' %}" defer=""></script>
+    <meta name="generator" content="Nicepage 5.20.10, nicepage.com">
+    <link id="u-theme-google-font" rel="stylesheet" href="https://fonts.googleapis.com/css?family=Raleway:100,100i,200,200i,300,300i,400,400i,500,500i,600,600i,700,700i,800,800i,900,900i|Open+Sans:300,300i,400,400i,500,500i,600,600i,700,700i,800,800i">
+
+    <style>
+        .button-container {
+            display: flex;
+            gap: 5px; /* Adjust as needed for spacing between buttons */
+            align-items: center;
+        }
+
+        @media (max-width: 768px) {
+            .button-container {
+                flex-direction: column; /* Stack buttons on smaller screens */
+                align-items: flex-start; /* Adjust alignment for stacked buttons */
+            }
+        }
+    </style>
+
+
+    <script type="application/ld+json">
+        {
+                "@context": "http://schema.org",
+                "@type": "Organization",
+                "name": "",
+                "url": "/"
+        }</script>
+    <meta name="theme-color" content="#77aaf6">
+    <meta property="og:title" content="Page 6">
+    <meta property="og:type" content="website">
+    <link rel="canonical" href="/">
+    <meta data-intl-tel-input-cdn-path="intlTelInput/">
 </head>
+<body data-home-page="https://website6023398.nicepage.io/Page-6.html?version=3ed5bff3-bd49-e8fe-3a18-ce3328a5d6b9" data-home-page-title="Page 6" data-path-to-root="./" data-include-products="false" class="u-body u-xl-mode" data-lang="en">
+    
+  {% if messages %}
 
-<body>
-  <!--  Body Wrapper -->
-  <div class="page-wrapper" id="main-wrapper" data-layout="vertical" data-navbarbg="skin6" data-sidebartype="full"
-    data-sidebar-position="fixed" data-header-position="fixed">
-    <!-- Sidebar Start -->
-    <aside class="left-sidebar">
-      <!-- Sidebar scroll-->
-      <div>
-        <div class="brand-logo d-flex align-items-center justify-content-between">
-          <a href="./index.html" class="text-nowrap logo-img">
-             <h3><strong>SMART </strong><img src="{% static 'images/logos/Logo_Blue_Bus.svg' %}" alt="Logo" style="height: 35px; width: 37px;">
-             </h3>
-          <div class="close-btn d-xl-none d-block sidebartoggler cursor-pointer" id="sidebarCollapse">
-            <i class="ti ti-x fs-8"></i>
-          </div>
-        </div>
-        <!-- Sidebar navigation-->
-        <nav class="sidebar-nav scroll-sidebar" data-simplebar="">
-          <ul id="sidebarnav">
-            <li class="nav-small-cap">
-              <i class="ti ti-dots nav-small-cap-icon fs-4"></i>
-              <span class="hide-menu">Home</span>
-            </li>
-            <li class="sidebar-item">
-              <a class="sidebar-link" href="./index.html" aria-expanded="false">
-                <span>
-                  <i class="ti ti-layout-dashboard"></i>
-                </span>
-                <span class="hide-menu">Dashboard</span>
-              </a>
-            </li>
-           
-            <li class="nav-small-cap">
-              <i class="ti ti-dots nav-small-cap-icon fs-4"></i>
-              <span class="hide-menu">AUTH</span>
-            </li>
-            <li class="sidebar-item">
-              <a class="sidebar-link" href="./authentication-login.html" aria-expanded="false">
-                <span>
-                  <i class="ti ti-login"></i>
-                </span>
-                <span class="hide-menu">Login</span>
-              </a>
-            </li>
-            <li class="sidebar-item">
-              <a class="sidebar-link" href="./authentication-register.html" aria-expanded="false">
-                <span>
-                  <i class="ti ti-user-plus"></i>
-                </span>
-                <span class="hide-menu">Register</span>
-              </a>
-            </li>
-            
-          </ul>
-         
-        </nav>
-        <!-- End Sidebar navigation -->
-      </div>
-      <!-- End Sidebar scroll-->
-    </aside>
-    <!--  Sidebar End -->
-    <!--  Main wrapper -->
-    <div class="body-wrapper">
-      <!--  Header Start -->
-      <header class="app-header">
-        <nav class="navbar navbar-expand-lg navbar-light">
-          <ul class="navbar-nav">
-            <li class="nav-item d-block d-xl-none">
-              <a class="nav-link sidebartoggler nav-icon-hover" id="headerCollapse" href="javascript:void(0)">
-                <i class="ti ti-menu-2"></i>
-              </a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link nav-icon-hover" href="javascript:void(0)">
-                <i class="ti ti-bell-ringing"></i>
-                <div class="notification bg-primary rounded-circle"></div>
-              </a>
-            </li>
-          </ul>
-          <div class="navbar-collapse justify-content-end px-0" id="navbarNav">
-            <ul class="navbar-nav flex-row ms-auto align-items-center justify-content-end">
-              <a href="#" target="_blank" class="btn btn-primary">Sign in with Google</a>
-              <li class="nav-item dropdown">
-                <a class="nav-link nav-icon-hover" href="javascript:void(0)" id="drop2" data-bs-toggle="dropdown"
-                  aria-expanded="false">
-                  <img src=" {% static 'images/profile/user-1.jpg' %}" alt="" width="35" height="35" class="rounded-circle">
-                </a>
-                <div class="dropdown-menu dropdown-menu-end dropdown-menu-animate-up" aria-labelledby="drop2">
-                  <div class="message-body">
-                    <a href="javascript:void(0)" class="d-flex align-items-center gap-2 dropdown-item">
-                      <i class="ti ti-user fs-6"></i>
-                      <p class="mb-0 fs-3">My Profile</p>
-                    </a>
-                    <a href="javascript:void(0)" class="d-flex align-items-center gap-2 dropdown-item">
-                      <i class="ti ti-mail fs-6"></i>
-                      <p class="mb-0 fs-3">My Account</p>
-                    </a>
-                    <a href="javascript:void(0)" class="d-flex align-items-center gap-2 dropdown-item">
-                      <i class="ti ti-list-check fs-6"></i>
-                      <p class="mb-0 fs-3">History</p>
-                    </a>
-                    <a href="./authentication-login.html" class="btn btn-outline-primary mx-3 mt-2 d-block">Logout</a>
-                  </div>
-                </div>
-              </li>
-            </ul>
-          </div>
-        </nav>
-      </header>
-      <!--  Header End -->
-      <div class="container-fluid">
-        <div class="row">
-          {% if messages %}
-  
-  {% for message in messages %}
-  
-  <div class="alert alert-{{message.tags}}">{{ message }}</div>
-        <div class="container-fluid">
-          <div class="container-fluid">
-          <div class="card">
-            <div class="card-body">
-                
-                
-                {% endfor %}{% endif %}
-                {% block content %}{% endblock %}
+        {% for message in messages %}
 
-            </div>
-          </div>
+        <div class="alert alert-{{message.tags}}">{{ message }}</div>
+        {% endfor %}{% endif %}
+        <section class="u-align-center u-clearfix u-section-1" id="sec-52f6">
+        <h2 class="u-text u-text-palette-1-base u-text-2"> SMART BUS APP</h2>
+        {% block content %}{% endblock %}
+
+        <p class="u-text u-text-default u-text-4">
+
+        </p>
         </div>
-      </div>
-    </div>
-  </div>
-  <script src="{% static 'libs/jquery/dist/jquery.min.js' %}"></script>
-  <script src="{% static 'libs/bootstrap/dist/js/bootstrap.bundle.min.js' %}"></script>
-  <script src="{% static 'js/sidebarmenu.js' %}"></script>
-  <script src="{% static 'js/app.min.js' %}"></script>
-  <script src="{% static 'libs/apexcharts/dist/apexcharts.min.js' %}"></script>
-  <script src="{% static 'libs/simplebar/dist/simplebar.js' %}"></script>
-  <script src="{% static 'js/dashboard.js' %}"></script>
+    </section>
+
+
+
+
+    <section class="u-backlink u-clearfix u-grey-80">
+        <a class="u-link" href="#" target="_blank">
+            <span>Dissertation Prototype</span>
+        </a>
+        <p class="u-text">
+            <span>created with</span>
+        </p>
+        <a class="u-link" href="#" target="_blank">
+            <span>Adetoyese Olaide</span>
+        </a>.
+    </section>
+
 </body>
-
 </html>
