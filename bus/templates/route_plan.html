@@ -1,35 +1,75 @@
-{% extends "base1.html" %}
+{% extends "base.html" %}
+
 {% block content %}
-<h5 class="card-title fw-semibold mb-4">Search for Route</h5>
 {% load static %}
 {% load crispy_forms_tags %}
-<div class="card">
-  <div class="card-body p-4">
-  <form method="get" action="{% url 'display_route' %}" class="custom-form" style="margin-bottom: 10px; ">
-    {% csrf_token %}
-    <div class="row">
-      <div class="col-md-4">
-        {{ form.from_post_code|as_crispy_field }}
-      </div>
-      <div class="col-md-4">
-        {{ form.to_post_code|as_crispy_field}}
-      </div>
-      <div class="col-md-4">
-        {{ form.date_time|as_crispy_field }}
-      </div>
-      <div class="col-md-4">
-        <button type="submit" class="btn btn-primary">Search</button>
-      </div>
-    </div>
-  </form>
-  </div>
-</div>
-<br>
+
 <style>
-  /* Add spacing to form fields */
-  .custom-form .form-group {
-    margin-bottom: 10px; /* Adjust as needed */
-  }
-</style>
+    /* Add spacing to form fields */
+    .custom-form .form-group {
+      margin-bottom: 10px; /* Adjust as needed */
+    }
+  </style>
+<div class="osahan-verification padding-bt">
+    <div class="p-3 shadow bg-danger danger-nav osahan-home-header">
+       <div class="font-weight-normal mb-0 d-flex align-items-center">
+          <img src="img/logo.png" class="img-fluid osahan-nav-logo">
+          <div class="ml-auto d-flex align-items-center">
+             <a href="profile.html" class="mr-3"><img src="img/user1.jpg" class="img-fluid rounded-circle"></a>
+             <a class="toggle osahan-toggle h4 m-0 text-white ml-auto" href="#"><i class="icofont-navigation-menu"></i></a>
+          </div>
+       </div>
+    </div>
+    <div class="bg-danger px-3 pb-3">
+       <div class="bg-white rounded-1 p-3">
+        <form method="get" action="{% url 'display_route' %}" class="custom-form" style="margin-bottom: 10px; ">
+            {% csrf_token %}
+             <div class="form-group border-bottom pb-2">
+                {{ form.from_post_code|as_crispy_field }}
+            
+                {{ form.to_post_code|as_crispy_field}}
+             
+                {{ form.date_time|as_crispy_field }}
+            
+             <button type="submit" class="btn btn-danger btn-block osahanbus-btn rounded-1">Search</button>
+          </form>
+       </div>
+    </div>
+    <div class="p-3 bg-warning">
+       <div class="row m-0">
+          <div class="col-6 py-1 pr-1 pl-0">
+             <div class="p-3 bg-white shadow-sm rounded-1">
+                <img class="img-fluid" src="{% static 'img/safe-vehicles.svg' %}" alt="">
+                <p class="mb-0 mt-4 font-weight-bold">Plan Journey<br>
+             </div>
+          </div>
+          <div class="col-6 py-1 pl-1 pr-0">
+            <div class="p-3 bg-white shadow-sm rounded-1">
+                <a href="{% url 'reviews:review_create' %}">
+                    <img class="img-fluid" src="{% static 'img/customer-support.svg' %}" alt="">
+                    <p class="mb-0 mt-4 font-weight-bold">Review Buses</p>
+                </a>
+            </div>
+        </div>
+        
+          <div class="col-6 py-1 pr-1 pl-0">
+             <div class="p-3 bg-white shadow-sm rounded-1">
+                <img class="img-fluid" src="{% static 'img/live-tracking.svg' %}" alt="">
+                <p class="mb-0 mt-4 font-weight-bold">Bus Time Table<br>
+             </div>
+          </div>
+          <div class="col-6 py-1 pl-1 pr-0">
+             <div class="p-3 bg-white shadow-sm rounded-1">
+                <img class="img-fluid" src="{% static 'img/verified-drivers.svg' %}" alt="">
+                <p class="mb-0 mt-4 font-weight-bold">Add Home<br>
+             </div>
+          </div>
+       </div>
+    </div>
+    
+ <!-- Footer Fixed -->
+ 
+
+
 
 {% endblock %}

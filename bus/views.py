@@ -55,7 +55,7 @@ def display_route(request):
         api_url = f'https://transportapi.com/v3/uk/public_journey.json?from=lonlat%3A{from_longitude}%2C{from_latitude}&to=lonlat%3A{to_longitude}%2C{to_latitude}&date={date}&time={time}&journey_time_type=leave_after&service=silverrail&modes=bus%2Ctrain%2Cboat&modes=bus&not_modes=bus%2Ctrain%2Cboat&not_modes=train&app_key=b0172443d13086192192fc659ac988ef&app_id=b42e95c3'
         response = requests.get(api_url)
         data = response.json()  # Assuming your API returns JSON data
-
+    
         # Iterate through routes and find the highest-rated bus for each leg
         for route in data['routes']:
             for leg in route['route_parts']:

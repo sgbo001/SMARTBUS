@@ -3,15 +3,34 @@
 {% block content %}
 {% load static %}
 
-<img class="u-image u-image-contain u-image-default u-image-1" src="{% static 'images/hgghghgh.png' %}" alt="" data-image-width="1920" data-image-height="1043">
-<p class="u-text u-text-default u-text-3">Bus Transportation Movement through a Cloud-based Smart Review Platform</p>
-<div class="button-container">
-  <a href="{% url 'reviews:review_create' %}" class="u-btn u-btn-round u-button-style u-hover-palette-1-light-1 u-palette-1-base u-radius-50 u-btn-1">Add Review</a>
-  <a href="{% url 'route_plan' %}" class="u-btn u-btn-round u-button-style u-hover-palette-1-light-1 u-palette-1-base u-radius-50 u-btn-1">Plan Route</a>
-  <a href="#" class="u-btn u-btn-round u-button-style u-hover-palette-1-light-1 u-palette-1-base u-radius-50 u-btn-1">My Home</a>
-  <a href="#" class="u-btn u-btn-round u-button-style u-hover-palette-1-light-1 u-palette-1-base u-radius-50 u-btn-1">Time Table</a>
+<div class="landing-page bg-danger">
+  <div class="osahan-slider m-0">
+     <div class="osahan-slider-item text-center">
+        <div class="d-flex align-items-center justify-content-center vh-100 flex-column">
+           <i class="icofont-globe display-3 text-white"></i>
+           <h5 class="mt-4 mb-3 text-white">Plan your Bus Journey</h5>
+           <p class="text-center text-white-50 mb-5 px-4">Bus Transportation Movement through a Cloud-based Smart Review Platform.</p>
+        </div>
+     </div>
+     <div class="osahan-slider-item text-center bg-white">
+        <div class="d-flex align-items-center justify-content-center vh-100 flex-column">
+           <i class="icofont-bus display-3 text-danger"></i>
+           <h5 class="mt-4 mb-3 text-danger">Smart Bus System</h5>
+           <p class="text-center text-dark-50 mb-5 px-4">Bus Transportation Movement through a Cloud-based Smart Review Platform.</p>
+        </div>
+     </div>
+     <div class="osahan-slider-item text-center">
+        <div class="d-flex align-items-center justify-content-center vh-100 flex-column">
+           <i class="icofont-notification display-3 text-white"></i>
+           <h5 class="mt-4 mb-3 text-white">Review all bus to improve their efficiency</h5>
+           <p class="text-center text-white-50 mb-5 px-4">Bus Transportation Movement through a Cloud-based Smart Review Platform.</p>
+        </div>
+     </div>
+  </div>
+</div>
+<div class="osahan-fotter fixed-bottom m-3">
+  <a href="{% url 'route_plan' %}" class="btn bg-white text-danger border-danger btn-block osahanbus-btlan">Get Started</a>
 </div>
 
-<p class="u-text u-text-default u-text-4">
-</p>
+
 {% endblock %}
