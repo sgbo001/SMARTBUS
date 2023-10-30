@@ -1,80 +1,42 @@
 {% load static %}
 <!DOCTYPE html>
-<html style="font-size: 16px;" lang="en">
+<html lang="en">
+
+
 <head>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="icon" type="image/png" href="{% static 'img/logo.png' %}">
     <title>SMART BUS - Default Title</title>
-    <link rel="shortcut icon" type="image/png" href="{% static 'images/logos/Logo_Blue_Bus.svg' %}" />
-    <link rel="stylesheet" href="{% static 'nicepage.css' %}" media="screen">
-    <link rel="stylesheet" href="{% static 'Page-6.css' %}" media="screen">
-    <script class="u-script" type="text/javascript" src="{% static 'jquery-1.9.1.min.js' %}" defer=""></script>
-    <script class="u-script" type="text/javascript" src="{% static 'nicepage.js' %}" defer=""></script>
-    <meta name="generator" content="Nicepage 5.20.10, nicepage.com">
-    <link id="u-theme-google-font" rel="stylesheet" href="https://fonts.googleapis.com/css?family=Raleway:100,100i,200,200i,300,300i,400,400i,500,500i,600,600i,700,700i,800,800i,900,900i|Open+Sans:300,300i,400,400i,500,500i,600,600i,700,700i,800,800i">
-
-    <style>
-        .button-container {
-            display: flex;
-            gap: 5px; /* Adjust as needed for spacing between buttons */
-            align-items: center;
-        }
-
-        @media (max-width: 768px) {
-            .button-container {
-                flex-direction: column; /* Stack buttons on smaller screens */
-                align-items: flex-start; /* Adjust alignment for stacked buttons */
-            }
-        }
-    </style>
-
-
-    <script type="application/ld+json">
-        {
-                "@context": "http://schema.org",
-                "@type": "Organization",
-                "name": "",
-                "url": "/"
-        }</script>
-    <meta name="theme-color" content="#77aaf6">
-    <meta property="og:title" content="Page 6">
-    <meta property="og:type" content="website">
-    <link rel="canonical" href="/">
-    <meta data-intl-tel-input-cdn-path="intlTelInput/">
+    <!-- Bootstrap core CSS -->
+    <link href="{% static 'vendor/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
+    <!-- Icofont Icon-->
+    <link href="{% static 'vendor/icons/icofont.min.css' %}" rel="stylesheet" type="text/css">
+    <!-- Slick Slider -->
+    <link rel="stylesheet" type="text/css" href="{% static 'vendor/slick/slick.min.css' %}" />
+    <link rel="stylesheet" type="text/css" href="{% static 'vendor/slick/slick-theme.min.css' %}" />
+    <!-- Custom styles for this template -->
+    <link href="{% static 'css/custom.css' %}" rel="stylesheet">
+    <!-- Sidebar CSS -->
+    <link href="{% static 'vendor/sidebar/demo.css' %}" rel="stylesheet">
 </head>
-<body data-home-page="https://website6023398.nicepage.io/Page-6.html?version=3ed5bff3-bd49-e8fe-3a18-ce3328a5d6b9" data-home-page-title="Page 6" data-path-to-root="./" data-include-products="false" class="u-body u-xl-mode" data-lang="en">
+<body>
+    <!-- landing page -->
+    {% block content %}{% endblock %}
+    <!-- footer fixed -->
     
-  {% if messages %}
-
-        {% for message in messages %}
-
-        <div class="alert alert-{{message.tags}}">{{ message }}</div>
-        {% endfor %}{% endif %}
-        <section class="u-align-center u-clearfix u-section-1" id="sec-52f6">
-        <h2 class="u-text u-text-palette-1-base u-text-2"> SMART BUS APP</h2>
-        {% block content %}{% endblock %}
-
-        <p class="u-text u-text-default u-text-4">
-
-        </p>
-        </div>
-    </section>
-
-
-
-
-    <section class="u-backlink u-clearfix u-grey-80">
-        <a class="u-link" href="#" target="_blank">
-            <span>Dissertation Prototype</span>
-        </a>
-        <p class="u-text">
-            <span>created with</span>
-        </p>
-        <a class="u-link" href="#" target="_blank">
-            <span>Adetoyese Olaide</span>
-        </a>.
-    </section>
-
+    <!-- Bootstrap core JavaScript -->
+    <script src="{% static 'vendor/jquery/jquery.min.js' %}"></script>
+    <script src="{% static 'vendor/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+    <!-- slick Slider JS-->
+    <script type="text/javascript" src="{% static 'vendor/slick/slick.min.js' %}"></script>
+    <!-- Sidebar JS-->
+    <script type="text/javascript" src="{% static 'vendor/sidebar/hc-offcanvas-nav.js' %}"></script>
+    <!-- Custom scripts for all pages-->
+    <script src="{% static 'js/custom.js' %}"></script>
 </body>
+
+
 </html>
