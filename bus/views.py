@@ -6,6 +6,7 @@ from datetime import datetime
 from .models import PostCode, Bus
 from reviews.models import Review
 from django.db.models import Avg, Max
+from reviews.models import Review
 # Create your views here.
 
     
@@ -75,4 +76,45 @@ def display_route(request):
 
 
 
-   
+def bus_detail(request):
+    if request.method == 'GET':
+        stop_name = request.GET.get('stop_name')
+        bus_id = request.GET.get('bus_id')
+        
+        
+        if stop_name:
+            buses = Bus.objects.filter(stop_points__stop_point=stop_name)
+        else:
+            buses = Bus.objects.none()
+        
+        if bus_id:
+            selected_bus = Bus.objects.get(bus_id=bus_id)
+            stop_point = selected_bus.stop_points.first()
+            bus_providers = selected_bus.bus_providers.all()
+            max_rating = Review.objects.filter(bus_id=selected_bus, stop_point=stop_point).aggregate(Max('rating'))['rating__max']
+            top_three_reviews = Review.objects.filter(bus_id__bus_id=selected_bus, stop_point__stop_point=stop_name).order_by('-timestamp')[:3]
+            print(selected_bus)
+            print(stop_point)
+            print(bus_providers)
+            print(max_rating)
+            print(top_three_reviews)
+        else:
+            selected_bus = None
+            stop_point = None
+            bus_providers = None
+            max_rating = None
+            top_three_reviews = None
+        
+        return render(request, 'bus_detail.html', {
+            
+            'buses': buses,
+            'selected_bus': selected_bus,
+            'stop_point': stop_point,
+            'bus_providers': bus_providers,
+            'max_rating': max_rating,
+            'top_three_reviews': top_three_reviews
+            
+            
+        })
+
+
