@@ -7,6 +7,7 @@ from .models import PostCode, Bus
 from reviews.models import Review
 from django.db.models import Avg, Max
 from reviews.models import Review
+import math
 # Create your views here.
 
     
@@ -56,13 +57,18 @@ def display_route(request):
         api_url = f'https://transportapi.com/v3/uk/public_journey.json?from=lonlat%3A{from_longitude}%2C{from_latitude}&to=lonlat%3A{to_longitude}%2C{to_latitude}&date={date}&time={time}&journey_time_type=leave_after&service=silverrail&modes=bus%2Ctrain%2Cboat&modes=bus&not_modes=bus%2Ctrain%2Cboat&not_modes=train&app_key=b0172443d13086192192fc659ac988ef&app_id=b42e95c3'
         response = requests.get(api_url)
         data = response.json()  # Assuming your API returns JSON data
-    
+        print(data)
+        
         # Iterate through routes and find the highest-rated bus for each leg
         for route in data['routes']:
             for leg in route['route_parts']:
                 if leg['mode'] == 'bus':
-                    highest_rated_bus = Review.objects.filter(bus_id__bus_id=leg['line_name']).aggregate(Max('rating'))['rating__max']
-                    leg['suggested_bus'] = highest_rated_bus
+                    smscode = leg['from_point']['place']['smscode']
+                    average_rating = Review.objects.filter(bus_id__bus_id=leg['line_name'], stop_point__stop_point=smscode).aggregate(Avg('rating'))['rating__avg']
+                    if average_rating is not None:
+                     leg['suggested_bus'] = math.ceil(average_rating)
+                    else:
+                     leg['suggested_bus'] = None
 
         # Pass the data to the template for rendering
         return render(request, 'route_display.html', {'routes': data})
@@ -92,7 +98,7 @@ def bus_detail(request):
             stop_point = selected_bus.stop_points.first()
             bus_providers = selected_bus.bus_providers.all()
             max_rating = Review.objects.filter(bus_id=selected_bus, stop_point=stop_point).aggregate(Max('rating'))['rating__max']
-            top_three_reviews = Review.objects.filter(bus_id__bus_id=selected_bus, stop_point__stop_point=stop_name).order_by('-timestamp')[:3]
+            top_three_reviews = Review.objects.filter(bus_id=selected_bus, stop_point=stop_point, comment__isnull=False,).exclude(comment__iexact='').order_by('-timestamp')[:3]
             print(selected_bus)
             print(stop_point)
             print(bus_providers)

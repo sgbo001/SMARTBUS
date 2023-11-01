@@ -49,41 +49,50 @@
                              <div>
                                  <span class="mode mode-{{ leg.mode }}"></span>
                                  {% if leg.mode == "bus" %}
-                                 <img src="{% static 'images/bus.svg' %}" />
-                                 <strong>{{ leg.line_name }}</strong>
+                                 <img src="{% static 'images/bus.svg' %}" /> 
+                                 <strong>{{ leg.line_name }}</strong> Ride for
                                  {% endif %}
                                  {% if leg.mode != "bus" %}
-                                 <img src="{% static 'images/walk.svg' %}" alt="{{ leg.mode }}" />
+                                 <img src="{% static 'images/walk.svg' %}" alt="{{ leg.mode }}" /> Walk
                                  {% endif %}
                                  {{ leg.duration|slice:"3:" }} mins
                                  {% if leg.suggested_bus %}
                                  <p>Bus Rating: 
                                     {% if leg.suggested_bus == 5 %}
-                                        <i class="icofont-star text-danger"></i>
-                                        <i class="icofont-star text-danger"></i>
-                                        <i class="icofont-star text-danger"></i>
-                                        <i class="icofont-star text-danger"></i>
-                                        <i class="icofont-star text-muted"></i>
-                                        <span class="text-dark">5.0</span>
+                                    <i class="icofont-star text-danger"></i>
+                                    <i class="icofont-star text-danger"></i>
+                                    <i class="icofont-star text-danger"></i>
+                                    <i class="icofont-star text-danger"></i>
+                                    <i class="icofont-star text-danger"></i>
+                                        <span class="text-dark">Likely to be Very Early</span>
                                     {% elif leg.suggested_bus == 4 %}
-                                        <i class="icofont-star text-danger"></i>
-                                        <i class="icofont-star text-danger"></i>
-                                        <i class="icofont-star text-danger"></i>
-                                        <i class="icofont-star text-danger"></i>
-                                        <i class="icofont-star text-muted"></i>
-                                        <span class="text-dark">4.0</span>
+                                    <i class="icofont-star text-danger"></i>
+                                    <i class="icofont-star text-danger"></i>
+                                    <i class="icofont-star text-danger"></i>
+                                    <i class="icofont-star text-danger"></i>
+                                    <i class="icofont-star text-muted"></i>
+                                        <span class="text-dark">Somewhat Early</span>
                                     {% elif leg.suggested_bus == 3 %}
                                     <i class="icofont-star text-danger"></i>
                                     <i class="icofont-star text-danger"></i>
-                                    <i class="icofont-star text-muted"></i>
-                                    <span class="text-dark">3.0</span><!-- Add code for rating 3 -->
-                                    {% elif leg.suggested_bus == 2 %}
                                     <i class="icofont-star text-danger"></i>
                                     <i class="icofont-star text-muted"></i>
-                                    <span class="text-dark">2.0</span> <!-- Add code for rating 2 -->
-                                    {% elif leg.suggested_bus == 1 %}
                                     <i class="icofont-star text-muted"></i>
-                                    <span class="text-dark">1.0</span>  <!-- Add code for rating 1 -->
+                                    <span class="text-dark">On time</span><!-- Add code for rating 3 -->
+                                    {% elif leg.suggested_bus == 2 %}
+                                    <i class="icofont-star text-danger"></i>
+                                    <i class="icofont-star text-danger"></i>
+                                    <i class="icofont-star text-muted"></i>
+                                    <i class="icofont-star text-muted"></i>
+                                    <i class="icofont-star text-muted"></i>
+                                    <span class="text-dark">Somewhat Late</span> <!-- Add code for rating 2 -->
+                                    {% elif leg.suggested_bus == 1 %}
+                                    <i class="icofont-star text-danger"></i>
+                                    <i class="icofont-star text-muted"></i>
+                                    <i class="icofont-star text-muted"></i>
+                                    <i class="icofont-star text-muted"></i>
+                                    <i class="icofont-star text-muted"></i>
+                                    <span class="text-dark">Likely to be Late</span>  <!-- Add code for rating 1 -->
                                     {% else %}
                                         <!-- Default code if none of the above conditions are met -->
                                     {% endif %}
@@ -124,53 +133,22 @@
              <div class="modal-body p-3">
                 <div class="mb-4">
                    <div class="d-flex">
-                      <p class="mb-2 text-dark font-weight-bold">Choose Class</p>
+                      <p class="mb-2 text-dark font-weight-bold">Optimal Route</p>
                    </div>
                    <div class="custom-control custom-radio custom-control-inline">
                       <input type="radio" id="customRadioclass1" name="customRadioclass1" class="custom-control-input">
-                      <label class="custom-control-label small" for="customRadioclass1">AC</label>
+                      <label class="custom-control-label small" for="customRadioclass1">Arrive early</label>
                    </div>
                    <div class="custom-control custom-radio custom-control-inline">
                       <input type="radio" id="customRadioclass2" name="customRadioclass1" class="custom-control-input">
-                      <label class="custom-control-label small" for="customRadioclass2">Non AC</label>
+                      <label class="custom-control-label small" for="customRadioclass2">Ontime</label>
                    </div>
                    <div class="custom-control custom-radio custom-control-inline">
                       <input type="radio" id="customRadioclass3" name="customRadioclass1" class="custom-control-input">
-                      <label class="custom-control-label small" for="customRadioclass3">Business</label>
+                      <label class="custom-control-label small" for="customRadioclass3">Late</label>
                    </div>
                 </div>
-                <div class="mb-4">
-                   <p class="mb-2 text-dark font-weight-bold">Choose Price</p>
-                   <div class="custom-control custom-radio custom-control-inline">
-                      <input type="radio" id="customRadioprice1" name="customRadioprice1" class="custom-control-input">
-                      <label class="custom-control-label small" for="customRadioprice1">$100 - $200</label>
-                   </div>
-                   <div class="custom-control custom-radio custom-control-inline">
-                      <input type="radio" id="customRadioprice2" name="customRadioprice1" class="custom-control-input">
-                      <label class="custom-control-label small" for="customRadioprice2">$300 - $400</label>
-                   </div>
-                   <div class="custom-control custom-radio custom-control-inline">
-                      <input type="radio" id="customRadioprice3" name="customRadioprice1" class="custom-control-input">
-                      <label class="custom-control-label small" for="customRadioprice3">$600 - $800</label>
-                   </div>
-                </div>
-                <div class="mb-4">
-                   <p class="mb-2 text-dark font-weight-bold">Choose Bus Service</p>
-                   <div class="btn-group btn-group-toggle d-block" data-toggle="buttons">
-                      <label class="btn btn-chkftr btn-danger small btn-sm rounded mr-2 mb-2">
-                      <input type="checkbox" name="options" autocomplete="off"> Niloy Poribohon
-                      </label>
-                      <label class="btn btn-chkftr btn-danger small btn-sm rounded mr-2 mb-2">
-                      <input type="checkbox" name="options" autocomplete="off"> Green Wheel
-                      </label>
-                      <label class="btn btn-chkftr btn-danger small btn-sm rounded mr-2 mb-2">
-                      <input type="checkbox" name="options" autocomplete="off"> Parboti Bus
-                      </label>
-                      <label class="btn btn-chkftr btn-danger small btn-sm rounded mr-2 mb-2">
-                      <input type="checkbox" name="options" autocomplete="off"> Night Way
-                      </label>
-                   </div>
-                </div>
+                
              </div>
              <div class="modal-footer border-0 fixed-bottom">
                 <button type="button" data-dismiss="modal" aria-label="Close" class="btn btn-danger btn-block osahanbus-btn py-3">APPLY FILTER</button>
