@@ -2,6 +2,7 @@
 
 {% block content %}
 {% load static %}
+{% load socialaccount %}
 
 <div class="landing-page bg-danger">
 
@@ -15,8 +16,9 @@
       </div>
    </div>
 <div class="fixed-bottom p-4">
-  <a href="{% url 'register' %}" class="btn btn-block btn-danger mb-3 osahanbus-btn">CREATE AN ACCOUNT</a>
-  <a href="{% url 'login' %}" class="btn btn-block btn-light osahanbus-btn">SIGN IN</a>
+   <a href="{% provider_login_url 'google' %}" class="btn btn-block rounded-1 google-btn osahanbus-social">
+      <i class="icofont-google-plus"></i> LOGIN WITH GOOGLE
+      </a>
 </div>
 
 

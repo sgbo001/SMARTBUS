@@ -1,19 +1,23 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from .forms import SearchForm
 import requests
 from django.http import HttpResponse
 from datetime import datetime
-from .models import PostCode, Bus
+from .models import Bus
 from reviews.models import Review
 from django.db.models import Avg, Max
 from reviews.models import Review
 import math
+from datetime import datetime, timedelta
 # Create your views here.
 
     
 def home(request):
-   
-    return render(request, 'home.html')
+   if request.user.is_authenticated:
+        # User is signed in, redirect to 'route_plan'
+        return redirect('route_plan')
+   else:
+        return render(request, 'home.html')
 
 def route_plan(request):
     if request.method == 'GET':
@@ -33,19 +37,16 @@ def display_route(request):
     # Fetch data from the API
     from_post_code = request.GET.get('from_post_code')
     to_post_code = request.GET.get('to_post_code')
-
-    # Search for longitude and latitude for from_post_code
-    from_post_code_info = PostCode.objects.filter(post_code=from_post_code).first()
-
-    # Search for longitude and latitude for to_post_code
-    to_post_code_info = PostCode.objects.filter(post_code=to_post_code).first()
-
+    
+    from_post_code_info = get_coordinates(from_post_code)
+    to_post_code_info = get_coordinates(to_post_code)
+    
     if from_post_code_info and to_post_code_info:
-        from_longitude = from_post_code_info.longitude
-        from_latitude = from_post_code_info.latitude
+        from_longitude = from_post_code_info['lng']
+        from_latitude = from_post_code_info['lat']
 
-        to_longitude = to_post_code_info.longitude
-        to_latitude = to_post_code_info.latitude
+        to_longitude = to_post_code_info['lng']
+        to_latitude = to_post_code_info['lat']
 
         # Your code to call the API and display the results can go here
         # ...
@@ -57,11 +58,13 @@ def display_route(request):
         api_url = f'https://transportapi.com/v3/uk/public_journey.json?from=lonlat%3A{from_longitude}%2C{from_latitude}&to=lonlat%3A{to_longitude}%2C{to_latitude}&date={date}&time={time}&journey_time_type=leave_after&service=silverrail&modes=bus%2Ctrain%2Cboat&modes=bus&not_modes=bus%2Ctrain%2Cboat&not_modes=train&app_key=b0172443d13086192192fc659ac988ef&app_id=b42e95c3'
         response = requests.get(api_url)
         data = response.json()  # Assuming your API returns JSON data
-        print(data)
+        
         
         # Iterate through routes and find the highest-rated bus for each leg
         for route in data['routes']:
             for leg in route['route_parts']:
+                route_duration = route['duration']
+                print(f"Route Duration: {route_duration}")
                 if leg['mode'] == 'bus':
                     smscode = leg['from_point']['place']['smscode']
                     average_rating = Review.objects.filter(bus_id__bus_id=leg['line_name'], stop_point__stop_point=smscode).aggregate(Avg('rating'))['rating__avg']
@@ -81,6 +84,21 @@ def display_route(request):
     return render(request, 'route_display.html')
 
 
+
+def get_coordinates(postcode):
+    # Use your Google Maps Geocoding API call to get coordinates
+    api_key = 'AIzaSyBic5uX0v4MzK_HoMYlw03cbUvV7lev1Yk'  # Replace with your Google Maps API key
+    geocoding_url = f'https://maps.googleapis.com/maps/api/geocode/json?address={postcode}&key={api_key}'
+
+    response = requests.get(geocoding_url)
+    data = response.json()
+
+    if data['status'] == 'OK' and len(data['results']) > 0:
+        location = data['results'][0]['geometry']['location']
+        return location
+    else:
+        return None
+    
 
 def bus_detail(request):
     if request.method == 'GET':

@@ -31,6 +31,10 @@ INSTALLED_APPS = [
     'reviews.apps.ReviewsConfig',
     'crispy_forms',
     'crispy_bootstrap4',
+    'allauth',
+    'allauth.account',
+    'allauth.socialaccount',
+    'allauth.socialaccount.providers.google',
 ]
 
 MIDDLEWARE = [
@@ -41,6 +45,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'allauth.account.middleware.AccountMiddleware'
 ]
 
 ROOT_URLCONF = 'busApp.urls'
@@ -128,3 +133,35 @@ CRISPY_ALLOWED_TEMPLATE_PACK = 'bootstrap4'
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
 LOGIN_REDIRECT_URL = 'route_plan'
 LOGIN_URL = 'login'
+LOGOUT_REDIRECT_URL = 'home'
+LOGIN_TEMPLATE = 'login'
+# allauth settings
+ACCOUNT_AUTHENTICATION_METHOD = 'email'  # or 'username' or other methods
+ACCOUNT_EMAIL_REQUIRED = True
+ACCOUNT_UNIQUE_EMAIL = True
+ACCOUNT_EMAIL_VERIFICATION = 'mandatory'
+SOCIALACCOUNT_QUERY_EMAIL = ACCOUNT_EMAIL_REQUIRED
+SOCIALACCOUNT_AUTO_SIGNUP = True  # Automatically create accounts for new users
+
+
+
+AUTHENTICATION_BACKENDS = (
+    # ...
+    'django.contrib.auth.backends.ModelBackend',
+    'allauth.account.auth_backends.AuthenticationBackend',
+)
+
+SOCIALACCOUNT_PROVIDERS = {
+    'google': {
+        'APP': {
+            'client_id': '624437417330-qmfd2bp9ppekvpla5q2m6t3shsgm1anu.apps.googleusercontent.com',
+            'secret': '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',
+            'key': '',
+        }
+    }
+}
+
+AUTHENTICATION_CLASSES = (
+    # ...
+    'allauth.socialaccount.providers.oauth2.client.OAuth2ErrorRedirectHandler',
+)
