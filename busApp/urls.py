@@ -9,6 +9,7 @@ from users import views as user_views
 from django.contrib.auth import views as auth_views
 
 
+
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('home/', home, name='home'),
@@ -19,7 +20,8 @@ urlpatterns = [
     path('route/', display_route, name='display_route'),
     path('reviews/', include('reviews.urls', namespace='reviews')),
     path('reviews/', include('reviews.urls', namespace='reviews')),
-    
-
+    path('accounts/', include('allauth.urls')),
+    path('accounts/', include('allauth.socialaccount.urls')),
+    path('profile/edit/', user_views.edit_profile, name='edit_profile'),
 
 ]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
