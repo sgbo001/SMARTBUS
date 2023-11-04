@@ -1,11 +1,12 @@
 from django.db import models
 from django.contrib.auth.models import User
-from bus.models import BusStop, Bus
+from bus.models import BusRoute
 
 class Review(models.Model):
     full_name = models.CharField(max_length=255, blank=False)
-    stop_point = models.ForeignKey(BusStop, on_delete=models.PROTECT)
-    bus_id = models.ForeignKey(Bus, on_delete=models.PROTECT)
+    stop_point = models.CharField(max_length=255, blank=False)
+    bus_id = models.CharField(max_length=10, blank=False)
+    arrival_time = models.TimeField(verbose_name="Arrival Time", blank=True)
     timestamp = models.DateTimeField(auto_now_add=True)
     
     RATING_CHOICES = (
@@ -18,4 +19,4 @@ class Review(models.Model):
     rating = models.IntegerField(choices=RATING_CHOICES)
     comment = models.TextField(blank=True, null=True)
     def __str__(self):
-        return f"Review by {self.full_name} for {self.bus_id} at {self.timestamp}"
+        return f"Review by {self.full_name} for {self.bus_id} at {self.arrival_time}"

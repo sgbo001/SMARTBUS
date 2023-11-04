@@ -3,7 +3,7 @@ from .forms import SearchForm
 import requests
 from django.http import HttpResponse
 from datetime import datetime
-from .models import Bus
+from .models import Bus, BusRoute
 from reviews.models import Review
 from django.db.models import Avg, Max
 from reviews.models import Review
@@ -64,10 +64,14 @@ def display_route(request):
         for route in data['routes']:
             for leg in route['route_parts']:
                 route_duration = route['duration']
-                print(f"Route Duration: {route_duration}")
+
                 if leg['mode'] == 'bus':
                     smscode = leg['from_point']['place']['smscode']
-                    average_rating = Review.objects.filter(bus_id__bus_id=leg['line_name'], stop_point__stop_point=smscode).aggregate(Avg('rating'))['rating__avg']
+                    print("SMS CODE", smscode)
+                    print("LINE ", leg['line_name'])
+                    print("DEPARTURE ", leg['departure_time'])
+                    average_rating = Review.objects.filter(bus_id=leg['line_name'], arrival_time=leg['departure_time'], stop_point=smscode).aggregate(Avg('rating'))['rating__avg']
+                    print(f"Rating: {average_rating}")
                     if average_rating is not None:
                      leg['suggested_bus'] = math.ceil(average_rating)
                     else:
@@ -100,45 +104,49 @@ def get_coordinates(postcode):
         return None
     
 
+    
+    
 def bus_detail(request):
     if request.method == 'GET':
         stop_name = request.GET.get('stop_name')
         bus_id = request.GET.get('bus_id')
-        
+        print("Stop Point : ", stop_name)
         
         if stop_name:
-            buses = Bus.objects.filter(stop_points__stop_point=stop_name)
+            buses = BusRoute.objects.filter(stop_point=stop_name).values('bus_id').distinct()
         else:
-            buses = Bus.objects.none()
+            buses = BusRoute.objects.none()
         
         if bus_id:
-            selected_bus = Bus.objects.get(bus_id=bus_id)
-            stop_point = selected_bus.stop_points.first()
-            bus_providers = selected_bus.bus_providers.all()
-            max_rating = Review.objects.filter(bus_id=selected_bus, stop_point=stop_point).aggregate(Max('rating'))['rating__max']
-            top_three_reviews = Review.objects.filter(bus_id=selected_bus, stop_point=stop_point, comment__isnull=False,).exclude(comment__iexact='').order_by('-timestamp')[:3]
-            print(selected_bus)
-            print(stop_point)
-            print(bus_providers)
+            
+            #bus_providers = selected_bus.bus_providers.all()
+            print(bus_id)
+            
+            print("Stop Point : ", stop_name)
+        
+            max_rating = Review.objects.filter(bus_id=bus_id, stop_point=stop_name).aggregate(Avg('rating'))['rating__avg']
+            top_three_reviews = Review.objects.filter(bus_id=bus_id, stop_point=stop_name, comment__isnull=False,).exclude(comment__iexact='').order_by('-timestamp')[:3]
+            #print(selected_bus)
+            
+            #print(bus_providers)
             print(max_rating)
             print(top_three_reviews)
         else:
-            selected_bus = None
-            stop_point = None
-            bus_providers = None
+            #selected_bus = None
+            #stop_point = None
+            #bus_providers = None
             max_rating = None
             top_three_reviews = None
         
         return render(request, 'bus_detail.html', {
             
             'buses': buses,
-            'selected_bus': selected_bus,
-            'stop_point': stop_point,
-            'bus_providers': bus_providers,
+            #'selected_bus': selected_bus,
+            #'stop_point': stop_point,
+            #'bus_providers': bus_providers,
             'max_rating': max_rating,
             'top_three_reviews': top_three_reviews
             
             
         })
-
 

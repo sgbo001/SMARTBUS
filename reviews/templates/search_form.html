@@ -8,7 +8,7 @@
     <div class="osahan-header-nav shadow-sm p-3 d-flex align-items-center bg-danger">
        <h5 class="font-weight-normal mb-0 text-white">
           <a class="text-danger mr-3" href="{% url 'route_plan' %}"><i class="icofont-rounded-left"></i></a>
-          Review Bus - Search Results - {% if stop_points %}{{ stop_points|join:", " }}{% else %}No results{% endif %}
+          Review Bus - Search Results - {% for common_name in unique_common_names %}{{ common_name.common_name }}{{ common_name.stop_point }}{% endfor %}
        </h5>
        <div class="ml-auto d-flex align-items-center">
           <a class="toggle osahan-toggle h4 m-0 text-white ml-auto" href="#"><i class="icofont-navigation-menu"></i></a>
@@ -23,21 +23,32 @@
              <button type="submit" class="btn btn-danger btn-block osahanbus-btn rounded-1">Search</button>
           </div>
        </form>
-       
        {% load crispy_forms_tags %}
        <form method="post" class="custom-form" style="margin-bottom: 10px;">
         {% csrf_token %}
-      <div class="form-group">
-        {{ form.full_name|as_crispy_field }}
-      </div>
+     
       <div class="form-group">
         <label for="bus-select">Select a Bus:</label>
         <select name="bus_id" id="bus-select" class="form-control">
-         {% for bus in buses %}
-           <option value="{{ bus.bus_id }}">{{ bus.bus_id }}</option>
-         {% endfor %}
-       </select>
-      </div>
+            {% for bus_id in unique_bus_ids %}
+            <option value="{{ bus_id.bus_id }}">{{ bus_id.bus_id }}</option>
+            {% endfor %}
+        </select>
+    </div>
+    
+      <div class="form-group">
+        <label for="arrival_time">Select Expected Arrival Time:</label>
+        <select name="arrival_time" id="arrival_time" class="form-control">
+          {% for arrival_time in unique_arrival_times %}
+          <option value="{{ arrival_time.arrival_time }}">{{ arrival_time.arrival_time }}</option>
+          {% endfor %}
+        </select>
+    </div>
+    
+    <div class="form-group">
+      {{ form.full_name|as_crispy_field }}
+    </div>
+
       <div class="form-group">
         <label for="star5" title="Very Early">
             <input type="radio" id="star5" name="rating" value="5">
@@ -67,5 +78,6 @@
    
  </div>
 
+ 
 
 {% endblock %}

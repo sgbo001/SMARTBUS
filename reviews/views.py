@@ -6,8 +6,10 @@ from .models import Review
 from bus.models import Bus  # Adjust this import based on your app structure
 from .forms import ReviewForm
 from django.contrib.auth.models import User
-from bus.models import BusStop, Bus
+from bus.models import BusStop, Bus, BusRoute
 from django.contrib import messages
+import json
+import pandas as pd
 
 def search_buses_by_stop(request):
     if request.method == 'GET':
@@ -25,40 +27,49 @@ class ReviewCreateView(View):
         is_number = stop_name and stop_name[0].isdigit()
 
         if is_number:
-            buses = Bus.objects.filter(stop_points__stop_point__icontains=stop_name)
-            stop_points = list(set(stop_point.common_name for bus in buses for stop_point in bus.stop_points.all()))
+            bus_info = BusRoute.objects.filter(stop_point=stop_name)
+            unique_stop_names = bus_info.values('common_name').distinct()
+            unique_bus_ids = bus_info.values('bus_id').distinct()
+            unique_arrival_times = bus_info.values('arrival_time').distinct()
+            
+            print(unique_stop_names)
+            print(unique_bus_ids)
+            
+            
         else:
-            buses = Bus.objects.filter(stop_points__common_name__icontains=stop_name)
-            stop_points = list(set(stop_point.stop_point for bus in buses for stop_point in bus.stop_points.all()))
+            bus_info = BusRoute.objects.filter(common_name=stop_name)
+            unique_stop_names = bus_info.values('stop_point').distinct()
+            unique_bus_ids = bus_info.values('bus_id').distinct()
+            unique_arrival_times = bus_info.values('arrival_time').distinct()
+            
+            print(unique_stop_names)
+            print(unique_bus_ids)
+            
 
-        return render(request, self.template_name, {'form': form, 'buses': buses, 'stop_points': stop_points})
 
+        return render(request, self.template_name, {'form': form, 'unique_bus_ids': unique_bus_ids, 'unique_common_names': unique_stop_names, 'unique_arrival_times': unique_arrival_times,})
+    
+   
     def post(self, request, *args, **kwargs):
         form = ReviewForm(request.POST)
         
         if form.is_valid():
-            stop_name = request.GET.get('stop_name')
+            #stop_name = request.GET.get('stop_name')
             bus_id = request.POST.get('bus_id')
+            arrival_time = request.POST.get('arrival_time')
+            stop_name = request.GET.get('stop_name')
             
-            is_number = stop_name and stop_name[0].isdigit()
-            
-            try:
-                if is_number:
-                    stop_point = BusStop.objects.get(stop_point=int(stop_name))
-                else:
-                    stop_point = BusStop.objects.get(common_name=stop_name)
+            if stop_name.isdigit():
+                stop_point = stop_name
+
+            else:
+                stop_point = BusRoute.objects.filter(common_name=stop_name).values('stop_point').distinct()
+
                 
-                bus = Bus.objects.get(bus_id=bus_id)
-            except BusStop.DoesNotExist:
-                # Handle the case where the stop_name doesn't exist
-                return JsonResponse({'errors': 'Invalid stop name'}, status=400)
-            except Bus.DoesNotExist:
-                # Handle the case where the bus_id doesn't exist
-                return JsonResponse({'errors': 'Invalid bus ID'}, status=400)
-            
             review = form.save(commit=False)
             review.stop_point = stop_point
-            review.bus_id = bus
+            review.bus_id = bus_id
+            review.arrival_time = arrival_time
             review.save()
             messages.success(request, 'Review submitted successfully.')
             previous_page = '/home'
@@ -66,4 +77,4 @@ class ReviewCreateView(View):
         else:
             messages.warning(request, 'An error occurred while saving this review.')
 
-    
+

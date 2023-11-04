@@ -5,7 +5,7 @@ from bus.models import Bus
 class ReviewForm(forms.ModelForm):
     class Meta:
         model = Review
-        fields = ['full_name','rating', 'comment']
+        fields = ['arrival_time', 'full_name','rating', 'comment']
     
 
 
