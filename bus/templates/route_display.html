@@ -36,7 +36,7 @@
                  <div class="list-item-img">
                      <img src="{% static 'img/listing/item1.png' %}" class="img-fluid">
                  </div>
-                 <p class="mb-0 l-hght-10">Route {{ forloop.counter }} - {{ route.duration|slice:"3:" }} mins</p>
+                 <p class="mb-0 l-hght-10">Route {{ forloop.counter }} - Journey Duration : {{ route.duration }} hrs</p>
                  {% with route_data=route.route_parts %}
                  {% for leg in route_data %}
                  <div>

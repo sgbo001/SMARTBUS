@@ -7,7 +7,7 @@ from bus.views import home, display_route, route_plan, bus_detail
 from reviews.views import ReviewCreateView
 from users import views as user_views
 from django.contrib.auth import views as auth_views
-
+from reviews import views
 
 
 urlpatterns = [
@@ -23,5 +23,6 @@ urlpatterns = [
     path('accounts/', include('allauth.urls')),
     path('accounts/', include('allauth.socialaccount.urls')),
     path('profile/edit/', user_views.edit_profile, name='edit_profile'),
+    #path('api/arrival_times/', views.get_arrival_times, name='get_arrival_times'),
 
 ]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
