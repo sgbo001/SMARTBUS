@@ -38,7 +38,7 @@ def edit_profile(request):
         form = ProfileEditForm(request.POST, instance=profile)
         if form.is_valid():
             form.save()
-            return redirect('view_profile')
+            return redirect('route_plan')
 
     else:
         form = ProfileEditForm(instance=profile)

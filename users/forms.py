@@ -18,4 +18,4 @@ class UserProfileForm(forms.ModelForm):
 class ProfileEditForm(forms.ModelForm):
     class Meta:
         model = Profile
-        fields = ['image', 'phone_number', 'city', 'state', 'address']
+        fields = ['phone_number', 'city', 'state', 'address']

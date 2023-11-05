@@ -25,16 +25,12 @@
          <form method="get" action="{% url 'display_route' %}" class="custom-form" style="margin-bottom: 10px;">
             {% csrf_token %}
             <div class="form-group border-bottom pb-2">
-                <div class="form-check">
-                    <input type="checkbox" class="form-check-input" id="autoLocation">
-                    <label class="form-check-label" for="autoLocation">Use My Current Location</label>
-                </div>
-                <div id="fromPostCodeWrapper" class="d-none">
-                    {{ form.from_post_code|as_crispy_field }}
-                    
-                </div>
+               <input type="checkbox" id="getLocationBtn">
+               <label class="form-check-label" for="autoLocation">Use My Current Location</label>
+               
+               <input type="text" id="postalCodeText" readonly style="display: none;">
                 
-
+                {{ form.from_post_code|as_crispy_field }}
                 {{ form.to_post_code|as_crispy_field }}
                 {{ form.date_time|as_crispy_field }}
                 <button type="submit" class="btn btn-danger btn-block osahanbus-btn rounded-1">Search</button>
@@ -107,52 +103,50 @@
        </div>
     </div>
  </div>
-
  <script>
-   document.addEventListener("DOMContentLoaded", function() {
-       const autoLocationCheckbox = document.getElementById("autoLocation");
-       const fromPostCodeWrapper = document.getElementById("fromPostCodeWrapper");
-       const currentPostCodeInput = document.getElementById("currentPostCode");
-   
-       autoLocationCheckbox.addEventListener("change", function() {
-           if (this.checked) {
-               fromPostCodeWrapper.classList.add("d-none");
-   
-               // Get the user's current location and convert it to postcode
-               if (navigator.geolocation) {
-                   navigator.geolocation.getCurrentPosition(function(position) {
-                       const latitude = position.coords.latitude;
-                       const longitude = position.coords.longitude;
-   
-                       // Use a geocoding service or library to convert coordinates to postcode
-                       // Here's a simple example using OpenCage Geocoding API
-                       fetch(`https://api.opencagedata.com/geocode/v1/json?q=${latitude}+${longitude}&key=a2003125b81348a1b9011350c8d00197`)
-                           .then(response => response.json())
-                           .then(data => {
-                               const postcode = data.results[0].components.postcode;
-                               currentPostCodeInput.value = postcode;
-   
-                               // Modify this line to select the 'from_post_code' field
-                               const fromPostCodeInput = document.getElementById("id_from_post_code");
-                               fromPostCodeInput.value = postcode;
-                           })
-                           .catch(error => {
-                               console.error("Error fetching postcode: ", error);
-                           });
+   const getLocationBtn = document.getElementById('getLocationBtn');
+   const postalCodeText = document.getElementById('postalCodeText');
+   const fromPostCodeInput = document.querySelector('input[name="from_post_code"]');
+
+   getLocationBtn.addEventListener('click', () => {
+       if ("geolocation" in navigator) {
+           navigator.geolocation.getCurrentPosition(function(position) {
+               const latitude = position.coords.latitude;
+               const longitude = position.coords.longitude;
+
+               // Make a request to OpenCageData API to get location information
+               fetch(`https://api.opencagedata.com/geocode/v1/json?q=${latitude}+${longitude}&key=a2003125b81348a1b9011350c8d00197`)
+                   .then(response => response.json())
+                   .then(data => {
+                       if (data.results.length > 0) {
+                           const postalCode = data.results[0].components.postcode;
+                           postalCodeText.value = postalCode || "Postal code not found";
+
+                           // Set the postal code in the form's field
+                           fromPostCodeInput.value = postalCode || "";
+                       } else {
+                           postalCodeText.value = "Location not found";
+
+                           // Clear the form's field
+                           fromPostCodeInput.value = "";
+                       }
+                   })
+                   .catch(error => {
+                       console.error("Error fetching location data:", error);
+                       postalCodeText.value = "Error fetching location data";
+
+                       // Clear the form's field
+                       fromPostCodeInput.value = "";
                    });
-               } else {
-                   console.error("Geolocation is not supported by your browser.");
-               }
-           } else {
-               fromPostCodeWrapper.classList.remove("d-none");
-               currentPostCodeInput.value = ""; // Clear the current location value
-   
-               // Modify this line to select the 'from_post_code' field
-               const fromPostCodeInput = document.getElementById("id_from_post_code");
-               fromPostCodeInput.value = ""; // Clear the 'from_post_code' field
-           }
-       });
+           });
+       } else {
+           postalCodeText.value = "Geolocation is not supported by your browser";
+
+           // Clear the form's field
+           fromPostCodeInput.value = "";
+       }
    });
-   </script>
+</script>
+
       
 {% endblock %}

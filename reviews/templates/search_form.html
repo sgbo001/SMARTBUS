@@ -19,22 +19,29 @@
             {% csrf_token %}
           <div class="form-group">
              <label class="text-muted f-10 mb-1" for="stop_name">Stop Name:</label>
-             <input type="text" class="form-control" id="stop_name" name="stop_name" value="{{ request.GET.stop_name }}" aria-label="Stop Name"><br>
-             <button type="submit" class="btn btn-danger btn-block osahanbus-btn rounded-1">Search</button>
+             <input type="text" class="form-control" id="stop_name" name="stop_name" value="{{ request.GET.stop_name }}" aria-label="Stop Name" onchange="this.form.submit()" ><br>
+             <button type="submit" class="btn btn-danger btn-block osahanbus-btn rounded-1" style="display: none;">Search</button>
           </div>
        </form>
        {% load crispy_forms_tags %}
        <form method="post" class="custom-form" style="margin-bottom: 10px;">
         {% csrf_token %}
      
-      <div class="form-group">
-        <label for="bus-select">Select a Bus:</label>
-        <select name="bus_id" id="bus-select" class="form-control">
-            {% for bus_id in unique_bus_ids %}
-            <option value="{{ bus_id.bus_id }}">{{ bus_id.bus_id }}</option>
-            {% endfor %}
-        </select>
-    </div>
+        <div class="form-group">
+          <label for="bus-select">Select a Bus:</label>
+          <select name="bus_id" id="bus-select" class="form-control" onchange="submitForm()">
+              <option value="">Select a Bus</option>
+              {% for bus_id in unique_bus_ids %}
+              <option value="{{ bus_id.bus_id }}">{{ bus_id.bus_id }}</option>
+              {% endfor %}
+          </select>
+      </div>
+      <script>
+          function submitForm() {
+              document.getElementById("search-form").submit();
+          }
+      </script>
+      
     
       <div class="form-group">
         <label for="arrival_time">Select Expected Arrival Time:</label>
@@ -44,10 +51,7 @@
           {% endfor %}
         </select>
     </div>
-    
-    <div class="form-group">
-      {{ form.full_name|as_crispy_field }}
-    </div>
+
 
       <div class="form-group">
         <label for="star5" title="Very Early">
@@ -70,6 +74,7 @@
             <input type="radio" id="star1" name="rating" value="1">
             Late
         </label>&nbsp;&nbsp;&nbsp;
+        
     </div>
     {{ form.comment|as_crispy_field }}
       <button type="submit" class="btn btn-danger btn-block osahanbus-btn mb-3 rounded-1 mt-4">SUBMIT REVIEW</button>

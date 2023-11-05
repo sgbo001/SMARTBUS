@@ -110,33 +110,33 @@ def bus_detail(request):
     if request.method == 'GET':
         stop_name = request.GET.get('stop_name')
         bus_id = request.GET.get('bus_id')
-        print("Stop Point : ", stop_name)
+        is_number = stop_name and stop_name[0].isdigit()
         
         if stop_name:
-            buses = BusRoute.objects.filter(stop_point=stop_name).values('bus_id').distinct()
+            if is_number:
+                bus_info = BusRoute.objects.filter(stop_point=stop_name)
+                buses = bus_info.values('bus_id').distinct()
+                stop_name = stop_name
+            else:
+                bus_info = BusRoute.objects.filter(common_name=stop_name).values('bus_id').distinct()
+                buses = bus_info.values('bus_id').distinct()
+                stop_name_query = bus_info.values('stop_point').distinct()
+                first_stop_name = stop_name_query.first()
+                stop_name = first_stop_name.get('stop_point')
+                
         else:
             buses = BusRoute.objects.none()
-        
+        print("Stop Name : ", stop_name)
         if bus_id:
-            
-            #bus_providers = selected_bus.bus_providers.all()
-            print(bus_id)
-            
-            print("Stop Point : ", stop_name)
+            pickup = BusRoute.objects.filter(stop_point=stop_name, bus_id=bus_id).values('arrival_time').distinct().order_by('arrival_time')
+            print(pickup)
         
             max_rating = Review.objects.filter(bus_id=bus_id, stop_point=stop_name).aggregate(Avg('rating'))['rating__avg']
             top_three_reviews = Review.objects.filter(bus_id=bus_id, stop_point=stop_name, comment__isnull=False,).exclude(comment__iexact='').order_by('-timestamp')[:3]
-            #print(selected_bus)
-            
-            #print(bus_providers)
-            print(max_rating)
-            print(top_three_reviews)
         else:
-            #selected_bus = None
-            #stop_point = None
-            #bus_providers = None
             max_rating = None
             top_three_reviews = None
+            pickup = None
         
         return render(request, 'bus_detail.html', {
             
@@ -145,8 +145,8 @@ def bus_detail(request):
             #'stop_point': stop_point,
             #'bus_providers': bus_providers,
             'max_rating': max_rating,
-            'top_three_reviews': top_three_reviews
-            
+            'top_three_reviews': top_three_reviews,
+            'pickups':pickup
             
         })
 
