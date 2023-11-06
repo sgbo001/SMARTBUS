@@ -4,6 +4,8 @@ from django.contrib import messages
 from .forms import ProfileEditForm, UserRegisterForm, UserProfileForm
 from .models import Profile
 
+
+
 def register(request):
     if request.method == 'POST':
         user_form = UserRegisterForm(request.POST)
@@ -44,3 +46,6 @@ def edit_profile(request):
         form = ProfileEditForm(instance=profile)
 
     return render(request, 'edit_profile.html', {'form': form})
+
+
+

@@ -23,6 +23,7 @@ urlpatterns = [
     path('accounts/', include('allauth.urls')),
     path('accounts/', include('allauth.socialaccount.urls')),
     path('profile/edit/', user_views.edit_profile, name='edit_profile'),
+
     #path('api/arrival_times/', views.get_arrival_times, name='get_arrival_times'),
 
 ]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
