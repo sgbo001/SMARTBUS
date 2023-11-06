@@ -18,6 +18,10 @@ def home(request):
         return redirect('route_plan')
    else:
         return render(request, 'home.html')
+    
+def error(request):
+
+     return render(request, 'error.html')
 
 def route_plan(request):
     if request.method == 'GET':
@@ -83,7 +87,7 @@ def display_route(request):
     else:
         # Handle the case where post codes were not found
         # You can print an error message or log it
-        print("Invalid post codes")
+        return render(request, 'error.html')
 
     return render(request, 'route_display.html')
 
