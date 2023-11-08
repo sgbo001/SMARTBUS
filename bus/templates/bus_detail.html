@@ -1,12 +1,12 @@
 {% extends "base.html" %}
-
+{% block title %}SMART BUS - Custom Page Title{% endblock %}
 {% block content %}
 {% load static %}
 
 <div class="Bus-Details padding-bt">
     <div class="osahan-header-nav shadow-sm p-3 d-flex align-items-center bg-danger">
        <h5 class="font-weight-normal mb-0 text-white">
-          <a class="text-danger mr-3" href="listing.html"><i class="icofont-rounded-left"></i></a>
+          <a class="text-danger mr-3" href="{% url 'route_plan' %}"><i class="icofont-rounded-left"></i></a>
           Bus Details - {{ request.GET.stop_name }}
        </h5>
        <div class="ml-auto d-flex align-items-center">
@@ -144,7 +144,7 @@
                   {% for review in top_three_reviews %} 
                   <div class="reviews bg-white p-3 shadow-sm rounded-1 mb-3">
                      <div class="d-flex align-items-center mb-2">
-                        <img src="img/review/r1.jpg" class="img-fluid rounded-pill">
+                        <img src="{% static 'img/user1.png' %}" style="width: 24px; height: 24px; class="img-fluid rounded-circle">
                         <div class="ml-2">
                            <p class="mb-0 small font-weight-bold">{{ review.full_name }}</p>
                            <div class="start-rating d-flex align-items-center f-8">

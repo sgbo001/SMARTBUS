@@ -61,7 +61,8 @@ def display_route(request):
 
         api_url = f'https://transportapi.com/v3/uk/public_journey.json?from=lonlat%3A{from_longitude}%2C{from_latitude}&to=lonlat%3A{to_longitude}%2C{to_latitude}&date={date}&time={time}&journey_time_type=leave_after&service=silverrail&modes=bus%2Ctrain%2Cboat&modes=bus&not_modes=bus%2Ctrain%2Cboat&not_modes=train&app_key=b0172443d13086192192fc659ac988ef&app_id=b42e95c3'
         response = requests.get(api_url)
-        data = response.json()  # Assuming your API returns JSON data
+        data = response.json()
+        print(data)# Assuming your API returns JSON data
         
         
         # Iterate through routes and find the highest-rated bus for each leg
@@ -71,10 +72,18 @@ def display_route(request):
 
                 if leg['mode'] == 'bus':
                     smscode = leg['from_point']['place']['smscode']
-                    print("SMS CODE", smscode)
-                    print("LINE ", leg['line_name'])
-                    print("DEPARTURE ", leg['departure_time'])
-                    average_rating = Review.objects.filter(bus_id=leg['line_name'], arrival_time=leg['departure_time'], stop_point=smscode).aggregate(Avg('rating'))['rating__avg']
+                    tolerance = 2
+                    departure_time = leg['departure_time']
+
+                    # Convert departure_time to a datetime.time object
+                    departure_time = datetime.strptime(departure_time, '%H:%M').time()
+
+                    # Calculate the time range
+                    start_time = (datetime.combine(datetime.today(), departure_time) - timedelta(minutes=tolerance)).time()
+                    end_time = (datetime.combine(datetime.today(), departure_time) + timedelta(minutes=tolerance)).time()
+                    print(start_time, "", end_time)
+
+                    average_rating = Review.objects.filter(bus_id=leg['line_name'], arrival_time__gte=start_time, arrival_time__lte=end_time, stop_point=smscode).aggregate(Avg('rating'))['rating__avg']
                     print(f"Rating: {average_rating}")
                     if average_rating is not None:
                      leg['suggested_bus'] = math.ceil(average_rating)

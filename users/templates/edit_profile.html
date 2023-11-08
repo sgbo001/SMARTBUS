@@ -1,5 +1,6 @@
 {% extends "base.html" %}
-{% load crispy_forms_tags %}  {# Load the Crispy Forms template tags #}
+{% load crispy_forms_tags %} 
+{% block title %}SMART BUS - My Profile{% endblock %} {# Load the Crispy Forms template tags #}
 {% block content %}
 {% load static %}
 
@@ -7,7 +8,7 @@
 <div class="osahan-profile">
     <div class="osahan-header-nav shadow-sm bg-danger p-3 d-flex align-items-center">
        <h5 class="font-weight-normal mb-0 text-white">
-          <a class="text-danger mr-3" href="home.html"><i class="icofont-rounded-left"></i></a>
+          <a class="text-danger mr-3" href="{% url 'route_plan' %}"><i class="icofont-rounded-left"></i></a>
           My Profile - {{ user.first_name }} {{ user.last_name }}
        </h5>
        <div class="ml-auto d-flex align-items-center">
