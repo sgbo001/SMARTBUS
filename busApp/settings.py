@@ -1,5 +1,16 @@
 import os
 from pathlib import Path
+from dotenv import load_dotenv
+load_dotenv()
+
+AZURE_DB_NAME = os.getenv('AZURE_DB_NAME')
+AZURE_DB_HOST = os.getenv('AZURE_DB_HOST')
+AZURE_DB_PORT = os.getenv('AZURE_DB_PORT')
+AZURE_DB_USER = os.getenv('AZURE_DB_USER')
+AZURE_DB_PASSWORD = os.getenv('AZURE_DB_PASSWORD')
+
+OPEN_CAGE_API_KEY = os.getenv('OPEN_CAGE_API_KEY', 'default_api_key')
+# Initialise environment variables
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -72,16 +83,20 @@ WSGI_APPLICATION = 'busApp.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
+from decouple import config
+
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'bus_development',
-        'USER': 'root',
-        'PASSWORD': 'admin',
-        'HOST': 'localhost',  # Or the hostname of your MySQL server
-        'PORT': '3306',       # Default MySQL port
+        'NAME': AZURE_DB_NAME,
+        'HOST': AZURE_DB_HOST,
+        'PORT': AZURE_DB_PORT,
+        'USER': AZURE_DB_USER,
+        'PASSWORD': AZURE_DB_PASSWORD,
     }
 }
+
+
 
 
 # Password validation
