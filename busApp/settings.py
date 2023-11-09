@@ -1,15 +1,10 @@
 import os
 from pathlib import Path
-from dotenv import load_dotenv
-load_dotenv()
 
-AZURE_DB_NAME = os.getenv('AZURE_DB_NAME')
-AZURE_DB_HOST = os.getenv('AZURE_DB_HOST')
-AZURE_DB_PORT = os.getenv('AZURE_DB_PORT')
-AZURE_DB_USER = os.getenv('AZURE_DB_USER')
-AZURE_DB_PASSWORD = os.getenv('AZURE_DB_PASSWORD')
+# ... and so on
 
-OPEN_CAGE_API_KEY = os.getenv('OPEN_CAGE_API_KEY', 'default_api_key')
+
+
 # Initialise environment variables
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -90,16 +85,15 @@ WSGI_APPLICATION = 'busApp.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
-from decouple import config
-
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': AZURE_DB_NAME,
-        'HOST': AZURE_DB_HOST,
-        'PORT': AZURE_DB_PORT,
-        'USER': AZURE_DB_USER,
-        'PASSWORD': AZURE_DB_PASSWORD,
+        'NAME': os.environ['AZURE_DB_NAME'],
+        'HOST': os.environ['AZURE_DB_HOST'],
+        'PORT': os.environ['AZURE_DB_PORT'],
+        'USER': os.environ['AZURE_DB_USER'],
+        'PASSWORD': os.environ['AZURE_DB_PASSWORD'],
+        
     }
 }
 
@@ -170,7 +164,7 @@ SOCIALACCOUNT_LOGIN_ON_GET=True
 
 PWA_APP_NAME = 'SmartBus Buddy'
 PWA_APP_DESCRIPTION = 'Bus Application with smart review feature that suggest optima route.'
-PWA_SERVICE_WORKER_PATH = os.path.join(BASE_DIR, 'static\js', 'serviceworker.js')
+PWA_SERVICE_WORKER_PATH = os.path.join(BASE_DIR, 'static/js', 'serviceworker.js')
 PWA_APP_THEME_COLOR = '#000000'
 PWA_APP_BACKGROUND_COLOR = '#ffffff'
 PWA_APP_DISPLAY = 'standalone'

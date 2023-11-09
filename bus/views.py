@@ -10,14 +10,13 @@ from reviews.models import Review
 import math
 from datetime import datetime, timedelta
 import os
-from dotenv import load_dotenv
+
 # Create your views here.
 
-load_dotenv()
+transport_api_key = os.environ.get('TRANSPORT_API_KEY')
+transport_app_id = os.environ.get('TRANSPORT_APP_ID')
+coordinate_api_key = os.environ.get('COORDINATE_API_KEY')
 
-TRANSPORT_API_KEY = os.getenv('TRANSPORT_API_KEY', 'default_api_key')
-TRANSPORT_APP_ID = os.getenv('TRANSPORT_APP_ID', 'default_app_id')
-COORDINATE_API_KEY = os.getenv('COORDINATE_API_KEY', 'default_coordinate_api_key')
 
 # Use COORDINATE_API_KEY wherever needed in your code
 
@@ -69,7 +68,7 @@ def display_route(request):
         date = date_time_obj.strftime('%Y-%m-%d')
         time = date_time_obj.strftime('%H:%M')
 
-        api_url = f'https://transportapi.com/v3/uk/public_journey.json?from=lonlat%3A{from_longitude}%2C{from_latitude}&to=lonlat%3A{to_longitude}%2C{to_latitude}&date={date}&time={time}&journey_time_type=leave_after&service=silverrail&modes=bus%2Ctrain%2Cboat&modes=bus&not_modes=bus%2Ctrain%2Cboat&not_modes=train&app_key={TRANSPORT_API_KEY}&app_id={TRANSPORT_APP_ID}'
+        api_url = f'https://transportapi.com/v3/uk/public_journey.json?from=lonlat%3A{from_longitude}%2C{from_latitude}&to=lonlat%3A{to_longitude}%2C{to_latitude}&date={date}&time={time}&journey_time_type=leave_after&service=silverrail&modes=bus%2Ctrain%2Cboat&modes=bus&not_modes=bus%2Ctrain%2Cboat&not_modes=train&app_key={transport_api_key}&app_id={transport_app_id}'
         response = requests.get(api_url)
         data = response.json()
         print(data)# Assuming your API returns JSON data
@@ -114,7 +113,7 @@ def display_route(request):
 
 def get_coordinates(postcode):
     # Use your Google Maps Geocoding API call to get coordinates
-    geocoding_url = f'https://maps.googleapis.com/maps/api/geocode/json?address={postcode}&key={COORDINATE_API_KEY}'
+    geocoding_url = f'https://maps.googleapis.com/maps/api/geocode/json?address={postcode}&key={coordinate_api_key}'
 
     response = requests.get(geocoding_url)
     data = response.json()
