@@ -161,7 +161,7 @@ SOCIALACCOUNT_AUTO_SIGNUP = True  # Automatically create accounts for new users
 SOCIALACCOUNT_LOGIN_ON_GET=True
 
 
-PWA_APP_NAME = 'SMART BUS'
+PWA_APP_NAME = 'SmartBus Buddy'
 PWA_APP_DESCRIPTION = 'Bus Application with smart review feature that suggest optima route.'
 PWA_SERVICE_WORKER_PATH = os.path.join(BASE_DIR, 'static\js', 'serviceworker.js')
 PWA_APP_THEME_COLOR = '#000000'
