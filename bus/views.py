@@ -9,7 +9,17 @@ from django.db.models import Avg, Max
 from reviews.models import Review
 import math
 from datetime import datetime, timedelta
+import os
+from dotenv import load_dotenv
 # Create your views here.
+
+load_dotenv()
+
+TRANSPORT_API_KEY = os.getenv('TRANSPORT_API_KEY', 'default_api_key')
+TRANSPORT_APP_ID = os.getenv('TRANSPORT_APP_ID', 'default_app_id')
+COORDINATE_API_KEY = os.getenv('COORDINATE_API_KEY', 'default_coordinate_api_key')
+
+# Use COORDINATE_API_KEY wherever needed in your code
 
     
 def home(request):
@@ -59,7 +69,7 @@ def display_route(request):
         date = date_time_obj.strftime('%Y-%m-%d')
         time = date_time_obj.strftime('%H:%M')
 
-        api_url = f'https://transportapi.com/v3/uk/public_journey.json?from=lonlat%3A{from_longitude}%2C{from_latitude}&to=lonlat%3A{to_longitude}%2C{to_latitude}&date={date}&time={time}&journey_time_type=leave_after&service=silverrail&modes=bus%2Ctrain%2Cboat&modes=bus&not_modes=bus%2Ctrain%2Cboat&not_modes=train&app_key=b0172443d13086192192fc659ac988ef&app_id=b42e95c3'
+        api_url = f'https://transportapi.com/v3/uk/public_journey.json?from=lonlat%3A{from_longitude}%2C{from_latitude}&to=lonlat%3A{to_longitude}%2C{to_latitude}&date={date}&time={time}&journey_time_type=leave_after&service=silverrail&modes=bus%2Ctrain%2Cboat&modes=bus&not_modes=bus%2Ctrain%2Cboat&not_modes=train&app_key={TRANSPORT_API_KEY}&app_id={TRANSPORT_APP_ID}'
         response = requests.get(api_url)
         data = response.json()
         print(data)# Assuming your API returns JSON data
@@ -104,12 +114,10 @@ def display_route(request):
 
 def get_coordinates(postcode):
     # Use your Google Maps Geocoding API call to get coordinates
-    api_key = 'AIzaSyBic5uX0v4MzK_HoMYlw03cbUvV7lev1Yk'  # Replace with your Google Maps API key
-    geocoding_url = f'https://maps.googleapis.com/maps/api/geocode/json?address={postcode}&key={api_key}'
+    geocoding_url = f'https://maps.googleapis.com/maps/api/geocode/json?address={postcode}&key={COORDINATE_API_KEY}'
 
     response = requests.get(geocoding_url)
     data = response.json()
-
     if data['status'] == 'OK' and len(data['results']) > 0:
         location = data['results'][0]['geometry']['location']
         return location
