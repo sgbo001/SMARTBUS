@@ -64,4 +64,4 @@ jobs:
         with:
           app-name: 'smartbusbuddy'
           slot-name: 'Production'
-          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_C2553A752E764E19A0E8712FA9DF24FC }}
+          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_07DD4B75FE674098B27A8EBEA62EB403 }}
