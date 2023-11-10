@@ -129,16 +129,18 @@ TIME_ZONE = 'UTC'
 USE_I18N = True
 
 USE_TZ = True
-DEFAULT_FILE_STORAGE = 'busApp.storage.AzureMediaStorage'
-STATICFILES_STORAGE = 'busApp.storage.AzureStaticStorage'
+AZURE_ACCOUNT_NAME = 'c2063081'
+AZURE_ACCOUNT_KEY = 'Ce8GO0ugoRfwDfGgE12t9gmwdJt7fUQquK00mQD57Xm00PSMSBY1jJwAel5dqDaWjp3nJ3b1SjVd+AStLO6D1A=='
 
-STATIC_LOCATION = "static1"
-MEDIA_LOCATION = "media1"
+# Azure Storage Container for static files
+AZURE_CONTAINER = 'static'
 
-AZURE_ACCOUNT_NAME = "c2063081"
-AZURE_CUSTOM_DOMAIN = f'{AZURE_ACCOUNT_NAME}.blob.core.windows.net'
-STATIC_URL = f'https://{AZURE_CUSTOM_DOMAIN}/{STATIC_LOCATION}/'
-MEDIA_URL = f'https://{AZURE_CUSTOM_DOMAIN}/{MEDIA_LOCATION}/'
+# Use Azure Storage for static files
+DEFAULT_FILE_STORAGE = 'storages.backends.azure_storage.AzureStorage'
+
+# Azure Storage settings
+AZURE_CUSTOM_DOMAIN = f'https://{AZURE_ACCOUNT_NAME}.blob.core.windows.net/{AZURE_CONTAINER}/'
+STATIC_URL = AZURE_CUSTOM_DOMAIN
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
