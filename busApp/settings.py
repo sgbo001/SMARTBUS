@@ -165,7 +165,7 @@ ACCOUNT_EMAIL_VERIFICATION = 'mandatory'
 SOCIALACCOUNT_QUERY_EMAIL = ACCOUNT_EMAIL_REQUIRED
 SOCIALACCOUNT_AUTO_SIGNUP = True  # Automatically create accounts for new users
 SOCIALACCOUNT_LOGIN_ON_GET=True
-
+SOCIAL_AUTH_GOOGLE_OAUTH2_WHITELISTED_DOMAINS = ['smartbusbuddy.azurewebsites.net']
 
 PWA_APP_NAME = 'SmartBus Buddy'
 PWA_APP_DESCRIPTION = 'Bus Application with smart review feature that suggest optima route.'
