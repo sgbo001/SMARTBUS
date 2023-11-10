@@ -129,11 +129,11 @@ TIME_ZONE = 'UTC'
 USE_I18N = True
 
 USE_TZ = True
-DEFAULT_FILE_STORAGE = 'SMARTBUS.storage.AzureMediaStorage'
-STATICFILES_STORAGE = 'SMARTBUS.storage.AzureStaticStorage'
+DEFAULT_FILE_STORAGE = 'busApp.storage.AzureMediaStorage'
+STATICFILES_STORAGE = 'busApp.storage.AzureStaticStorage'
 
-STATIC_LOCATION = "static"
-MEDIA_LOCATION = "media"
+STATIC_LOCATION = "static1"
+MEDIA_LOCATION = "media1"
 
 AZURE_ACCOUNT_NAME = "c2063081"
 AZURE_CUSTOM_DOMAIN = f'{AZURE_ACCOUNT_NAME}.blob.core.windows.net'
