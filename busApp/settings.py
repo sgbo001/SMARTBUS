@@ -134,14 +134,15 @@ AZURE_ACCOUNT_KEY = 'Ce8GO0ugoRfwDfGgE12t9gmwdJt7fUQquK00mQD57Xm00PSMSBY1jJwAel5
 
 # Azure Storage Container for static files
 AZURE_CONTAINER = 'static'
-AZURE_MEDIA_CONTAINER = 'static'
+
 # Use Azure Storage for static files
 DEFAULT_FILE_STORAGE = 'storages.backends.azure_storage.AzureStorage'
 
-# Azure Storage settings
-AZURE_CUSTOM_DOMAIN = f'https://{AZURE_ACCOUNT_NAME}.blob.core.windows.net/{AZURE_CONTAINER}/'
-AZURE_MEDIA_CUSTOM_DOMAIN = f'https://{AZURE_ACCOUNT_NAME}.blob.core.windows.net/{AZURE_MEDIA_CONTAINER}/'
-STATIC_URL = AZURE_CUSTOM_DOMAIN
+STATIC_LOCATION = "static"
+MEDIA_LOCATION = "media"
+AZURE_CUSTOM_DOMAIN = f'{AZURE_ACCOUNT_NAME}.blob.core.windows.net'
+MEDIA_URL = f'https://{AZURE_CUSTOM_DOMAIN}/{MEDIA_LOCATION}/'
+STATIC_URL = f'https://{AZURE_CUSTOM_DOMAIN}/{STATIC_LOCATION}/'
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
