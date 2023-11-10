@@ -138,11 +138,10 @@ AZURE_CONTAINER = 'static'
 # Use Azure Storage for static files
 DEFAULT_FILE_STORAGE = 'storages.backends.azure_storage.AzureStorage'
 
-STATIC_LOCATION = "static"
-MEDIA_LOCATION = "media"
-AZURE_CUSTOM_DOMAIN = f'{AZURE_ACCOUNT_NAME}.blob.core.windows.net'
-MEDIA_URL = f'https://{AZURE_CUSTOM_DOMAIN}/{MEDIA_LOCATION}/'
-STATIC_URL = f'https://{AZURE_CUSTOM_DOMAIN}/{STATIC_LOCATION}/'
+# Azure Storage settings
+AZURE_CUSTOM_DOMAIN = f'https://{AZURE_ACCOUNT_NAME}.blob.core.windows.net/{AZURE_CONTAINER}/'
+AZURE_MEDIA_CUSTOM_DOMAIN = f'https://{AZURE_ACCOUNT_NAME}.blob.core.windows.net/{AZURE_MEDIA_CONTAINER}/'
+STATIC_URL = AZURE_CUSTOM_DOMAIN
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
@@ -165,7 +164,7 @@ ACCOUNT_EMAIL_VERIFICATION = 'mandatory'
 SOCIALACCOUNT_QUERY_EMAIL = ACCOUNT_EMAIL_REQUIRED
 SOCIALACCOUNT_AUTO_SIGNUP = True  # Automatically create accounts for new users
 SOCIALACCOUNT_LOGIN_ON_GET=True
-SOCIAL_AUTH_GOOGLE_OAUTH2_WHITELISTED_DOMAINS = ['smartbusbuddy.azurewebsites.net']
+
 
 PWA_APP_NAME = 'SmartBus Buddy'
 PWA_APP_DESCRIPTION = 'Bus Application with smart review feature that suggest optima route.'
