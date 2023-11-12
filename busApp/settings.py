@@ -209,8 +209,8 @@ AUTHENTICATION_BACKENDS = (
 SOCIALACCOUNT_PROVIDERS = {
     'google': {
         'APP': {
-            'client_id': '624437417330-qmfd2bp9ppekvpla5q2m6t3shsgm1anu.apps.googleusercontent.com',
-            'secret': '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',
+            'client_id': '624437417330-k6c0bdog1aokp3j2uv7ff5sl3li1l2ps.apps.googleusercontent.com',
+            'secret': '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',
             'key': '',
 	    'redirect_uri': 'https://smartbusbuddy.azurewebsites.net/auth/google/callback',
         }
