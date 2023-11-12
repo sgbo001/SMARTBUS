@@ -212,6 +212,7 @@ SOCIALACCOUNT_PROVIDERS = {
             'client_id': '624437417330-qmfd2bp9ppekvpla5q2m6t3shsgm1anu.apps.googleusercontent.com',
             'secret': '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',
             'key': '',
+	    'redirect_uri': 'https://smartbusbuddy.azurewebsites.net/auth/google/callback',
         }
     }
 }
