@@ -31,7 +31,7 @@
        </div>
        <!-- List Item -->
        {% for route in routes.routes %}
-       <a href="bus-details.html" class="text-dark col-6 px-0">
+       <a class="text-dark col-6 px-0">
          <div class="list_item_gird m-0 bg-white shadow-sm listing-item border-bottom border-right">
              <div class="px-3 pt-3 tic-div">
                  <div class="list-item-img">
@@ -43,19 +43,30 @@
                  <div>
                      <div class="p-3 d-flex">
                          <div class="bus_details w-100">
-                             <small class="text-muted mb-2 d-block">
-                                 {{ leg.departure_time }} &nbsp;&nbsp;{{ leg.from_point_name }}<br>
-                             </small>
+                           
                              <div>
-                                 <span class="mode mode-{{ leg.mode }}"></span>
-                                 {% if leg.mode == "bus" %}
-                                 <button type="button" "><img src="{% static 'img/logo.png' %}" style="width: 24px; height: 24px;" /> 
-                                 <strong>{{ leg.line_name }}</strong></button> Ride for
-                                 {% endif %}
-                                 {% if leg.mode != "bus" %}
-                                 <img src="{% static 'images/walk.svg' %}" alt="{{ leg.mode }}" /> Walk
-                                 {% endif %}
-                                 {{ leg.duration|slice:"3:" }} mins
+
+                              <div class="d-flex l-hght-10">
+                                 <span class="icofont-clock-time small mr-2 text-danger"></span>
+                                 <div>
+                                     <small class="text-muted mb-2 d-block">Journey Start</small>
+                                     <p class="small">{{ leg.departure_time }} </p>
+                                 </div>
+                             </div>
+                             <div class="d-flex l-hght-10">
+                                 
+                                 <div>
+                                 
+                                     <p class="small mb-1">{% if leg.mode == "bus" %}
+                                       <button type="button"><img src="{% static 'img/logo.png' %}" style="width: 24px; height: 24px;" /> 
+                                       <strong>{{ leg.line_name }}</strong></button> Ride from
+                                       {% endif %}
+                                       {% if leg.mode != "bus" %}
+                                       <img src="{% static 'images/walk.svg' %}" alt="{{ leg.mode }}" onclick="openGoogleMaps('{{ leg.to_point_name }}') "/> Walk for {{ leg.duration|slice:"3:" }} mins from
+                                       {% endif %}{{ leg.from_point_name }} <strong>to</strong> {{ leg.to_point_name }}</p>
+                                 </div>
+                             </div>
+                                
                                  {% if leg.suggested_bus %}
                                  <p>Bus Rating: 
                                     {% if leg.suggested_bus == 5 %}
@@ -111,6 +122,12 @@
      
        {% endfor %}
 
+       <script>
+         function openGoogleMaps(destination) {
+             var googleMapsUrl = 'https://www.google.com/maps/dir/?api=1&origin=Current+Location&destination=' + destination + '&dirflg=w';
+             window.open(googleMapsUrl, '_blank');
+         }
+     </script>
 
        
     </div>
