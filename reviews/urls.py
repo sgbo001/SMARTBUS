@@ -6,6 +6,7 @@ app_name = 'reviews'
 
 urlpatterns = [
     path('create/', ReviewCreateView.as_view(), name='review_create'),
+    
 
 
 ]

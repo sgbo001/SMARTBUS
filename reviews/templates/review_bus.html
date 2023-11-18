@@ -1,0 +1,114 @@
+{% extends "base.html" %}
+{% block title %}SmartBus Buddy - Review Bus Page{% endblock %}
+{% block content %}
+
+{% load static %}
+
+</style>
+<div class="osahan-signup">
+    <div class="osahan-header-nav shadow-sm p-3 d-flex align-items-center bg-danger">
+       <h5 class="font-weight-normal mb-0 text-white">
+          <a class="text-danger mr-3" href="{% url 'route_plan' %}"><i class="icofont-rounded-left"></i></a>
+          Review Bus - {{ request.GET.smscode}}
+       </h5>
+       <div class="ml-auto d-flex align-items-center">
+          <a class="toggle osahan-toggle h4 m-0 text-white ml-auto" href="#"><i class="icofont-navigation-menu"></i></a>
+       </div>
+    </div>
+    <div class="p-3">
+        <form method="POST" action="{% url 'review_create' %}">
+            {% csrf_token %}
+
+          <div class="form-group">
+             <label class="text-muted f-10 mb-1" for="stop_name">Stop Name:</label>
+             <input type="text" class="form-control" id="stop_name" name="stop_name"  aria-label="Stop Name" readonly><br>
+             
+          </div>
+       </form>
+       {% load crispy_forms_tags %}
+       <form method="post" class="custom-form" style="margin-bottom: 10px;">
+        {% csrf_token %}
+
+        <div class="form-group">
+          <label for="bus-select">Bus Number:</label>
+          <input type="text" class="form-control" id="bus-select" name="bus-select"  aria-label="bus-select" readonly><br>
+
+      </div>
+     
+      
+    
+      <div class="form-group">
+        <label for="arrival_time">Expected Arrival Time:</label>
+        <input type="text" class="form-control" id="arrival_time" name="arrival_time"  aria-label="arrival_time" readonly><br>
+        
+    </div>
+
+
+      <div class="form-group">
+        <label for="star5" title="Very Early">
+            <input type="radio" id="star5" name="rating" value="5">
+            Very Early
+        </label>&nbsp;&nbsp;&nbsp;
+        <label for="star4" title="Somewhat Early">
+            <input type="radio" id="star4" name="rating" value="4">
+            Somewhat Early
+        </label>&nbsp;&nbsp;&nbsp;
+        <label for="star3" title="On Time">
+            <input type="radio" id="star3" name="rating" value="3">
+            On Time
+        </label>&nbsp;&nbsp;&nbsp;
+        <label for="star2" title="Somewhat Late">
+            <input type="radio" id="star2" name="rating" value="2">
+            Somewhat Late
+        </label>&nbsp;&nbsp;&nbsp;
+        <label for="star1" title="Late">
+            <input type="radio" id="star1" name="rating" value="1">
+            Late
+        </label>&nbsp;&nbsp;&nbsp;
+        
+    </div>
+    <div class="form-group">
+        <label for="arrival_time">Comment:</label>
+        <textarea class="form-control" id="comment" name="comment" aria-label="comment"></textarea><br>
+
+        
+    </div>  
+    {{ form|crispy }}
+    <button type="submit" class="btn btn-danger btn-block osahanbus-btn mb-3 rounded-1 mt-4">SUBMIT REVIEW</button>
+</form>
+   
+ </div>
+
+<!-- Add the following script in your HTML file -->
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        // Get the URL parameters
+        var urlParams = new URLSearchParams(window.location.search);
+        
+        // Populate the smscode input field
+        var smscodeInput = document.getElementById("stop_name");
+        if (urlParams.has("smscode")) {
+            smscodeInput.value = urlParams.get("smscode");
+        }
+
+        // Populate the busName dropdown
+        var busNameInput = document.getElementById("bus-select");
+        if (urlParams.has("busName")) {
+            busNameInput.value = urlParams.get("busName");
+            // Loop through the options and select the one with the matching value
+           
+        }
+
+        var arrivalInput = document.getElementById("arrival_time");
+        if (urlParams.has("departureTime")) {
+            arrivalInput.value = urlParams.get("departureTime");
+            // Loop through the options and select the one with the matching value
+           
+        }
+        // Populate the departureTime dropdown
+        
+    });
+</script>
+ 
+
+{% endblock %}

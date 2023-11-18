@@ -1,5 +1,5 @@
 {% extends "base.html" %}
-{% block title %}SmartBus Buddy - Review Display{% endblock %}
+{% block title %}SmartBus Buddy - Route Display{% endblock %}
 {% block content %}
 {% load static %}
 
@@ -58,11 +58,15 @@
                                  <div>
                                  
                                      <p class="small mb-1">{% if leg.mode == "bus" %}
-                                       <button type="button"><img src="{% static 'img/logo.png' %}" style="width: 24px; height: 24px;" /> 
+                                       <button type="button" onclick="openLink('{{ leg.line_name }}', '{{ leg.from_point.place.smscode }}', '{{ leg.departure_time }}')">
+                                          <img src="{% static 'img/logo.png' %}" style="width: 24px; height: 24px;" />
                                        <strong>{{ leg.line_name }}</strong></button> Ride from
                                        {% endif %}
                                        {% if leg.mode != "bus" %}
                                        <img src="{% static 'images/walk.svg' %}" alt="{{ leg.mode }}" onclick="openGoogleMaps('{{ leg.to_point_name }}') "/> Walk for {{ leg.duration|slice:"3:" }} mins from
+                                       <label onclick="showBusDetailsPopup('{{ forloop.counter }}', '{{ route.duration }}', '{{ leg.departure_time }}', '{{ leg.line_name }}', '{{ leg.from_point.place.smscode }}');">
+                                          <em>Click Here</em>
+                                      </label>
                                        {% endif %}{{ leg.from_point_name }} <strong>to</strong> {{ leg.to_point_name }}</p>
                                  </div>
                              </div>
@@ -111,13 +115,14 @@
                                 
                                  {% endif %}
                              </div>
+                             
                          </div>
                      </div>
                  </div>
                  {% endfor %}
                  {% endwith %}
              </div>
-         </div>
+         </div> 
      </a>
      
        {% endfor %}
@@ -129,6 +134,20 @@
          }
      </script>
 
+     <script>
+      function openLink(lineName, smscode, departureTime) {
+          // Construct the URL with dynamic values
+          var busName = lineName;
+          var stopPoint = smscode;
+          var arrivalTime = departureTime;
+            
+          // Construct the URL with the dynamic values
+          var url = "{% url 'review_create' %}?busName=" + busName + "&smscode=" + stopPoint + "&departureTime=" + arrivalTime;
+  
+          // Open the URL in a new tab or window
+          window.open(url, '_blank');
+      }
+  </script>
        
     </div>
  </div>
@@ -175,5 +194,25 @@
     </div>
  </div>
 
+ <script>
+   function showBusDetailsPopup(routeCounter, duration, departureTime, lineName, smscode) {
+      var busDetails =
+          "Route " + routeCounter + " - Journey Duration: " + duration + " mins\n" +
+          "Departure Time: " + departureTime + "\n" +
+          "Bus Line: " + lineName + "\n" +
+          "Stop Code: " + smscode;
+
+      // Display the route information in a pop-up
+      alert(busDetails);
+  }
+
+   function closePopup() {
+       // Close the pop-up window
+       if (window.opener && !window.opener.closed) {
+           window.opener.location.reload(); // Refresh the parent window (if needed)
+           window.close();
+       }
+   }
+</script>
 
 {% endblock %}
