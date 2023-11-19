@@ -37,7 +37,7 @@
                  <div class="list-item-img">
                      <img src="{% static 'img/listing/item1.png' %}" class="img-fluid">
                  </div>
-                 <p class="mb-0 l-hght-10">Route {{ forloop.counter }} - Journey Duration : {{ route.duration }} mins</p>
+                 <p class="mb-0 l-hght-10" >Route {{ forloop.counter }} - Journey Duration : {{ route.duration }} mins</p>
                  {% with route_data=route.route_parts %}
                  {% for leg in route_data %}
                  <div>
@@ -49,28 +49,25 @@
                               <div class="d-flex l-hght-10">
                                  <span class="icofont-clock-time small mr-2 text-danger"></span>
                                  <div>
-                                     <small class="text-muted mb-2 d-block">Journey Start</small>
-                                     <p class="small">{{ leg.departure_time }} </p>
-                                 </div>
-                             </div>
-                             <div class="d-flex l-hght-10">
-                                 
-                                 <div>
-                                 
-                                     <p class="small mb-1">{% if leg.mode == "bus" %}
-                                       <button type="button" onclick="openLink('{{ leg.line_name }}', '{{ leg.from_point.place.smscode }}', '{{ leg.departure_time }}')">
-                                          <img src="{% static 'img/logo.png' %}" style="width: 24px; height: 24px;" />
-                                       <strong>{{ leg.line_name }}</strong></button> Ride from
+                                     <small class="small"><strong>{{ leg.departure_time }}</strong>
+                                    {% if leg.mode == "bus" %}
+                                           <button type="button" onclick="openLink('{{ leg.line_name }}', '{{ leg.from_point.place.smscode }}', '{{ leg.departure_time }}')" style="display: inline-block;">
+                                               <img src="{% static 'img/logo.png' %}" style="width: 24px; height: 24px;" />
+                                               <strong>{{ leg.line_name }}</strong>
+                                           </button> for {{ leg.duration|slice:"3:" }} mins from
+                                           <label onclick="showBusDetailsPopup('{{ leg.from_point_name }}', '{{ leg.to_point_name }}', '{{ leg.duration|slice:"3:" }}');" style="font-weight: bold; color: navy; display: inline-block;">
+                                               <em>Click Here</em>
+                                           </label>  
                                        {% endif %}
                                        {% if leg.mode != "bus" %}
-                                       <img src="{% static 'images/walk.svg' %}" alt="{{ leg.mode }}" onclick="openGoogleMaps('{{ leg.to_point_name }}') "/> Walk for {{ leg.duration|slice:"3:" }} mins from
-                                       <label onclick="showBusDetailsPopup('{{ forloop.counter }}', '{{ route.duration }}', '{{ leg.departure_time }}', '{{ leg.line_name }}', '{{ leg.from_point.place.smscode }}');">
-                                          <em>Click Here</em>
-                                      </label>
-                                       {% endif %}{{ leg.from_point_name }} <strong>to</strong> {{ leg.to_point_name }}</p>
+                                           <img src="{% static 'images/walk.svg' %}" alt="{{ leg.mode }}" onclick="openGoogleMaps('{{ leg.to_point_name }}')" style="display: inline-block;"/> for {{ leg.duration|slice:"3:" }} mins from
+                                           <label onclick="showBusDetailsPopup('{{ leg.from_point_name }}', '{{ leg.to_point_name }}', '{{ leg.duration|slice:"3:" }}');" style="font-weight: bold; color: navy; display: inline-block;">
+                                               <em>Click Here</em>
+                                           </label>                                      
+                                       {% endif %}</small>
                                  </div>
                              </div>
-                                
+                                                             
                                  {% if leg.suggested_bus %}
                                  <p>Bus Rating: 
                                     {% if leg.suggested_bus == 5 %}
@@ -126,6 +123,10 @@
      </a>
      
        {% endfor %}
+
+       <!-- Add these scripts in your HTML -->
+<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 
        <script>
          function openGoogleMaps(destination) {
@@ -195,12 +196,12 @@
  </div>
 
  <script>
-   function showBusDetailsPopup(routeCounter, duration, departureTime, lineName, smscode) {
+   function showBusDetailsPopup(routeFrom, routeTo, duration) {
       var busDetails =
-          "Route " + routeCounter + " - Journey Duration: " + duration + " mins\n" +
-          "Departure Time: " + departureTime + "\n" +
-          "Bus Line: " + lineName + "\n" +
-          "Stop Code: " + smscode;
+          "Start From: " + routeFrom+ "\n" +
+          "To: " + routeTo + "\n" +
+          "Duration: " + duration + " mins \n";
+          
 
       // Display the route information in a pop-up
       alert(busDetails);
