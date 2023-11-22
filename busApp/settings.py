@@ -44,7 +44,6 @@ INSTALLED_APPS = [
     'reviews.apps.ReviewsConfig',
     'crispy_forms',
     'crispy_bootstrap4',
-    #'django.contrib.sites',
     'allauth',
     'allauth.account',
     'allauth.socialaccount',
@@ -68,7 +67,6 @@ ROOT_URLCONF = 'busApp.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [BASE_DIR / 'templates'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -157,14 +155,14 @@ CRISPY_ALLOWED_TEMPLATE_PACK = 'bootstrap4'
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
 LOGIN_URL = 'login'
 LOGIN_TEMPLATE = 'login'
-SITE_ID = 2
-LOGIN_REDIRECT_URL = '/'
+LOGIN_REDIRECT_URL = 'route_plan'
 LOGOUT_REDIRECT_URL = '/'
+
 # allauth settings
 ACCOUNT_AUTHENTICATION_METHOD = 'email'  # or 'username' or other methods
 ACCOUNT_EMAIL_REQUIRED = True
 ACCOUNT_UNIQUE_EMAIL = True
-ACCOUNT_EMAIL_VERIFICATION = 'none'
+ACCOUNT_EMAIL_VERIFICATION = 'mandatory'
 SOCIALACCOUNT_QUERY_EMAIL = ACCOUNT_EMAIL_REQUIRED
 SOCIALACCOUNT_AUTO_SIGNUP = True  # Automatically create accounts for new users
 SOCIALACCOUNT_LOGIN_ON_GET=True
@@ -221,7 +219,7 @@ SOCIALACCOUNT_PROVIDERS = {
     }
 }
 
-
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
 AUTHENTICATION_CLASSES = (
     # ...
