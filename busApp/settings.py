@@ -156,7 +156,7 @@ CRISPY_TEMPLATE_PACK = 'bootstrap4'
 LOGIN_URL = 'login'
 LOGIN_TEMPLATE = 'login'
 LOGIN_REDIRECT_URL = 'route_plan'
-LOGOUT_REDIRECT_URL = '/'
+LOGOUT_REDIRECT_URL = 'login'
 
 # allauth settings
 ACCOUNT_AUTHENTICATION_METHOD = 'email'  # or 'username' or other methods
@@ -227,3 +227,4 @@ AUTHENTICATION_CLASSES = (
 )
 
 handler404 = 'bus.views.error'
+handler500 = 'bus.views.error'

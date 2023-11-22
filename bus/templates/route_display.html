@@ -6,10 +6,10 @@
 <div class="osahan-listing">
     <div class="osahan-header-nav shadow-sm p-3 d-flex align-items-center bg-danger">
        <h5 class="font-weight-normal mb-0 text-white">
-          <a class="text-danger" href="{% url 'route_plan' %}"><i class="icofont-rounded-left"></i></a> &nbsp; Bus Search Routes
+          <a class="text-danger" href="{% url 'route_plan' %}"><i class="icofont-rounded-left"></i></a> &nbsp; Search Routes - {{ to_full_address }}
        </h5>
        <div class="ml-auto d-flex align-items-center">
-          <a href="home.html" class="text-white h6 mb-0"><i class="icofont-search-1"></i></a>
+          <a href="{% url 'route_plan' %}" class="text-white h6 mb-0"><i class="icofont-search-1"></i></a>
           <a href="#" class="mx-4 text-white h6 mb-0" data-toggle="modal" data-target="#filterModal"><i class="icofont-filter"></i></a>
           <a class="toggle osahan-toggle h4 m-0 text-white ml-auto" href="#"><i class="icofont-navigation-menu"></i></a>
        </div>
@@ -53,7 +53,7 @@
                            </div>
                            {% elif leg.mode == "bus" %}
                            <div style="margin-left: 10px;">
-                             <p class="small mb-0 l-hght-10 text-danger gift-code" style="margin-left: 10px;">{{ leg.line_name }}<img src="{% static 'img/logo.png' %}" onclick="openLink('{{ leg.line_name }}', '{{ leg.from_point.place.smscode }}', '{{ leg.departure_time }}')" style="width: 18px; height: 18px;" />
+                             <p class="small mb-0 l-hght-10 text-danger gift-code" style="margin-left: 10px;"><strong>{{ leg.line_name }}</strong><img src="{% static 'img/logo.png' %}" onclick="openLink('{{ leg.line_name }}', '{{ leg.from_point.place.smscode }}', '{{ leg.departure_time }}')" style="width: 18px; height: 18px;" />
                               <span style="display: inline-block; margin: 0 5px; font-size: 16px;">&rarr;</span>
                            </p>
                              {% if leg.suggested_bus == 5 %}
@@ -103,7 +103,14 @@
                          {% if leg.mode != "bus" %}
                          <p class="small mb-1"><strong>{{ leg.departure_time }}</strong> : Walk for {{ leg.duration|slice:"3:" }} mins from {{ leg.from_point_name }} <span style="display: inline-block; margin: 0 5px; font-size: 16px;">&rarr;</span> {{ leg.to_point_name }}</p>
                          {% elif leg.mode == "bus" %}
-                         <p class="small mb-1"><strong>{{ leg.departure_time }}</strong> : Ride <strong>BUS {{ leg.line_name }}</strong> for {{ leg.duration|slice:"3:" }} mins from {{ leg.from_point_name }} <span style="display: inline-block; margin: 0 5px; font-size: 16px;">&rarr;</span> {{ leg.to_point_name }}</p>
+                         <p class="small mb-1"><strong>{{ leg.departure_time }}</strong> : Ride 
+                           {% if "FSYO" in leg.service.id %}
+                           <strong style="color: navy">BUS {{ leg.line_name }}</strong> 
+                           {% elif "SYRK" in leg.service.id %}
+                           <strong style="color: green">BUS {{ leg.line_name }} </strong> 
+                           {% else %}
+                           <strong>BUS {{ leg.line_name }}</strong> {% endif %}
+                           for {{ leg.duration|slice:"3:" }} mins from {{ leg.from_point_name }} <span style="display: inline-block; margin: 0 5px; font-size: 16px;">&rarr;</span> {{ leg.to_point_name }}</p>
                          {% endif %}
                           {% endfor %}
                           {% endwith %}
