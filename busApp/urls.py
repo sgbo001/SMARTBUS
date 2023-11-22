@@ -28,6 +28,7 @@ urlpatterns = [
     path('404/', error, name='error'),
     path('reviewBus/', views.review_bus, name='review_bus'),
     path('review_create/', views.review_create, name='review_create'),
+
     #path('api/arrival_times/', views.get_arrival_times, name='get_arrival_times'),
 
 ]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

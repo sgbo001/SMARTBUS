@@ -51,16 +51,17 @@ def display_route(request):
     from_post_code = request.GET.get('from_post_code')
     to_post_code = request.GET.get('to_post_code')
     
-    from_post_code_info = get_coordinates(from_post_code)
-    to_post_code_info = get_coordinates(to_post_code)
+    from_post_code_info = get_coordinates(from_post_code, coordinate_api_key)
+    to_post_code_info = get_coordinates(to_post_code, coordinate_api_key)
     
     if from_post_code_info and to_post_code_info:
-        from_longitude = from_post_code_info['lng']
-        from_latitude = from_post_code_info['lat']
+        from_longitude = from_post_code_info['location']['lng']
+        from_latitude = from_post_code_info['location']['lat']
+        from_full_address = from_post_code_info['full_address']
 
-        to_longitude = to_post_code_info['lng']
-        to_latitude = to_post_code_info['lat']
-
+        to_longitude = to_post_code_info['location']['lng']
+        to_latitude = to_post_code_info['location']['lat']
+        to_full_address = to_post_code_info['full_address']
         # Your code to call the API and display the results can go here
         # ...
         date_time_str = request.GET.get('date_time')
@@ -100,7 +101,7 @@ def display_route(request):
                      leg['suggested_bus'] = None
 
         # Pass the data to the template for rendering
-        return render(request, 'route_display.html', {'routes': data})
+        return render(request, 'route_display.html', {'from_full_address': from_full_address, 'to_full_address': to_full_address,'routes': data})
 
     else:
         # Handle the case where post codes were not found
@@ -111,15 +112,22 @@ def display_route(request):
 
 
 
-def get_coordinates(postcode):
-    # Use your Google Maps Geocoding API call to get coordinates
+def get_coordinates(postcode, coordinate_api_key):
+    # Use your Google Maps Geocoding API call to get coordinates and address components
     geocoding_url = f'https://maps.googleapis.com/maps/api/geocode/json?address={postcode}&key={coordinate_api_key}'
 
     response = requests.get(geocoding_url)
     data = response.json()
+
     if data['status'] == 'OK' and len(data['results']) > 0:
-        location = data['results'][0]['geometry']['location']
-        return location
+        location_result = data['results'][0]
+        location = location_result['geometry']['location']
+        full_address = location_result['formatted_address']
+
+        return {
+            'location': location,
+            'full_address': full_address
+        }
     else:
         return None
     

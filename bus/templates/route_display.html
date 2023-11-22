@@ -20,110 +20,102 @@
              <div class="row mx-0 px-1">
                 <div class="col-6 p-0">
                    <small class="text-muted mb-1 f-10 pr-1">GOING FROM</small>
-                   <p class="small mb-0">{{ request.GET.from_post_code }}</p>
+                   <p class="small mb-0">{{ from_full_address }}</p>
                 </div>
                 <div class="col-6 p-0">
                    <small class="text-muted mb-1 f-10 pr-1">GOING TO</small>
-                   <p class="small mb-0">{{ request.GET.to_post_code }}</p>
+                   <p class="small mb-0">{{ to_full_address }}</p>
                 </div>
              </div>
           </div>
-       </div>
-       <!-- List Item -->
-       {% for route in routes.routes %}
-       <a class="text-dark col-6 px-0">
-         <div class="list_item_gird m-0 bg-white shadow-sm listing-item border-bottom border-right">
-             <div class="px-3 pt-3 tic-div">
-                 <div class="list-item-img">
-                     <img src="{% static 'img/listing/item1.png' %}" class="img-fluid">
-                 </div>
-                 <p class="mb-0 l-hght-10" >Route {{ forloop.counter }} - Journey Duration : {{ route.duration }} mins</p>
-                 {% with route_data=route.route_parts %}
-                 {% for leg in route_data %}
-                 <div>
-                     <div class="p-3 d-flex">
-                         <div class="bus_details w-100">
-                           
-                             <div>
-
-                              <div class="d-flex l-hght-10">
-                                 <span class="icofont-clock-time small mr-2 text-danger"></span>
-                                 <div>
-                                     <small class="small"><strong>{{ leg.departure_time }}</strong>
-                                    {% if leg.mode == "bus" %}
-                                           <button type="button" onclick="openLink('{{ leg.line_name }}', '{{ leg.from_point.place.smscode }}', '{{ leg.departure_time }}')" style="display: inline-block;">
-                                               <img src="{% static 'img/logo.png' %}" style="width: 24px; height: 24px;" />
-                                               <strong>{{ leg.line_name }}</strong>
-                                           </button> for {{ leg.duration|slice:"3:" }} mins from
-                                           <label onclick="showBusDetailsPopup('{{ leg.from_point_name }}', '{{ leg.to_point_name }}', '{{ leg.duration|slice:"3:" }}');" style="font-weight: bold; color: navy; display: inline-block;">
-                                               <em>Click Here</em>
-                                           </label>  
-                                       {% endif %}
-                                       {% if leg.mode != "bus" %}
-                                           <img src="{% static 'images/walk.svg' %}" alt="{{ leg.mode }}" onclick="openGoogleMaps('{{ leg.to_point_name }}')" style="display: inline-block;"/> for {{ leg.duration|slice:"3:" }} mins from
-                                           <label onclick="showBusDetailsPopup('{{ leg.from_point_name }}', '{{ leg.to_point_name }}', '{{ leg.duration|slice:"3:" }}');" style="font-weight: bold; color: navy; display: inline-block;">
-                                               <em>Click Here</em>
-                                           </label>                                      
-                                       {% endif %}</small>
-                                 </div>
-                             </div>
-                                                             
-                                 {% if leg.suggested_bus %}
-                                 <p>Bus Rating: 
-                                    {% if leg.suggested_bus == 5 %}
+          {% for route in routes.routes %}    
+       <div class="osahan-giftcard p-3">
+          
+         <!-- Gift Card Item -->
+         <a class="text-dark">
+             <div class="osahan-gift card_item2 align-items-center row m-0 border bg-white shadow-sm border-rad8 mb-3 align-items-center">
+                 <div class="pl-3 py-3">
+                     <div class="gift-card">
+                        <h4 class="mb-0 l-hght-10" , style="color : black">Route - {{ forloop.counter }} </h5><br>
+                         <span class="text-muted small">Journey Duration : <strong>{{ route.duration }} mins </strong></span>
+                     </div>
+                     
+                     <div class="mt-2 pb-1">
+                        
+                         <div style="display: flex;">
+                           {% with route_data=route.route_parts %}
+                           {% for leg in route_data %}
+                           {% if leg.mode != "bus" %}
+                           <div style="margin-left: 10px;">
+                           <img src="{% static 'images/walk.svg' %}" alt="{{ leg.mode }}" onclick="openGoogleMaps('{{ leg.to_point_name }}')" style="display: inline-block;"/>
+                           <span style="display: inline-block; margin: 0 5px; font-size: 16px;">&rarr;</span>
+                           <p class="f-8" />{{ leg.duration|slice:"3:" }} mins</p>
+                           </div>
+                           {% elif leg.mode == "bus" %}
+                           <div style="margin-left: 10px;">
+                             <p class="small mb-0 l-hght-10 text-danger gift-code" style="margin-left: 10px;">{{ leg.line_name }}<img src="{% static 'img/logo.png' %}" onclick="openLink('{{ leg.line_name }}', '{{ leg.from_point.place.smscode }}', '{{ leg.departure_time }}')" style="width: 18px; height: 18px;" />
+                              <span style="display: inline-block; margin: 0 5px; font-size: 16px;">&rarr;</span>
+                           </p>
+                             {% if leg.suggested_bus == 5 %}
                                     <i class="icofont-star text-danger"></i>
                                     <i class="icofont-star text-danger"></i>
                                     <i class="icofont-star text-danger"></i>
                                     <i class="icofont-star text-danger"></i>
                                     <i class="icofont-star text-danger"></i>
-                                        <span class="text-dark">Likely to be Very Early</span>
+                                    <p class="f-8" />Likely to be Very Early</p>
                                     {% elif leg.suggested_bus == 4 %}
                                     <i class="icofont-star text-danger"></i>
                                     <i class="icofont-star text-danger"></i>
                                     <i class="icofont-star text-danger"></i>
                                     <i class="icofont-star text-danger"></i>
                                     <i class="icofont-star text-muted"></i>
-                                        <span class="text-dark">Somewhat Early</span>
+                                    <p class="f-8" />Somewhat Early</p>
                                     {% elif leg.suggested_bus == 3 %}
                                     <i class="icofont-star text-danger"></i>
                                     <i class="icofont-star text-danger"></i>
                                     <i class="icofont-star text-danger"></i>
                                     <i class="icofont-star text-muted"></i>
                                     <i class="icofont-star text-muted"></i>
-                                    <span class="text-dark">On time</span><!-- Add code for rating 3 -->
+                                    <p class="f-8" />On time</p><!-- Add code for rating 3 -->
                                     {% elif leg.suggested_bus == 2 %}
                                     <i class="icofont-star text-danger"></i>
                                     <i class="icofont-star text-danger"></i>
                                     <i class="icofont-star text-muted"></i>
                                     <i class="icofont-star text-muted"></i>
                                     <i class="icofont-star text-muted"></i>
-                                    <span class="text-dark">Somewhat Late</span> <!-- Add code for rating 2 -->
+                                    <p class="f-8" />Somewhat Late</p> <!-- Add code for rating 2 -->
                                     {% elif leg.suggested_bus == 1 %}
                                     <i class="icofont-star text-danger"></i>
                                     <i class="icofont-star text-muted"></i>
                                     <i class="icofont-star text-muted"></i>
                                     <i class="icofont-star text-muted"></i>
                                     <i class="icofont-star text-muted"></i>
-                                    <span class="text-dark">Likely to be Late</span>  <!-- Add code for rating 1 -->
+                                    <p class="f-8" />Likely to be Late</p>  <!-- Add code for rating 1 -->
                                     {% else %}
                                         <!-- Default code if none of the above conditions are met -->
-                                    {% endif %}
-                                </p>
-                                
-                                 {% endif %}
-                             </div>
-                             
+                                    {% endif %}</div>
+                             {% endif %}
+                              {% endfor %}
+                           {% endwith %}
                          </div>
+                         {% with route_data=route.route_parts %}
+                         {% for leg in route_data %}
+                         {% if leg.mode != "bus" %}
+                         <p class="small mb-1"><strong>{{ leg.departure_time }}</strong> : Walk for {{ leg.duration|slice:"3:" }} mins from {{ leg.from_point_name }} <span style="display: inline-block; margin: 0 5px; font-size: 16px;">&rarr;</span> {{ leg.to_point_name }}</p>
+                         {% elif leg.mode == "bus" %}
+                         <p class="small mb-1"><strong>{{ leg.departure_time }}</strong> : Ride <strong>BUS {{ leg.line_name }}</strong> for {{ leg.duration|slice:"3:" }} mins from {{ leg.from_point_name }} <span style="display: inline-block; margin: 0 5px; font-size: 16px;">&rarr;</span> {{ leg.to_point_name }}</p>
+                         {% endif %}
+                          {% endfor %}
+                          {% endwith %}
                      </div>
-                 </div>
-                 {% endfor %}
-                 {% endwith %}
-             </div>
-         </div> 
-     </a>
-     
-       {% endfor %}
+                     
 
+                 </div>
+             </div>
+         </a>
+         <!-- Gift Card Item -->
+        
+     </div> {% endfor %}
        <!-- Add these scripts in your HTML -->
 <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
 <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
