@@ -156,13 +156,13 @@ CRISPY_TEMPLATE_PACK = 'bootstrap4'
 LOGIN_URL = 'login'
 LOGIN_TEMPLATE = 'login'
 LOGIN_REDIRECT_URL = 'route_plan'
-LOGOUT_REDIRECT_URL = 'login'
+LOGOUT_REDIRECT_URL = '/'
 
 # allauth settings
 ACCOUNT_AUTHENTICATION_METHOD = 'email'  # or 'username' or other methods
 ACCOUNT_EMAIL_REQUIRED = True
 ACCOUNT_UNIQUE_EMAIL = True
-ACCOUNT_EMAIL_VERIFICATION = 'mandatory'
+ACCOUNT_EMAIL_VERIFICATION = 'none'
 SOCIALACCOUNT_QUERY_EMAIL = ACCOUNT_EMAIL_REQUIRED
 SOCIALACCOUNT_AUTO_SIGNUP = True  # Automatically create accounts for new users
 SOCIALACCOUNT_LOGIN_ON_GET=True
@@ -227,4 +227,3 @@ AUTHENTICATION_CLASSES = (
 )
 
 handler404 = 'bus.views.error'
-handler500 = 'bus.views.error'
