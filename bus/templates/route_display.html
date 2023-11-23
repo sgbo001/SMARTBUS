@@ -104,15 +104,16 @@
                          <p class="small mb-1"><strong>{{ leg.departure_time }}</strong> : Walk for {{ leg.duration|slice:"3:" }} mins from {{ leg.from_point_name }} <span style="display: inline-block; margin: 0 5px; font-size: 16px;">&rarr;</span> {{ leg.to_point_name }}</p>
                          {% elif leg.mode == "bus" %}
                          <p class="small mb-1"><strong>{{ leg.departure_time }}</strong> : Ride 
-                           {% if "FSYO" in leg.service.id %}
-                           <strong style="color: navy">BUS {{ leg.line_name }}</strong> 
-                           {% elif "SYRK" in leg.service.id %}
-                           <strong style="color: green">BUS {{ leg.line_name }} </strong> 
-                             {% elif "TMTL" in leg.service.id %}
-                             <strong style="color: darkred">BUS {{ leg.line_name }} </strong> 
-                           {% else %}
-                           <strong>BUS {{ leg.line_name }}</strong> {% endif %}
-                           for {{ leg.duration|slice:"3:" }} mins from {{ leg.from_point_name }} <span style="display: inline-block; margin: 0 5px; font-size: 16px;">&rarr;</span> {{ leg.to_point_name }}</p>
+                          {% if "FSYO" in leg.service.id %}
+                              <strong style="color: navy;">BUS {{ leg.line_name }}</strong> 
+                            {% elif "SYRK" in leg.service.id %}
+                              <strong style="color: green;">BUS {{ leg.line_name }}</strong> 
+                            {% elif "TMTL" in leg.service.id %}
+                              <strong style="color: darkred;">BUS {{ leg.line_name }}</strong> 
+                            {% else %}
+                              <strong>BUS {{ leg.line_name }}</strong>
+                            {% endif %}
+                            for {{ leg.duration|slice:"3:" }} mins from {{ leg.from_point_name }} <span style="display: inline-block; margin: 0 5px; font-size: 16px;">&rarr;</span> {{ leg.to_point_name }}</p>
                          {% endif %}
                           {% endfor %}
                           {% endwith %}
