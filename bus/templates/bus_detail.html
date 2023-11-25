@@ -1,198 +1,242 @@
 {% extends "base.html" %}
-{% block title %}SmartBus Buddy - Custom Page Title{% endblock %}
+{% block title %}SmartBus Buddy - Route Display{% endblock %}
 {% block content %}
 {% load static %}
-
-<div class="Bus-Details padding-bt">
+<style>
+   .rating-rectangle {
+      width: 125px; /* Adjust the width as needed */
+      height: 25px; /* Adjust the height as needed */
+      text-align: center;
+      border-radius: 5px;
+      margin-right: 2px; /* Adjust the margin as needed */
+      display: inline-block; /* Keeps the styles while removing the block behavior */
+  }
+  
+  .green {
+      background-color: green;
+      color: black;
+  }
+  
+  .light-green {
+      background-color: lightgreen;
+      color: black;
+  }
+  
+  .blue {
+      background-color: blue;
+      color: white;
+  }
+  
+  .yellow {
+      background-color: yellow;
+      color: black; /* Adjust the text color as needed */
+  }
+  
+  .red {
+      background-color: red;
+      color: white;
+  }
+  
+</style>
+<div class="osahan-listing">
     <div class="osahan-header-nav shadow-sm p-3 d-flex align-items-center bg-danger">
        <h5 class="font-weight-normal mb-0 text-white">
-          <a class="text-danger mr-3" href="{% url 'route_plan' %}"><i class="icofont-rounded-left"></i></a>
-          Bus Details - {{ request.GET.stop_name }}
+          <a class="text-danger" href="{% url 'route_plan' %}"><i class="icofont-rounded-left"></i></a> &nbsp; Search Routes - {{ to_full_address }}
        </h5>
        <div class="ml-auto d-flex align-items-center">
+          <a href="{% url 'route_plan' %}" class="text-white h6 mb-0"><i class="icofont-search-1"></i></a>
+          <a href="#" class="mx-4 text-white h6 mb-0" data-toggle="modal" data-target="#filterModal"><i class="icofont-filter"></i></a>
           <a class="toggle osahan-toggle h4 m-0 text-white ml-auto" href="#"><i class="icofont-navigation-menu"></i></a>
        </div>
     </div>
-
-    <div class="p-3">
-      <form method="GET" action="">
-          {% csrf_token %}
-          <div class="form-group">
-              <label class="text-muted f-10 mb-1" for="stop_name">Stop Name:</label>
-              <input type="text" class="form-control" id="stop_name" name="stop_name" aria-label="Stop Name" value="{{ request.GET.stop_name }}"><br>
-              <button type="submit" class="btn btn-danger btn-block osahanbus-btn rounded-1">Search</button>
+    <div class="osahan-listing p-0 m-0 row border-top">
+       <div class="p-2 border-bottom w-100">
+          <div class="bg-white border border-warning rounded-1 shadow-sm p-2">
+             <div class="row mx-0 px-1">
+                <div class="col-6 p-0">
+                   <small class="text-muted mb-1 f-10 pr-1">GOING FROM</small>
+                   <p class="small mb-0">{{ from_full_address }}</p>
+                </div>
+                <div class="col-6 p-0">
+                   <small class="text-muted mb-1 f-10 pr-1">GOING TO</small>
+                   <p class="small mb-0">{{ to_full_address }}</p>
+                </div>
+             </div>
           </div>
+          {% for route in routes.routes %}    
+       <div class="osahan-giftcard p-3">
           
-          <div class="form-group">
-              <label for="bus-select">Select a Bus:</label>
-              <select name="bus_id" id="bus-select" class="form-control" onchange="this.form.submit()">
-                  <option value="">Select a Bus</option>
-                  {% for bus in buses %}
-                      <option value="{{ bus.bus_id }}">{{ bus.bus_id }}</option>
-                  {% endfor %}
-              </select>
-          </div>
-          <button type="submit" class="btn btn-danger btn-block osahanbus-btn mb-3 rounded-1 mt-4" style="display: none;">VIEW REVIEW</button>
-      </form>
-  
-   </form>
-
-   <!-- Details -->
-   <div class="list_item m-0 bg-white">
-      <div class="px-3 py-3 tic-div border-bottom d-flex">
-         <img src="{% static 'img/listing/item1.png' %}" class="img-fluid border rounded p-1 shape-img mr-3">
-         <div class="w-100">
-            <h6 class="my-1 l-hght-18 font-weight-bold">{{ request.GET.bus_id }}</h6>
-            
-            {% if max_rating == 5 %}
-            <div class="start-rating f-10">
-               <i class="icofont-star text-danger"></i>
-               <i class="icofont-star text-danger"></i>
-               <i class="icofont-star text-danger"></i>
-               <i class="icofont-star text-danger"></i>
-               <i class="icofont-star text-danger"></i>
-               <span class="text-dark">{{ max_rating }} / 5</span>
-               <div class="d-flex mt-2">
-                  <p class="m-0"><i class="icofont-google-map mr-1 text-danger"></i><span class="small">{{ stop_point }}</span></p>
-                  <p class="small ml-auto mb-0"><i class="icofont-bus mr-1 text-danger"></i> Likely to be very Early</p>
-               </div>
-            </div>
-            {% elif max_rating == 4 %}
-            <div class="start-rating f-10">
-             <i class="icofont-star text-danger"></i>
-             <i class="icofont-star text-danger"></i>
-             <i class="icofont-star text-danger"></i>
-             <i class="icofont-star text-danger"></i>
-             <i class="icofont-star text-muted"></i>
-             <span class="text-dark">{{ max_rating }} / 5</span>
-             <div class="d-flex mt-2">
-                <p class="m-0"><i class="icofont-google-map mr-1 text-danger"></i><span class="small">{{ stop_point }}</span></p>
-                <p class="small ml-auto mb-0"><i class="icofont-bus mr-1 text-danger"></i> Somewhat Early</p>
-             </div>
-          </div>
-
-          {% elif max_rating == 3 %}
-            <div class="start-rating f-10">
-             <i class="icofont-star text-danger"></i>
-             <i class="icofont-star text-danger"></i>
-             <i class="icofont-star text-danger"></i>
-             <i class="icofont-star text-muted"></i>
-             <i class="icofont-star text-muted"></i>
-             <span class="text-dark">{{ max_rating }} / 5</span>
-             <div class="d-flex mt-2">
-                <p class="m-0"><i class="icofont-google-map mr-1 text-danger"></i><span class="small">{{ stop_point }}</span></p>
-                <p class="small ml-auto mb-0"><i class="icofont-bus mr-1 text-danger"></i> On Time</p>
-             </div>
-          </div>
-          {% elif max_rating == 2 %}
-          <div class="start-rating f-10">
-           <i class="icofont-star text-danger"></i>
-           <i class="icofont-star text-danger"></i>
-           <i class="icofont-star text-muted"></i>
-           <i class="icofont-star text-muted"></i>
-           <i class="icofont-star text-muted"></i>
-           <span class="text-dark">{{ max_rating }} / 5</span>
-           <div class="d-flex mt-2">
-              <p class="m-0"><i class="icofont-google-map mr-1 text-danger"></i><span class="small">{{ stop_point }}</span></p>
-              <p class="small ml-auto mb-0"><i class="icofont-bus mr-1 text-danger"></i>Somewhat Late</p>
-           </div>
-        </div>
-        {% elif max_rating == 1 %}
-          <div class="start-rating f-10">
-           <i class="icofont-star text-danger"></i>
-           <i class="icofont-star text-muted"></i>
-           <i class="icofont-star text-muted"></i>
-           <i class="icofont-star text-muted"></i>
-           <i class="icofont-star text-muted"></i>
-           <span class="text-dark">{{ max_rating }} / 5</span>
-           <div class="d-flex mt-2">
-              <p class="m-0"><i class="icofont-google-map mr-1 text-danger"></i><span class="small">{{ stop_point }}</span></p>
-              <p class="small ml-auto mb-0"><i class="icofont-bus mr-1 text-danger"></i>Late</p>
-           </div>
-        </div>
-            {% else %}
-     {% endif %}
-      
-         </div>
-      </div>
-      
-   </div>
-   <ul class="nav nav-pills mb-0 nav-justified bg-white px-3 py-2 border-top border-bottom" id="pills-tab" role="tablist">
-      <li class="nav-item" role="presentation">
-         <a class="nav-link active" id="pills-home-tab" data-toggle="pill" href="#pills-home" role="tab" aria-controls="pills-home" aria-selected="true"><i class="icofont-info-circle"></i> Info</a>
-      </li>
-      <li class="nav-item" role="presentation">
-         <a class="nav-link" id="pills-profile-tab" data-toggle="pill" href="#pills-profile" role="tab" aria-controls="pills-profile" aria-selected="false"><i class="icofont-star"></i> Review</a>
-      </li>
-      <li class="nav-item" role="presentation">
-         <a class="nav-link" id="pills-contact-tab" data-toggle="pill" href="#pills-contact" role="tab" aria-controls="pills-contact" aria-selected="false"><i class="icofont-history"></i> Pick Up</a>
-      </li>
-   </ul>
-   <div class="tab-content" id="pills-tabContent">
-      <div class="tab-pane fade show active" id="pills-home" role="tabpanel" aria-labelledby="pills-home-tab">
-         <div class="bus-details pt-3 pb-0 px-3">
-            <div class="info" id="info">
-               <h6 class="font-weight-normal">About Bus <b>{{ selected_bus.bus_id }}</h6>
-               <p class="text-muted small mb-3">This is run by both First Bus and Stage Coach.</p>
-            </div>
-         </div>
-      </div>
-      <div class="tab-pane fade" id="pills-profile" role="tabpanel" aria-labelledby="pills-profile-tab">
-         <div class="bus-details pt-3 pb-0 px-3">
-
-               <div class="comments mt-3">
-                  {% for review in top_three_reviews %} 
-                  <div class="reviews bg-white p-3 shadow-sm rounded-1 mb-3">
-                     <div class="d-flex align-items-center mb-2">
-                        <img src="{% static 'img/user1.png' %}" style="width: 24px; height: 24px; class="img-fluid rounded-circle">
-                        <div class="ml-2">
-                           <p class="mb-0 small font-weight-bold">{{ review.full_name }}</p>
-                           <div class="start-rating d-flex align-items-center f-8">
-                              <i class="icofont-star text-danger"></i>
-                              <i class="icofont-star text-danger"></i>
-                              <i class="icofont-star text-danger"></i>
-                              <i class="icofont-star text-danger"></i>
-                              <i class="icofont-star text-muted"></i>
-                              <span class="ml-2 small text-danger">Good</span>
-                           </div>
-                        </div>
-                        <div class="date ml-auto mb-auto small">
-                           <small class="f-10">{{ review.timestamp|date:"d/m/Y" }}</small>
-                        </div>
+         <!-- Gift Card Item -->
+         <a class="text-dark">
+             <div class="osahan-gift card_item2 align-items-center row m-0 border bg-white shadow-sm border-rad8 mb-3 align-items-center">
+                 <div class="pl-3 py-3">
+                     <div class="gift-card">
+                        <h4 class="mb-0 l-hght-10" , style="color : black">Route - {{ forloop.counter }} </h5><br>
+                         <span class="text-muted small">Journey Duration : <strong>{{ route.duration }} mins </strong></span>
                      </div>
-                     <p class="small text-muted mb-0">{{ review.comment }}</p>
-                  </div>
-                  {% endfor %}
-               </div>
-            </div>
-         </div>
-      </div>
-      <div class="tab-pane fade" id="pills-contact" role="tabpanel" aria-labelledby="pills-contact-tab">
-         <div class="bus-details pt-3 pb-0 px-3">
-            <!-- Pick Up Point -->
-            <div class="pickpoint" id="pick">
-               <div class="bg-white shadow-sm rounded-1 p-3 mb-3">
-                  <h6 class="border-bottom pb-3 mb-3">Boarding Point Selected</h6>
-                  {% for pickup in pickups %} 
-                  <div class="custom-control custom-radio custom-control-inline">
-                     <input type="radio" id="customRadiopick1" name="customRadiopick1" class="custom-control-input" checked>
-                     <label class="custom-control-label small d-flex" for="customRadiopick1">
-                        <p class="h6 mr-4 mb-0">{{ pickup.arrival_time }}</p>
-                       
-                     </label>
-                  </div>{% endfor %}
-               </div>
-               
-            </div>
-         </div>
-      </div>
-   </div>
+                     
+                     <div class="mt-2 pb-1">
+                        
+                         <div style="display: flex;">
+                           {% with route_data=route.route_parts %}
+                           {% for leg in route_data %}
+                           {% if leg.mode != "bus" %}
+                           <div style="margin-left: 10px;">
+                           <img src="{% static 'images/walk.svg' %}" alt="{{ leg.mode }}" onclick="openGoogleMaps('{{ leg.to_point_name }}')" style="display: inline-block;"/>
+                           <span style="display: inline-block; margin: 0 5px; font-size: 16px;">&rarr;</span>
+                           <p class="f-8" />{{ leg.duration|slice:"3:" }} mins</p>
+                           </div>
+                           {% elif leg.mode == "bus" %}
+                           <div style="margin-left: 10px;">
+                             <p class="small mb-0 l-hght-10 text-danger gift-code" style="margin-left: 10px;">
+                              {% if "FSYO" in leg.service.id %}
+                              <strong> <em>FB - </em>{{ leg.line_name }}</strong> 
+                              {% elif "SYRK" in leg.service.id %}
+                              <strong><em>SG - </em>{{ leg.line_name }}</strong> 
+                              {% elif "TMTL" in leg.service.id %}
+                              <strong><em>TM - </em>{{ leg.line_name }}</strong> 
+                              {% else %}
+                              <strong>{{ leg.line_name }}</strong>
+                                                         {% endif %}
+                              
+                              <img src="{% static 'img/logo.png' %}"  title="Click to Review" onclick="openLink('{{ leg.line_name }}', '{{ leg.from_point.place.smscode }}', '{{ leg.departure_time }}')" style="width: 18px; height: 18px;" />
+                              <span style="display: inline-block; margin: 0 5px; font-size: 16px;">&rarr;</span>
+                           </p>
+                             {% if leg.suggested_bus == 5 %}
+                             <p class="rating-rectangle green">Very Early</p>
+                                    {% elif leg.suggested_bus == 4 %}
+                                    <p class="rating-rectangle light-green">Somewhat Early</p>
+                                    {% elif leg.suggested_bus == 3 %}
+                                    <p class="rating-rectangle blue">On time</p>
+                                    {% elif leg.suggested_bus == 2 %}
+                                    <p class="rating-rectangle yellow">Somewhat Late</p>
+                                    {% elif leg.suggested_bus == 1 %}
+                                    <p class="rating-rectangle red">Likely to be Late</p>
+                                    {% else %}
+                                        <!-- Default code if none of the above conditions are met -->
+                                    {% endif %}</div>
+                             {% endif %}
+                              {% endfor %}
+                           {% endwith %}
+                         </div>
+                         {% with route_data=route.route_parts %}
+                         {% for leg in route_data %}
+                         {% if leg.mode != "bus" %}
+                         <p class="small mb-1"><strong>{{ leg.departure_time }}</strong> : Walk for {{ leg.duration|slice:"3:" }} mins from {{ leg.from_point_name }} <span style="display: inline-block; margin: 0 5px; font-size: 16px;">&rarr;</span> {{ leg.to_point_name }}</p>
+                         {% elif leg.mode == "bus" %}
+                         <p class="small mb-1"><strong>{{ leg.departure_time }}</strong> : Ride 
+                          {% if "FSYO" in leg.service.id %}
+                              <strong style="color: navy;">BUS {{ leg.line_name }}</strong> 
+                            {% elif "SYRK" in leg.service.id %}
+                              <strong style="color: green;">BUS {{ leg.line_name }}</strong> 
+                            {% elif "TMTL" in leg.service.id %}
+                              <strong style="color: darkred;">BUS {{ leg.line_name }}</strong> 
+                            {% else %}
+                              <strong>BUS {{ leg.line_name }}</strong>
+                            {% endif %}
+                            for {{ leg.duration|slice:"3:" }} mins from {{ leg.from_point_name }} <span style="display: inline-block; margin: 0 5px; font-size: 16px;">&rarr;</span> {{ leg.to_point_name }}</p>
+                         {% endif %}
+                          {% endfor %}
+                          {% endwith %}
+                     </div>
+                     
+
+                 </div>
+             </div>
+         </a>
+         <!-- Gift Card Item -->
+        
+     </div> {% endfor %}
+       <!-- Add these scripts in your HTML -->
+<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
+       <script>
+         function openGoogleMaps(destination) {
+             var googleMapsUrl = 'https://www.google.com/maps/dir/?api=1&origin=Current+Location&destination=' + destination + '&dirflg=w';
+             window.open(googleMapsUrl, '_blank');
+         }
+     </script>
+
+     <script>
+      function openLink(lineName, smscode, departureTime) {
+          // Construct the URL with dynamic values
+          var busName = lineName;
+          var stopPoint = smscode;
+          var arrivalTime = departureTime;
+            
+          // Construct the URL with the dynamic values
+          var url = "{% url 'review_create' %}?busName=" + busName + "&smscode=" + stopPoint + "&departureTime=" + arrivalTime;
+  
+          // Open the URL in a new tab or window
+          window.open(url, '_blank');
+      }
+  </script>
+       
+    </div>
+ </div>
+ <!-- Filter Modal -->
+ <div class="modal fade" id="filterModal" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog m-0">
+       <div class="modal-content modal-content rounded-0 border-0 vh-100">
+          <form>
+             <div class="osahan-header-nav shadow-sm p-3 d-flex align-items-center bg-danger">
+                <h5 class="font-weight-normal mb-0 text-white">
+                   <a data-dismiss="modal" aria-label="Close" class="text-danger"><i class="icofont-rounded-left mr-3"></i></a>
+                   Filter By
+                </h5>
+                <div class="ml-auto d-flex align-items-center">
+                   <a href="#" class="text-white mr-3">Clear all</a>
+                   <a class="toggle osahan-toggle h4 m-0 text-white ml-auto hc-nav-trigger hc-nav-1" href="#" role="button" aria-controls="hc-nav-1"><i class="icofont-navigation-menu"></i></a>
+                </div>
+             </div>
+             <div class="modal-body p-3">
+                <div class="mb-4">
+                   <div class="d-flex">
+                      <p class="mb-2 text-dark font-weight-bold">Optimal Route</p>
+                   </div>
+                   <div class="custom-control custom-radio custom-control-inline">
+                      <input type="radio" id="customRadioclass1" name="customRadioclass1" class="custom-control-input">
+                      <label class="custom-control-label small" for="customRadioclass1">Arrive early</label>
+                   </div>
+                   <div class="custom-control custom-radio custom-control-inline">
+                      <input type="radio" id="customRadioclass2" name="customRadioclass1" class="custom-control-input">
+                      <label class="custom-control-label small" for="customRadioclass2">Ontime</label>
+                   </div>
+                   <div class="custom-control custom-radio custom-control-inline">
+                      <input type="radio" id="customRadioclass3" name="customRadioclass1" class="custom-control-input">
+                      <label class="custom-control-label small" for="customRadioclass3">Late</label>
+                   </div>
+                </div>
+                
+             </div>
+             <div class="modal-footer border-0 fixed-bottom">
+                <button type="button" data-dismiss="modal" aria-label="Close" class="btn btn-danger btn-block osahanbus-btn py-3">APPLY FILTER</button>
+             </div>
+          </form>
+       </div>
+    </div>
  </div>
 
-</div>
-</div>
-</div>
-</div>
+ <script>
+   function showBusDetailsPopup(routeFrom, routeTo, duration) {
+      var busDetails =
+          "Start From: " + routeFrom+ "\n" +
+          "To: " + routeTo + "\n" +
+          "Duration: " + duration + " mins \n";
+          
 
+      // Display the route information in a pop-up
+      alert(busDetails);
+  }
+
+   function closePopup() {
+       // Close the pop-up window
+       if (window.opener && !window.opener.closed) {
+           window.opener.location.reload(); // Refresh the parent window (if needed)
+           window.close();
+       }
+   }
+</script>
 
 {% endblock %}
