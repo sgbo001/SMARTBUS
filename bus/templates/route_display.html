@@ -2,7 +2,42 @@
 {% block title %}SmartBus Buddy - Route Display{% endblock %}
 {% block content %}
 {% load static %}
-
+<style>
+   .rating-rectangle {
+      width: 125px; /* Adjust the width as needed */
+      height: 25px; /* Adjust the height as needed */
+      text-align: center;
+      border-radius: 5px;
+      margin-right: 2px; /* Adjust the margin as needed */
+      display: inline-block; /* Keeps the styles while removing the block behavior */
+  }
+  
+  .green {
+      background-color: green;
+      color: black;
+  }
+  
+  .light-green {
+      background-color: lightgreen;
+      color: black;
+  }
+  
+  .blue {
+      background-color: blue;
+      color: white;
+  }
+  
+  .yellow {
+      background-color: yellow;
+      color: black; /* Adjust the text color as needed */
+  }
+  
+  .red {
+      background-color: red;
+      color: white;
+  }
+  
+</style>
 <div class="osahan-listing">
     <div class="osahan-header-nav shadow-sm p-3 d-flex align-items-center bg-danger">
        <h5 class="font-weight-normal mb-0 text-white">
@@ -54,7 +89,7 @@
                            {% elif leg.mode == "bus" %}
                            <div style="margin-left: 10px;">
                              <p class="small mb-0 l-hght-10 text-danger gift-code" style="margin-left: 10px;">
-                                {% if "FSYO" in leg.service.id %}
+                              {% if "FSYO" in leg.service.id %}
                               <strong> <em>FB - </em>{{ leg.line_name }}</strong> 
                               {% elif "SYRK" in leg.service.id %}
                               <strong><em>SG - </em>{{ leg.line_name }}</strong> 
@@ -63,45 +98,20 @@
                               {% else %}
                               <strong>{{ leg.line_name }}</strong>
                                                          {% endif %}
-                                 
-                                 <img src="{% static 'img/logo.png' %}" onclick="openLink('{{ leg.line_name }}', '{{ leg.from_point.place.smscode }}', '{{ leg.departure_time }}')" style="width: 18px; height: 18px;" />
+                              
+                              <img src="{% static 'img/logo.png' %}"  title="Click to Review" onclick="openLink('{{ leg.line_name }}', '{{ leg.from_point.place.smscode }}', '{{ leg.departure_time }}')" style="width: 18px; height: 18px;" />
                               <span style="display: inline-block; margin: 0 5px; font-size: 16px;">&rarr;</span>
                            </p>
                              {% if leg.suggested_bus == 5 %}
-                                    <i class="icofont-star text-danger"></i>
-                                    <i class="icofont-star text-danger"></i>
-                                    <i class="icofont-star text-danger"></i>
-                                    <i class="icofont-star text-danger"></i>
-                                    <i class="icofont-star text-danger"></i>
-                                    <p class="f-8" />Likely to be Very Early</p>
+                             <p class="rating-rectangle green">Very Early</p>
                                     {% elif leg.suggested_bus == 4 %}
-                                    <i class="icofont-star text-danger"></i>
-                                    <i class="icofont-star text-danger"></i>
-                                    <i class="icofont-star text-danger"></i>
-                                    <i class="icofont-star text-danger"></i>
-                                    <i class="icofont-star text-muted"></i>
-                                    <p class="f-8" />Somewhat Early</p>
+                                    <p class="rating-rectangle light-green">Somewhat Early</p>
                                     {% elif leg.suggested_bus == 3 %}
-                                    <i class="icofont-star text-danger"></i>
-                                    <i class="icofont-star text-danger"></i>
-                                    <i class="icofont-star text-danger"></i>
-                                    <i class="icofont-star text-muted"></i>
-                                    <i class="icofont-star text-muted"></i>
-                                    <p class="f-8" />On time</p><!-- Add code for rating 3 -->
+                                    <p class="rating-rectangle blue">On time</p>
                                     {% elif leg.suggested_bus == 2 %}
-                                    <i class="icofont-star text-danger"></i>
-                                    <i class="icofont-star text-danger"></i>
-                                    <i class="icofont-star text-muted"></i>
-                                    <i class="icofont-star text-muted"></i>
-                                    <i class="icofont-star text-muted"></i>
-                                    <p class="f-8" />Somewhat Late</p> <!-- Add code for rating 2 -->
+                                    <p class="rating-rectangle yellow">Somewhat Late</p>
                                     {% elif leg.suggested_bus == 1 %}
-                                    <i class="icofont-star text-danger"></i>
-                                    <i class="icofont-star text-muted"></i>
-                                    <i class="icofont-star text-muted"></i>
-                                    <i class="icofont-star text-muted"></i>
-                                    <i class="icofont-star text-muted"></i>
-                                    <p class="f-8" />Likely to be Late</p>  <!-- Add code for rating 1 -->
+                                    <p class="rating-rectangle red">Likely to be Late</p>
                                     {% else %}
                                         <!-- Default code if none of the above conditions are met -->
                                     {% endif %}</div>
