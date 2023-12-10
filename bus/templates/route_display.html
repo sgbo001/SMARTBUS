@@ -3,40 +3,41 @@
 {% block content %}
 {% load static %}
 <style>
-   .rating-rectangle {
-      width: 125px; /* Adjust the width as needed */
-      height: 25px; /* Adjust the height as needed */
-      text-align: center;
-      border-radius: 5px;
-      margin-right: 2px; /* Adjust the margin as needed */
-      display: inline-block; /* Keeps the styles while removing the block behavior */
-  }
-  
-  .green {
-      background-color: green;
-      color: black;
-  }
-  
-  .light-green {
-      background-color: lightgreen;
-      color: black;
-  }
-  
-  .blue {
-      background-color: blue;
-      color: white;
-  }
-  
-  .yellow {
-      background-color: yellow;
-      color: black; /* Adjust the text color as needed */
-  }
-  
-  .red {
-      background-color: red;
-      color: white;
-  }
-  
+   .slidecontainer {
+      width: 100%;
+    }
+    
+    .slider {
+      -webkit-appearance: none;
+      width: 83%;
+      height: 15px;
+      margin-left: 8%;
+      background: linear-gradient(to right, red, blue, green); /* Change the colors here */
+      outline: none;
+      opacity: 0.7;
+      -webkit-transition: .2s;
+      transition: opacity .2s;
+    }
+    
+    .slider:hover {
+      opacity: 1;
+    }
+    
+    .slider::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      appearance: none;
+      width: 5px;
+      height: 25px;
+      background: #d9d9d9;
+      cursor: pointer;
+    }
+    
+    .slider::-moz-range-thumb {
+      width: 25px;
+      height: 25px;
+      background: #04AA6D;
+      cursor: pointer;
+    }
 </style>
 <div class="osahan-listing">
     <div class="osahan-header-nav shadow-sm p-3 d-flex align-items-center bg-danger">
@@ -103,15 +104,20 @@
                               <span style="display: inline-block; margin: 0 5px; font-size: 16px;">&rarr;</span>
                            </p>
                              {% if leg.suggested_bus == 5 %}
-                             <p class="rating-rectangle green">Very Early</p>
+                             <input type="range" min="1" max="100" value="95" class="slider" id="myRange">
+                             <strong><p style="text-align: center;">Very Early</p></strong>
                                     {% elif leg.suggested_bus == 4 %}
-                                    <p class="rating-rectangle light-green">Somewhat Early</p>
+                                    <input type="range" min="1" max="100" value="75" class="slider" id="myRange">
+                                    <strong><p style="text-align: center;">Somewhat Early</p></strong>
                                     {% elif leg.suggested_bus == 3 %}
-                                    <p class="rating-rectangle blue">On time</p>
+                                    <input type="range" min="1" max="100" value="50" class="slider" id="myRange">
+                                    <strong><p style="text-align: center;">On time</p></strong>
                                     {% elif leg.suggested_bus == 2 %}
-                                    <p class="rating-rectangle yellow">Somewhat Late</p>
+                                    <input type="range" min="1" max="100" value="30" class="slider" id="myRange">
+                                    <strong><p style="text-align: center;">Somewhat Late</p></strong>
                                     {% elif leg.suggested_bus == 1 %}
-                                    <p class="rating-rectangle red">Likely to be Late</p>
+                                    <input type="range" min="1" max="100" value="5" class="slider" id="myRange">
+                                    <strong><p style="text-align: center;">Very Late</p></strong>
                                     {% else %}
                                         <!-- Default code if none of the above conditions are met -->
                                     {% endif %}</div>
