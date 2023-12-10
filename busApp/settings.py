@@ -127,7 +127,9 @@ USE_I18N = True
 
 USE_TZ = True
 AZURE_ACCOUNT_NAME = 'c2063081'
-AZURE_ACCOUNT_KEY = 'Ce8GO0ugoRfwDfGgE12t9gmwdJt7fUQquK00mQD57Xm00PSMSBY1jJwAel5dqDaWjp3nJ3b1SjVd+AStLO6D1A=='
+AZURE_ACCOUNT_KEY = 'H25Y8tmCnZFNVvOSYzkuNlCGAFwqEt+nFiZXbeD9l3KUF95b3OU1e8mrBZhMGjaG8UO3UyEe/ktT+AStFrdNEQ=='
+
+
 
 # Azure Storage Container for static files
 AZURE_CONTAINER = 'static'
@@ -139,6 +141,15 @@ DEFAULT_FILE_STORAGE = 'storages.backends.azure_storage.AzureStorage'
 AZURE_CUSTOM_DOMAIN = f'https://{AZURE_ACCOUNT_NAME}.blob.core.windows.net/{AZURE_CONTAINER}/'
 AZURE_MEDIA_CUSTOM_DOMAIN = f'https://{AZURE_ACCOUNT_NAME}.blob.core.windows.net/{AZURE_MEDIA_CONTAINER}/'
 STATIC_URL = AZURE_CUSTOM_DOMAIN
+
+
+# STATIC_URL = '/static/'
+# MEDIA_ROOT = BASE_DIR / 'media'
+# MEDIA_URL = '/media/'
+# STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+#STATICFILES_DIRS = [
+#    os.path.join(BASE_DIR, 'static'),
+#]
 
 
 # Static files (CSS, JavaScript, Images)
