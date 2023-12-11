@@ -143,7 +143,7 @@ AZURE_MEDIA_CUSTOM_DOMAIN = f'https://{AZURE_ACCOUNT_NAME}.blob.core.windows.net
 STATIC_URL = AZURE_CUSTOM_DOMAIN
 
 
-STATIC_URL = '/static/'
+# STATIC_URL = '/static/'
 # MEDIA_ROOT = BASE_DIR / 'media'
 # MEDIA_URL = '/media/'
 # STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
