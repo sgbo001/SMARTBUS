@@ -164,7 +164,7 @@ CRISPY_TEMPLATE_PACK = 'bootstrap4'
 LOGIN_URL = 'login'
 LOGIN_TEMPLATE = 'login'
 LOGIN_REDIRECT_URL = 'route_plan'
-LOGOUT_REDIRECT_URL = 'login'
+LOGOUT_REDIRECT_URL = '/'
 
 # allauth settings
 ACCOUNT_AUTHENTICATION_METHOD = 'email'  # or 'username' or other methods
