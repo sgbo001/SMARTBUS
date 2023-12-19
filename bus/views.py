@@ -47,68 +47,82 @@ def route_plan(request):
 
 
 def display_route(request):
-    # Fetch data from the API
-    from_post_code = request.GET.get('from_post_code')
-    to_post_code = request.GET.get('to_post_code')
-    
-    from_post_code_info = get_coordinates(from_post_code, coordinate_api_key)
-    to_post_code_info = get_coordinates(to_post_code, coordinate_api_key)
-    
-    if from_post_code_info and to_post_code_info:
-        from_longitude = from_post_code_info['location']['lng']
-        from_latitude = from_post_code_info['location']['lat']
-        from_full_address = from_post_code_info['full_address']
+    try:
+        # Fetch data from the API
+        from_post_code = request.GET.get('from_post_code')
+        to_post_code = request.GET.get('to_post_code')
 
-        to_longitude = to_post_code_info['location']['lng']
-        to_latitude = to_post_code_info['location']['lat']
-        to_full_address = to_post_code_info['full_address']
-        # Your code to call the API and display the results can go here
-        # ...
-        date_time_str = request.GET.get('date_time')
-        date_time_obj = datetime.strptime(date_time_str, '%Y-%m-%dT%H:%M')
-        date = date_time_obj.strftime('%Y-%m-%d')
-        time = date_time_obj.strftime('%H:%M')
+        from_post_code_info = get_coordinates(from_post_code, coordinate_api_key)
+        to_post_code_info = get_coordinates(to_post_code, coordinate_api_key)
 
-        api_url = f'https://transportapi.com/v3/uk/public_journey.json?from=lonlat%3A{from_longitude}%2C{from_latitude}&to=lonlat%3A{to_longitude}%2C{to_latitude}&date={date}&time={time}&journey_time_type=leave_after&service=silverrail&modes=bus%2Ctrain%2Cboat&modes=bus&not_modes=bus%2Ctrain%2Cboat&not_modes=train&app_key={transport_api_key}&app_id={transport_app_id}'
-        response = requests.get(api_url)
-        data = response.json()
-        print(data)# Assuming your API returns JSON data
-        
-        
-        # Iterate through routes and find the highest-rated bus for each leg
-        for route in data['routes']:
-            for leg in route['route_parts']:
-                route_duration = route['duration']
+        if from_post_code_info and to_post_code_info:
+            from_longitude = from_post_code_info['location']['lng']
+            from_latitude = from_post_code_info['location']['lat']
+            from_full_address = from_post_code_info['full_address']
 
-                if leg['mode'] == 'bus':
-                    smscode = leg['from_point']['place']['smscode']
-                    tolerance = 2
-                    departure_time = leg['departure_time']
+            to_longitude = to_post_code_info['location']['lng']
+            to_latitude = to_post_code_info['location']['lat']
+            to_full_address = to_post_code_info['full_address']
 
-                    # Convert departure_time to a datetime.time object
-                    departure_time = datetime.strptime(departure_time, '%H:%M').time()
+            # Your code to call the API and display the results can go here
+            # ...
+            date_time_str = request.GET.get('date_time')
+            date_time_obj = datetime.strptime(date_time_str, '%Y-%m-%dT%H:%M')
+            date = date_time_obj.strftime('%Y-%m-%d')
+            time = date_time_obj.strftime('%H:%M')
 
-                    # Calculate the time range
-                    start_time = (datetime.combine(datetime.today(), departure_time) - timedelta(minutes=tolerance)).time()
-                    end_time = (datetime.combine(datetime.today(), departure_time) + timedelta(minutes=tolerance)).time()
-                    print(start_time, "", end_time)
+            api_url = f'https://transportapi.com/v3/uk/public_journey.json?from=lonlat%3A{from_longitude}%2C{from_latitude}&to=lonlat%3A{to_longitude}%2C{to_latitude}&date={date}&time={time}&journey_time_type=leave_after&service=silverrail&modes=bus%2Ctrain%2Cboat&modes=bus&not_modes=bus%2Ctrain%2Cboat&not_modes=train&app_key={transport_api_key}&app_id={transport_app_id}'
+            response = requests.get(api_url)
 
-                    average_rating = Review.objects.filter(bus_id=leg['line_name'], arrival_time__gte=start_time, arrival_time__lte=end_time, stop_point=smscode).aggregate(Avg('rating'))['rating__avg']
-                    print(f"Rating: {average_rating}")
-                    if average_rating is not None:
-                     leg['suggested_bus'] = math.ceil(average_rating)
-                    else:
-                     leg['suggested_bus'] = None
+            if response.status_code != 200:
+                raise Http404
 
-        # Pass the data to the template for rendering
-        return render(request, 'route_display.html', {'from_full_address': from_full_address, 'to_full_address': to_full_address,'routes': data})
+            data = response.json()
 
-    else:
-        # Handle the case where post codes were not found
-        # You can print an error message or log it
+            # Iterate through routes and find the highest-rated bus for each leg
+            for route in data.get('routes', []):
+                for leg in route.get('route_parts', []):
+                    route_duration = route.get('duration', 0)
+
+                    if leg.get('mode') == 'bus':
+                        smscode = leg['from_point']['place']['smscode']
+                        tolerance = 2
+                        departure_time = leg['departure_time']
+
+                        # Convert departure_time to a datetime.time object
+                        departure_time = datetime.strptime(departure_time, '%H:%M').time()
+
+                        # Calculate the time range
+                        start_time = (datetime.combine(datetime.today(), departure_time) - timedelta(minutes=tolerance)).time()
+                        end_time = (datetime.combine(datetime.today(), departure_time) + timedelta(minutes=tolerance)).time()
+                        print(start_time, "", end_time)
+
+                        average_rating = Review.objects.filter(
+                            bus_id=leg['line_name'],
+                            arrival_time__gte=start_time,
+                            arrival_time__lte=end_time,
+                            stop_point=smscode
+                        ).aggregate(Avg('rating'))['rating__avg']
+
+                        print(f"Rating: {average_rating}")
+
+                        if average_rating is not None:
+                            leg['suggested_bus'] = math.ceil(average_rating)
+                        else:
+                            leg['suggested_bus'] = None
+
+            # Pass the data to the template for rendering
+            return render(request, 'route_display.html', {
+                'from_full_address': from_full_address,
+                'to_full_address': to_full_address,
+                'routes': data
+            })
+        else:
+
+            raise Http404
+    except Exception as e:
+        print(f"Error: {e}")
         return render(request, 'error.html')
-
-    return render(request, 'route_display.html')
 
 
 
