@@ -1,13 +1,8 @@
 import os
 from pathlib import Path
 
-# ... and so on
 
 
-
-# Initialise environment variables
-
-# Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 
@@ -129,9 +124,6 @@ USE_TZ = True
 AZURE_ACCOUNT_NAME = 'c2063081'
 AZURE_ACCOUNT_KEY = 'H25Y8tmCnZFNVvOSYzkuNlCGAFwqEt+nFiZXbeD9l3KUF95b3OU1e8mrBZhMGjaG8UO3UyEe/ktT+AStFrdNEQ=='
 
-
-
-# Azure Storage Container for static files
 AZURE_CONTAINER = 'static'
 AZURE_MEDIA_CONTAINER = 'static'
 
