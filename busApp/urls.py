@@ -3,7 +3,7 @@ from django.contrib import admin
 from django.urls import path, include, re_path
 from django.conf.urls.static import static
 from django.conf import settings
-from bus.views import home, display_route, route_plan, bus_detail, error
+from bus.views import home, display_route, route_plan, bus_detail, error, notifications, notifications_count
 from reviews.views import ReviewCreateView
 from users import views as user_views
 from django.contrib.auth import views as auth_views
@@ -28,6 +28,8 @@ urlpatterns = [
     path('404/', error, name='error'),
     path('reviewBus/', views.review_bus, name='review_bus'),
     path('review_create/', views.review_create, name='review_create'),
+    path('notifications/', notifications, name='notifications'),
+    path('notifications_count/', notifications_count, name='notifications_count'),
 
     #path('api/arrival_times/', views.get_arrival_times, name='get_arrival_times'),
 

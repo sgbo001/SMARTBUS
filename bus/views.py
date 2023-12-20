@@ -3,7 +3,7 @@ from .forms import SearchForm
 import requests
 from django.http import HttpResponse
 from datetime import datetime
-from .models import Bus, BusRoute
+from .models import Bus, BusRoute, Notification
 from reviews.models import Review
 from django.db.models import Avg, Max
 from reviews.models import Review
@@ -31,19 +31,31 @@ def home(request):
 def error(request):
 
      return render(request, 'error.html')
+ 
+def notifications(request):
+    notifications = Notification.objects.all().order_by('-datetime')
+    context = {'notifications': notifications}
+    return render(request, 'notifications.html', context)
+
+def notifications_count(request):
+    count = Notification.objects.count()
+    return render(request, 'base.html', {'notification_count': count})
+
 
 def route_plan(request):
     if request.method == 'GET':
         form = SearchForm(request.GET)
         if form.is_valid():
-            # Process the form data and perform the search logic
             from_post_code = form.cleaned_data['from_post_code']
             to_post_code = form.cleaned_data['to_post_code']
             date_time = form.cleaned_data['date_time']
-            # Perform search logic and return results
+
     else:
         form = SearchForm()
-    return render(request, 'route_plan.html', {'form': form})
+
+    notification_count = Notification.objects.count()
+
+    return render(request, 'route_plan.html', {'form': form, 'notification_count': notification_count})
 
 
 def display_route(request):

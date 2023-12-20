@@ -1,6 +1,7 @@
 {% extends "base.html" %}
 {% block title %}SMART BUS - Login{% endblock %}
 {% block content %}
+{% load socialaccount %}
 {% load static %}
 
 <div class="osahan-signup">
@@ -30,11 +31,8 @@
           <p class="text-muted text-center py-2 m-0">OR</p>
           <hr class="ml-4">
        </div>
-       <a href="#" class="btn btn-block rounded-1 google-btn osahanbus-social">
+       <a href="{% provider_login_url 'google' %}" class="btn btn-block rounded-1 google-btn osahanbus-social">
        <i class="icofont-google-plus"></i> LOGIN WITH GOOGLE
-       </a>
-       <a href="#" class="my-3 btn btn-block rounded-1 fb-btn osahanbus-social">
-       <i class="icofont-facebook"></i> LOGIN WITH FACEBOOK
        </a>
        <div class="osahan-signin text-center p-1">
           <p class="m-0">Not a member ? <a href="signup.html" class="text-danger ml-2">Sign Up</a></p>

@@ -43,7 +43,7 @@
     <script type="text/javascript" src="{% static 'vendor/sidebar/hc-offcanvas-nav.js' %}"></script>
     <!-- Custom scripts for all pages-->
 
-    {%if user.is_authenticated%}
+   
     <div class="fixed-bottom p-3">
         <div class="footer-menu row m-0 bg-danger shadow rounded-2">
            <div class="col-3 p-0 text-center">
@@ -58,23 +58,35 @@
                  <p class="mb-0 small">My Tickets</p>
               </a>
            </div>
-           <div class="col-3 p-0 text-center" style="opacity: 0.5;">
-            <a href="#" class="home text-white">
-              <span class="icofont-notification h5" style="filter: grayscale(100%);"></span>
-              <small class="osahan-n">4</small>
-              <p class="mb-0 small">Notice</p>
+           <div class="col-3 p-0 text-center">
+            <a href="{% url 'notifications' %}" class="home text-white">
+                <span class="icofont-notification h5"></span>
+                <small class="osahan-n">{{ notification_count }}</small>
+                <p class="mb-0 small">Notifications</p>
             </a>
-          </div>          
+        </div>
+
+          {%if user.is_authenticated%}         
            <div class="col-3 p-0 text-center">
               <a href="{% url 'edit_profile' %}" class="home text-white active">
                  <span class="icofont-user h5"></span>
                  <p class="mb-0 small">Profile</p>
               </a>
            </div>
+           {%else %}
+           <div class="col-3 p-0 text-center" style="opacity: 0.5;">
+            <a href="{% url 'edit_profile' %}" class="home text-white active">
+               <span class="icofont-user h5"style="filter: grayscale(100%);" ></span>
+               <p class="mb-0 small">Profile</p>
+            </a>
+         </div>
+         {%endif%}
         </div>
      </div>
-     {%else %}
-          {%endif%}
+    
+
+    
+          
    
           <nav id="main-nav">
             <ul class="second-nav">
