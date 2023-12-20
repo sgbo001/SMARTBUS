@@ -11,14 +11,12 @@ import math
 from datetime import datetime, timedelta
 import os
 
-# Create your views here.
+
 
 transport_api_key = os.environ.get('TRANSPORT_API_KEY')
 transport_app_id = os.environ.get('TRANSPORT_APP_ID')
 coordinate_api_key = os.environ.get('COORDINATE_API_KEY')
 
-
-# Use COORDINATE_API_KEY wherever needed in your code
 
     
 def home(request):
@@ -156,7 +154,6 @@ def get_coordinates(postcode, coordinate_api_key):
         }
     else:
         return None
-    
 
     
     
@@ -195,9 +192,6 @@ def bus_detail(request):
         return render(request, 'bus_detail.html', {
             
             'buses': buses,
-            #'selected_bus': selected_bus,
-            #'stop_point': stop_point,
-            #'bus_providers': bus_providers,
             'max_rating': max_rating,
             'top_three_reviews': top_three_reviews,
             'pickups':pickup
