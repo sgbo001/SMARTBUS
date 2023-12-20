@@ -3,6 +3,8 @@
 {% block content %}
 {% load static %}
 {% load crispy_forms_tags %}
+{% load widget_tweaks %}
+
 
 <style>
     /* Add spacing to form fields */
@@ -32,7 +34,7 @@
                 
                 {{ form.from_post_code|as_crispy_field }}
                 {{ form.to_post_code|as_crispy_field }}
-                {{ form.date_time|as_crispy_field }}
+                 {{ form.date_time|as_crispy_field }}
                 <button type="submit" class="btn btn-danger btn-block osahanbus-btn rounded-1">Search</button>
             </div>
         </form>
@@ -73,8 +75,20 @@
        </div>
     </div>
     
- <!-- Footer Fixed -->
+<script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBic5uX0v4MzK_HoMYlw03cbUvV7lev1Yk&libraries=places&callback=initAutocomplete"></script>
+ <script>
+   function initAutocomplete() {
+      var fromInput = document.getElementById('fromLocationInput');
+      var toInput = document.getElementById('toLocationInput');
+      var fromAutocomplete = new google.maps.places.Autocomplete(fromInput);
+      var toAutocomplete = new google.maps.places.Autocomplete(toInput);
+    }    
  
+   document.addEventListener('DOMContentLoaded', function () {
+     initAutocomplete();
+   });
+ </script>
+
  <script>
    const getLocationBtn = document.getElementById('getLocationBtn');
    const postalCodeText = document.getElementById('postalCodeText');
