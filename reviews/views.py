@@ -3,7 +3,7 @@ from django.http import JsonResponse
 from django.views import View
 from django.http import HttpResponse
 from .models import Review
-from bus.models import Bus  # Adjust this import based on your app structure
+from bus.models import Bus  
 from .forms import ReviewForm
 from django.contrib.auth.models import User
 from bus.models import BusStop, Bus, BusRoute
@@ -11,6 +11,7 @@ from django.contrib import messages
 import json
 import pandas as pd
 from datetime import datetime
+
 
 def search_buses_by_stop(request):
     if request.method == 'GET':
@@ -21,13 +22,6 @@ def search_buses_by_stop(request):
 def review_bus(request):
    
     return render(request, 'review_bus.html',)
-
-
-from datetime import datetime
-
-from datetime import datetime
-from django.shortcuts import render, redirect
-from django.http import HttpResponse  # Import HttpResponse
 
 def review_create(request):
     stop_point = request.GET.get('smscode')
@@ -61,16 +55,13 @@ def review_create(request):
             comment=comment
         )
         review.save()
-
+        messages.success(request, f'Review submitted successfully for BUS {bus_id}')
         previous_page = '/route_plan/'
         return redirect(previous_page)
-
     # If the request method is not POST, render the form page
     return render(request, 'review_bus.html')
 
-    
 
-    
 class ReviewCreateView(View):
     template_name = 'search_form.html'
 
@@ -86,17 +77,14 @@ class ReviewCreateView(View):
             bus_info = BusRoute.objects.filter(stop_point=stop_name)
             unique_stop_names = bus_info.values('common_name').distinct()
             unique_bus_ids = bus_info.values('bus_id').distinct()
-            #unique_arrival_times = bus_info.values('arrival_time').distinct()
+
      
         else:
             bus_info = BusRoute.objects.filter(common_name=stop_name)
             unique_stop_names = bus_info.values('stop_point').distinct()
             unique_bus_ids = bus_info.values('bus_id').distinct()
-            #unique_arrival_times = bus_info.values('arrival_time').distinct()
 
         unique_arrival_times = bus_info.values('arrival_time').distinct() 
-        for arrival_time in unique_arrival_times:
-            print(arrival_time['arrival_time'])
 
 
         return render(request, self.template_name, {'form': form, 'unique_bus_ids': unique_bus_ids, 'unique_common_names': unique_stop_names, 'unique_arrival_times': unique_arrival_times,})
@@ -130,8 +118,8 @@ class ReviewCreateView(View):
             review.arrival_time = arrival_time
             review.full_name = full_name
             review.save()
-            messages.success(request, 'Review submitted successfully.')
-            previous_page = '/home'
+            messages.success(request, f'Review submitted successfully for BUS {bus_id}')
+            previous_page = '/route_plan/'
             return redirect(previous_page)
         else:
             messages.warning(request, 'An error occurred while saving this review.')

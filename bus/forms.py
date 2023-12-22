@@ -14,6 +14,6 @@ class SearchForm(forms.Form):
 
     def __init__(self, *args, **kwargs):
         super(SearchForm, self).__init__(*args, **kwargs)
-        self.fields['from_post_code'].widget.attrs.update({'placeholder': 'Enter Post Code'})
-        self.fields['to_post_code'].widget.attrs.update({'placeholder': 'Enter Post Code'})
+        self.fields['from_post_code'].widget.attrs.update({'placeholder': 'Search Location'})
+        self.fields['to_post_code'].widget.attrs.update({'placeholder': 'Search Location'})
         self.fields['date_time'].widget.attrs.update({'placeholder': 'Enter Date/Time'})

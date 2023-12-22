@@ -20,9 +20,20 @@
              <a href="#" class="mr-3"><img src="{% static 'img/user1.png' %}" class="img-fluid rounded-circle"></a>
              <a class="toggle osahan-toggle h4 m-0 text-white ml-auto" href="#"><i class="icofont-navigation-menu"></i></a>
           </div>
+          
        </div>
     </div>
     <div class="bg-danger px-3 pb-3">
+      {% if messages %}
+      
+      {% for message in messages %}
+
+      <div class="alert alert-{{message.tags}}" style="text-align: center;">{{ message }}</div>
+
+
+      {% endfor %}
+
+      {% endif %}
        <div class="bg-white rounded-1 p-3">
          <form method="get" action="{% url 'display_route' %}" class="custom-form" style="margin-bottom: 10px;">
             {% csrf_token %}
@@ -105,7 +116,7 @@
                    .then(response => response.json())
                    .then(data => {
                        if (data.results.length > 0) {
-                           const postalCode = data.results[0].components.postcode;
+                           const postalCode = data.results[0].formatted;
                            postalCodeText.value = postalCode || "Postal code not found";
 
                            // Set the postal code in the form's field
