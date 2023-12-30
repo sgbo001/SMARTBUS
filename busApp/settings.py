@@ -122,19 +122,27 @@ TIME_ZONE = 'UTC'
 USE_I18N = True
 
 USE_TZ = True
-AZURE_ACCOUNT_NAME = 'c2063081'
-AZURE_ACCOUNT_KEY = 'H25Y8tmCnZFNVvOSYzkuNlCGAFwqEt+nFiZXbeD9l3KUF95b3OU1e8mrBZhMGjaG8UO3UyEe/ktT+AStFrdNEQ=='
+DEFAULT_FILE_STORAGE = 'busApp.storage.AzureMediaStorage'
+STATICFILES_STORAGE = 'busApp.storage.AzureStaticStorage'
 
-AZURE_CONTAINER = 'static'
-AZURE_MEDIA_CONTAINER = 'static'
+STATIC_LOCATION = "static"
+MEDIA_LOCATION = "media"
 
-# Use Azure Storage for static files
-DEFAULT_FILE_STORAGE = 'storages.backends.azure_storage.AzureStorage'
+AZURE_ACCOUNT_NAME = "c2063081"
+AZURE_CUSTOM_DOMAIN = f'{AZURE_ACCOUNT_NAME}.blob.core.windows.net'
+STATIC_URL = f'https://{AZURE_CUSTOM_DOMAIN}/{STATIC_LOCATION}/'
+MEDIA_URL = f'https://{AZURE_CUSTOM_DOMAIN}/{MEDIA_LOCATION}/'
 
-AZURE_CUSTOM_DOMAIN = f'https://{AZURE_ACCOUNT_NAME}.blob.core.windows.net/{AZURE_CONTAINER}/'
-AZURE_MEDIA_CUSTOM_DOMAIN = f'https://{AZURE_ACCOUNT_NAME}.blob.core.windows.net/{AZURE_MEDIA_CONTAINER}/'
-STATIC_URL = AZURE_CUSTOM_DOMAIN
+# Adjust the following settings for Azure Storage
+AZURE_ACCOUNT_KEY = 'H25Y8tmCnZFNVvOSYzkuNlCGAFwqEt+nFiZXbeD9l3KUF95b3OU1e8mrBZhMGjaG8UO3UyEe/ktT+AStFrdNEQ=='  # Replace with your Azure Storage account key
+AZURE_CONTAINER = 'c2063081'  # Replace with your Azure Storage container name
 
+AZURE_BLOB_HEADERS = {
+    'x-ms-blob-cache-control': 'max-age=3600',  # Adjust cache settings as needed
+    'Access-Control-Allow-Origin': '*',  # Set appropriate CORS policy
+}
+
+AZURE_OVERWRITE_FILES = True  # Set to True to overwrite existing files during collectstatic
 
 #STATIC_URL = '/static/'
 # MEDIA_ROOT = BASE_DIR / 'media'
