@@ -2,7 +2,43 @@
 {% block title %}SmartBus Buddy - Custom Page Title{% endblock %}
 {% block content %}
 {% load static %}
-
+<style>
+   .slidecontainer {
+      width: 100%;
+    }
+    
+    .slider {
+      -webkit-appearance: none;
+      width: 50%;
+      height: 15px;
+      margin-left: 8%;
+      background: linear-gradient(to right, red, yellow, green, yellow, red); 
+      outline: none;
+      opacity: 0.7;
+      -webkit-transition: .2s;
+      transition: opacity .2s;
+    }
+    
+    .slider:hover {
+      opacity: 1;
+    }
+    
+    .slider::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      appearance: none;
+      width: 5px;
+      height: 25px;
+      background: #d9d9d9;
+      cursor: pointer;
+    }
+    
+    .slider::-moz-range-thumb {
+      width: 25px;
+      height: 25px;
+      background: #04AA6D;
+      cursor: pointer;
+    }
+</style>
 <div class="Bus-Details padding-bt">
     <div class="osahan-header-nav shadow-sm p-3 d-flex align-items-center bg-danger">
        <h5 class="font-weight-normal mb-0 text-white">
@@ -42,76 +78,27 @@
          <img src="{% static 'img/listing/item1.png' %}" class="img-fluid border rounded p-1 shape-img mr-3">
          <div class="w-100">
             <h6 class="my-1 l-hght-18 font-weight-bold">{{ request.GET.bus_id }}</h6>
-            
-            {% if max_rating == 5 %}
-            <div class="start-rating f-10">
-               <i class="icofont-star text-danger"></i>
-               <i class="icofont-star text-danger"></i>
-               <i class="icofont-star text-danger"></i>
-               <i class="icofont-star text-danger"></i>
-               <i class="icofont-star text-danger"></i>
-               <span class="text-dark">{{ max_rating }} / 5</span>
-               <div class="d-flex mt-2">
-                  <p class="m-0"><i class="icofont-google-map mr-1 text-danger"></i><span class="small">{{ stop_point }}</span></p>
-                  <p class="small ml-auto mb-0"><i class="icofont-bus mr-1 text-danger"></i> Likely to be very Early</p>
-               </div>
-            </div>
-            {% elif max_rating == 4 %}
-            <div class="start-rating f-10">
-             <i class="icofont-star text-danger"></i>
-             <i class="icofont-star text-danger"></i>
-             <i class="icofont-star text-danger"></i>
-             <i class="icofont-star text-danger"></i>
-             <i class="icofont-star text-muted"></i>
-             <span class="text-dark">{{ max_rating }} / 5</span>
-             <div class="d-flex mt-2">
-                <p class="m-0"><i class="icofont-google-map mr-1 text-danger"></i><span class="small">{{ stop_point }}</span></p>
-                <p class="small ml-auto mb-0"><i class="icofont-bus mr-1 text-danger"></i> Somewhat Early</p>
-             </div>
-          </div>
+            <input type="range" min="1" max="100" value="{{ rating_percentage }}" class="slider" id="myRange" disabled>
+            <span class="text-dark">{{ max_rating }} / 5</span>
+            <div class="d-flex mt-2">
+               <p class="m-0"><i class="icofont-google-map mr-1 text-danger"></i><span class="small">{{ stop_point }}</span></p>
+               {% if max_rating %}
+                  {% if max_rating >= 1 and max_rating <= 1.4 %}
+                     <p class="small ml-auto mb-0"><i class="icofont-bus mr-1 text-danger"></i> Likely to be Very Late</p>
+                  {% elif max_rating > 1.4 and max_rating <= 2.5 %}
+                     <p class="small ml-auto mb-0"><i class="icofont-bus mr-1 text-warning"></i> Likely to be Somewhat Late</p>
+                  {% elif max_rating > 2.5 and max_rating <= 3.6 %}
+                     <p class="small ml-auto mb-0"><i class="icofont-bus mr-1 text-success"></i> On Time</p>
+                  {% elif max_rating > 3.6 and max_rating <= 4.4 %}
+                     <p class="small ml-auto mb-0"><i class="icofont-bus mr-1 text-warning"></i> Somewhat Early</p>
+                  {% elif max_rating > 4.4 and max_rating <= 5 %}
+                     <p class="small ml-auto mb-0"><i class="icofont-bus mr-1 text-warning"></i> Likely to be Very Early</p>
+                  {% endif %}
+               {% else %}
+                  <p class="small ml-auto mb-0">No Review yet</p>
+               {% endif %}
 
-          {% elif max_rating == 3 %}
-            <div class="start-rating f-10">
-             <i class="icofont-star text-danger"></i>
-             <i class="icofont-star text-danger"></i>
-             <i class="icofont-star text-danger"></i>
-             <i class="icofont-star text-muted"></i>
-             <i class="icofont-star text-muted"></i>
-             <span class="text-dark">{{ max_rating }} / 5</span>
-             <div class="d-flex mt-2">
-                <p class="m-0"><i class="icofont-google-map mr-1 text-danger"></i><span class="small">{{ stop_point }}</span></p>
-                <p class="small ml-auto mb-0"><i class="icofont-bus mr-1 text-danger"></i> On Time</p>
-             </div>
-          </div>
-          {% elif max_rating == 2 %}
-          <div class="start-rating f-10">
-           <i class="icofont-star text-danger"></i>
-           <i class="icofont-star text-danger"></i>
-           <i class="icofont-star text-muted"></i>
-           <i class="icofont-star text-muted"></i>
-           <i class="icofont-star text-muted"></i>
-           <span class="text-dark">{{ max_rating }} / 5</span>
-           <div class="d-flex mt-2">
-              <p class="m-0"><i class="icofont-google-map mr-1 text-danger"></i><span class="small">{{ stop_point }}</span></p>
-              <p class="small ml-auto mb-0"><i class="icofont-bus mr-1 text-danger"></i>Somewhat Late</p>
-           </div>
-        </div>
-        {% elif max_rating == 1 %}
-          <div class="start-rating f-10">
-           <i class="icofont-star text-danger"></i>
-           <i class="icofont-star text-muted"></i>
-           <i class="icofont-star text-muted"></i>
-           <i class="icofont-star text-muted"></i>
-           <i class="icofont-star text-muted"></i>
-           <span class="text-dark">{{ max_rating }} / 5</span>
-           <div class="d-flex mt-2">
-              <p class="m-0"><i class="icofont-google-map mr-1 text-danger"></i><span class="small">{{ stop_point }}</span></p>
-              <p class="small ml-auto mb-0"><i class="icofont-bus mr-1 text-danger"></i>Late</p>
-           </div>
-        </div>
-            {% else %}
-     {% endif %}
-      
+            </div>
          </div>
       </div>
       

@@ -5,6 +5,7 @@ from bus.models import BusRoute
 class Review(models.Model):
     full_name = models.CharField(max_length=255, blank=False)
     stop_point = models.CharField(max_length=255, blank=False)
+    common_name = models.CharField(max_length=255, blank=True)
     bus_id = models.CharField(max_length=10, blank=False)
     arrival_time = models.TimeField(verbose_name="Arrival Time", blank=True)
     timestamp = models.DateTimeField(auto_now_add=True)

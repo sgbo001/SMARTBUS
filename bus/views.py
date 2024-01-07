@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
 from .forms import SearchForm
 import requests
-from django.http import HttpResponse
+from django.http import Http404, HttpResponse
 from datetime import datetime
 from .models import Bus, BusRoute, Notification
 from reviews.models import Review
@@ -106,26 +106,25 @@ def display_route(request):
                         start_time = (datetime.combine(datetime.today(), departure_time) - timedelta(minutes=tolerance)).time()
                         end_time = (datetime.combine(datetime.today(), departure_time) + timedelta(minutes=tolerance)).time()
                         print(start_time, "", end_time)
-
+                        rating_percentage = 0
                         average_rating = Review.objects.filter(
                             bus_id=leg['line_name'],
                             arrival_time__gte=start_time,
                             arrival_time__lte=end_time,
                             stop_point=smscode
                         ).aggregate(Avg('rating'))['rating__avg']
-
-                        print(f"Rating: {average_rating}")
-
+                        
                         if average_rating is not None:
-                            leg['suggested_bus'] = math.ceil(average_rating)
+                            leg['suggested_bus'] = (average_rating / 5) * 100
                         else:
-                            leg['suggested_bus'] = None
+                            leg['suggested_bus'] = 0
 
             # Pass the data to the template for rendering
             return render(request, 'route_display.html', {
                 'from_full_address': from_full_address,
                 'to_full_address': to_full_address,
-                'routes': data
+                'routes': data,
+                'rating_percentage' :rating_percentage 
             })
         else:
 
@@ -178,11 +177,16 @@ def bus_detail(request):
         else:
             buses = BusRoute.objects.none()
         print("Stop Name : ", stop_name)
+        rating_percentage = 0
         if bus_id:
             pickup = BusRoute.objects.filter(stop_point=stop_name, bus_id=bus_id).values('arrival_time').distinct().order_by('arrival_time')
             print(pickup)
         
             max_rating = Review.objects.filter(bus_id=bus_id, stop_point=stop_name).aggregate(Avg('rating'))['rating__avg']
+            if max_rating is None:
+                rating_percentage = 0
+            else:
+                rating_percentage = (max_rating / 5) * 100
             top_three_reviews = Review.objects.filter(bus_id=bus_id, stop_point=stop_name, comment__isnull=False,).exclude(comment__iexact='').order_by('-timestamp')[:3]
         else:
             max_rating = None
@@ -194,7 +198,8 @@ def bus_detail(request):
             'buses': buses,
             'max_rating': max_rating,
             'top_three_reviews': top_three_reviews,
-            'pickups':pickup
+            'pickups':pickup,
+            'rating_percentage' :rating_percentage 
             
         })
 

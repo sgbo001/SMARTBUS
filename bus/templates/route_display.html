@@ -88,7 +88,7 @@
                            </div>
                            {% elif leg.mode == "bus" %}
                            <div style="margin-left: 10px;">
-                             <p class="small mb-0 l-hght-10 text-danger gift-code" style="margin-left: 10px;">
+                              <p class="small mb-0 l-hght-10 text-danger gift-code" style="margin-left: 10px; cursor: pointer;" >
                               {% if "FSYO" in leg.service.id %}
                               <strong> <em>FB - </em>{{ leg.line_name }}</strong> 
                               {% elif "SYRK" in leg.service.id %}
@@ -102,33 +102,36 @@
                               <img src="{% static 'img/logo.png' %}"  title="Click to Review" onclick="openLink('{{ leg.line_name }}', '{{ leg.from_point.place.smscode }}', '{{ leg.departure_time }}')" style="width: 18px; height: 18px;" />
                               <span style="display: inline-block; margin: 0 5px; font-size: 16px;">&rarr;</span>
                            </p>
-                             {% if leg.suggested_bus == 5 %}
-                             <input type="range" min="1" max="100" value="95" class="slider" id="myRange">
-                             <strong><p style="text-align: center;">Very Early</p></strong>
-                                    {% elif leg.suggested_bus == 4 %}
-                                    <input type="range" min="1" max="100" value="75" class="slider" id="myRange">
-                                    <strong><p style="text-align: center;">Somewhat Early</p></strong>
-                                    {% elif leg.suggested_bus == 3 %}
-                                    <input type="range" min="1" max="100" value="50" class="slider" id="myRange">
-                                    <strong><p style="text-align: center;">On time</p></strong>
-                                    {% elif leg.suggested_bus == 2 %}
-                                    <input type="range" min="1" max="100" value="30" class="slider" id="myRange">
-                                    <strong><p style="text-align: center;">Somewhat Late</p></strong>
-                                    {% elif leg.suggested_bus == 1 %}
-                                    <input type="range" min="1" max="100" value="5" class="slider" id="myRange">
-                                    <strong><p style="text-align: center;">Very Late</p></strong>
-                                    {% else %}
-                                    {% endif %}</div>
+                           <input type="range" min="1" max="100" value="{{ leg.suggested_bus }}" class="slider" id="myRange" disabled>
+                           {% if leg.suggested_bus %}
+                           {% if leg.suggested_bus >= 1 and leg.suggested_bus <= 39 %}
+                               <p style="text-align: center;">Very Late</p>
+                           {% elif leg.suggested_bus >= 40 and leg.suggested_bus <= 49 %}
+                               <p style="text-align: center;">Somewhat Late</p>
+                           {% elif leg.suggested_bus >= 50 and leg.suggested_bus <= 60 %}
+                               <p style="text-align: center;">On Time</p>
+                           {% elif leg.suggested_bus >= 61 and leg.suggested_bus <= 69 %}
+                               <p style="text-align: center;">Somewhat Early</p>
+                           {% elif leg.suggested_bus >= 70 and leg.suggested_bus <= 100 %}
+                               <p style="text-align: center;">Early</p>
+                               {% endif %}
+                           {% else %}
+                           <p style="text-align: center;">No Review</p>
+                           {% endif %}
+                     
+                       
+                        </div>
                              {% endif %}
                               {% endfor %}
                            {% endwith %}
+                           
                          </div>
                          {% with route_data=route.route_parts %}
                          {% for leg in route_data %}
                          {% if leg.mode != "bus" %}
                          <p class="small mb-1"><strong>{{ leg.departure_time }}</strong> : Walk for {{ leg.duration|slice:"3:" }} mins from {{ leg.from_point_name }} <span style="display: inline-block; margin: 0 5px; font-size: 16px;">&rarr;</span> {{ leg.to_point_name }}</p>
                          {% elif leg.mode == "bus" %}
-                         <p class="small mb-1"><strong>{{ leg.departure_time }}</strong> : Ride 
+                         <p class="small mb-1" onclick="openLink1('{{ leg.line_name }}', '{{ leg.from_point.place.smscode }}')"><strong>{{ leg.departure_time }}</strong> : Ride 
                           {% if "FSYO" in leg.service.id %}
                               <strong style="color: navy;">BUS {{ leg.line_name }}</strong> 
                             {% elif "SYRK" in leg.service.id %}
@@ -176,6 +179,20 @@
           window.open(url, '_blank');
       }
   </script>
+
+  <script>
+   function openLink1(lineName, smscode) {
+       // Construct the URL with dynamic values
+       var busName = lineName;
+       var stopPoint = smscode;
+      
+       // Construct the URL with the dynamic values
+       var url = "{% url 'bus_detail' %}?stop_name=" + stopPoint + "&bus_id=" + lineName;
+
+       // Open the URL in a new tab or window
+       window.open(url, '_blank');
+   }
+</script>
        
     </div>
  </div>
