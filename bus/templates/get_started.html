@@ -1,0 +1,68 @@
+{% extends "base.html" %}
+
+{% block content %}
+{% load static %}
+{% load socialaccount %}
+
+<body class="bg-light">
+
+    <div class="osahan-giftcard">
+        <div class="osahan-header-nav shadow-sm bg-danger p-3 d-flex align-items-center">
+            <h5 class="font-weight-normal mb-0 text-white">
+                <a class="text-danger mr-3" href="{% url 'home' %}"><i class="icofont-rounded-left"></i></a>
+                Get Started
+            </h5>
+            
+        </div>
+        <div class="osahan-listing p-0 m-0 row border-top overflow-auto" style="max-height: 400px;">
+            <div class="osahan-giftcard p-3">
+                <a class="text-dark">
+                    <div class="osahan-gift card_item2 align-items-center row m-0 border bg-white shadow-sm border-rad8 mb-3 align-items-center">
+                        <div class="pl-3 py-3">
+                            <div class="gift-card">
+                                <h6 class="mb-0 l-hght-10" style="color: black">Step 1 - Login</h6><br>
+                                <span class="text-muted small">You can Login either as Guest or Login with your Google Account to access the Menu Page</span>
+                            </div>
+                        </div>
+                    </div>
+                </a>
+                <a class="text-dark">
+                    <div class="osahan-gift card_item2 align-items-center row m-0 border bg-white shadow-sm border-rad8 mb-3 align-items-center">
+                        <div class="pl-3 py-3">
+                            <div class="gift-card">
+                                <h6 class="mb-0 l-hght-10" style="color: black">Step 2 - Menu Page</h6><br>
+                                <span class="text-muted small"><strong>Section 1 - Bus Route Search:</strong> This is the area where you can plan your journey by entering the starting and destination postcodes, selecting the date and time, and clicking the "Search" button to view the available routes and receive suggested routes.</span><br>
+                                <span class="text-muted small"><strong>Menu 1 - Plan Journey:</strong> Currently unavailable</span><br>
+                                <span class="text-muted small"><strong>Menu 2 - Bus TimeTable:</strong> Currently unavailable</span><br>
+                                <span class="text-muted small"><strong>Menu 3 - Review Bus:</strong> This is where you can review the bus based on bus stop name/point.</span><br>
+                                <span class="text-muted small"><strong>Menu 4 - Bus Details:</strong> This section allows you to access historical reviews and comments for a bus based on the bus stop name/point and scheduled time.</span>
+                            </div>
+                        </div>
+                    </div>
+                </a>
+                <a class="text-dark">
+                    <div class="osahan-gift card_item2 align-items-center row m-0 border bg-white shadow-sm border-rad8 mb-3 align-items-center">
+                        <div class="pl-3 py-3">
+                            <div class="gift-card">
+                                <h6 class="mb-0 l-hght-10" style="color: black">Step 3 - Bus Route Search</h6><br>
+                                <span class="text-muted small">Below are the meanings of Icons when you search for a bus route and the features they hold:</span><br>
+                                <img src="{% static 'img/logo.png' %}" style="width: 18px; height: 18px;" /><span>: This bus icon with the bus number provides information about the bus to enter. Additionally, clicking on it will redirect you to a review page where you can provide real-time feedback on the bus.</span><br>
+                                <img src="{% static 'images/walk.svg' %}" style="display: inline-block;" /><span> This leg icon signifies the walking distance to the next bus stop or destination. Clicking on the icon also redirects you to Google Maps, guiding you on how to reach the next stop as indicated on the bus route.</span>
+                            </div>
+                        </div>
+                    </div>
+                </a>
+            </div>
+           
+        </div>
+    </div>
+</div>
+<div class="fixed-bottom p-4">
+
+    <a href="{% url 'route_plan' %}" class="btn btn-block btn-danger mb-3 osahanbus-btn">LOGIN AS GUEST</a>
+    <a href="{% provider_login_url 'google' %}" class="btn btn-block rounded-1 google-btn osahanbus-social">
+        <i class="icofont-google-plus"></i> LOGIN WITH GOOGLE
+    </a>
+</div>
+
+{% endblock %}

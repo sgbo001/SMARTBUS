@@ -3,7 +3,7 @@ from django.contrib import admin
 from django.urls import path, include, re_path
 from django.conf.urls.static import static
 from django.conf import settings
-from bus.views import home, display_route, route_plan, bus_detail, error, notifications, notifications_count
+from bus.views import home, display_route, route_plan, bus_detail, error, notifications, notifications_count, get_started
 from reviews.views import ReviewCreateView
 from users import views as user_views
 from django.contrib.auth import views as auth_views
@@ -12,6 +12,7 @@ from reviews import views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('get_started/', get_started, name='get_started'),
     path('', home, name='home'),
     path('login', auth_views.LoginView.as_view(template_name = 'login.html'), name='login'),
     path('logout', auth_views.LogoutView.as_view(template_name = 'home.html'), name='logout'),

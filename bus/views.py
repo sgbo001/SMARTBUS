@@ -18,6 +18,9 @@ transport_app_id = os.environ.get('TRANSPORT_APP_ID')
 coordinate_api_key = os.environ.get('COORDINATE_API_KEY')
 
 
+def get_started(request):
+
+     return render(request, 'get_started.html')
     
 def home(request):
    if request.user.is_authenticated:
