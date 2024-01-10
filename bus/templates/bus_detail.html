@@ -43,7 +43,7 @@
     <div class="osahan-header-nav shadow-sm p-3 d-flex align-items-center bg-danger">
        <h5 class="font-weight-normal mb-0 text-white">
           <a class="text-danger mr-3" href="{% url 'route_plan' %}"><i class="icofont-rounded-left"></i></a>
-          Bus Details - {{ request.GET.stop_name }}
+          Bus Details - {{ request.GET.stop_name }} - {{ request.GET.bus_id }} - {{ request.GET.arrival_time }}
        </h5>
        <div class="ml-auto d-flex align-items-center">
           <a class="toggle osahan-toggle h4 m-0 text-white ml-auto" href="#"><i class="icofont-navigation-menu"></i></a>
@@ -52,24 +52,38 @@
 
     <div class="p-3">
       <form method="GET" action="">
-          {% csrf_token %}
-          <div class="form-group">
-              <label class="text-muted f-10 mb-1" for="stop_name">Stop Name:</label>
-              <input type="text" class="form-control" id="stop_name" name="stop_name" aria-label="Stop Name" value="{{ request.GET.stop_name }}"><br>
-              <button type="submit" class="btn btn-danger btn-block osahanbus-btn rounded-1">Search</button>
-          </div>
-          
-          <div class="form-group">
-              <label for="bus-select">Select a Bus:</label>
-              <select name="bus_id" id="bus-select" class="form-control" onchange="this.form.submit()">
-                  <option value="">Select a Bus</option>
-                  {% for bus in buses %}
-                      <option value="{{ bus.bus_id }}">{{ bus.bus_id }}</option>
-                  {% endfor %}
-              </select>
-          </div>
-          <button type="submit" class="btn btn-danger btn-block osahanbus-btn mb-3 rounded-1 mt-4" style="display: none;">VIEW REVIEW</button>
-      </form>
+         {% csrf_token %}
+         <div class="form-group">
+             <label class="text-muted f-10 mb-1" for="stop_name">Stop Name:</label>
+             <input type="text" class="form-control" id="stop_name" name="stop_name" aria-label="Stop Name" value="{{ request.GET.stop_name }}"><br>
+             <button type="submit" class="btn btn-danger btn-block osahanbus-btn rounded-1">Search</button>
+         </div>
+               
+         <div class="form-group">
+             <label for="bus-select">Select a Bus:</label>
+             <select name="bus_id" id="bus-select" class="form-control" onchange="this.form.submit()">
+                 <option value="">Select a Bus</option>
+                 {% for bus in buses %}
+                     <option value="{{ bus.bus_id }}" {% if bus.bus_id == request.GET.bus_id %}selected{% endif %}>{{ bus.bus_id }}</option>
+                 {% endfor %}
+             </select>
+         </div>
+     
+         <input type="hidden" name="arrival_time" value="{{ request.GET.arrival_time }}">
+     
+         <div class="form-group">
+             <label for="arrival_time">Select Time:</label>
+             <select name="arrival_time" id="arrival_time" class="form-control" onchange="this.form.submit()">
+                 <option value="">Select a Time</option>
+                 {% for arrival_time in arrival_times %}
+                     <option value="{{ arrival_time.arrival_time }}" {% if arrival_time.arrival_time == request.GET.arrival_time %}selected{% endif %}>{{ arrival_time.arrival_time }}</option>
+                 {% endfor %}
+             </select>
+         </div>
+         
+         <button type="submit" class="btn btn-danger btn-block osahanbus-btn mb-3 rounded-1 mt-4" style="display: none;">VIEW REVIEW</button>
+     </form>
+     
   
    </form>
 
@@ -78,20 +92,20 @@
          <img src="{% static 'img/listing/item1.png' %}" class="img-fluid border rounded p-1 shape-img mr-3">
          <div class="w-100">
             <h6 class="my-1 l-hght-18 font-weight-bold">{{ request.GET.bus_id }}</h6>
-            <input type="range" min="1" max="100" value="{{ rating_percentage }}" class="slider" id="myRange" disabled>
-            <span class="text-dark">{{ max_rating }} / 5</span>
+            <input type="range" min="1" max="5" value="{{ rating}}" class="slider" id="myRange" disabled>
+            <span class="text-dark">{{ rating }} / 5</span>
             <div class="d-flex mt-2">
                <p class="m-0"><i class="icofont-google-map mr-1 text-danger"></i><span class="small">{{ stop_point }}</span></p>
-               {% if max_rating %}
-                  {% if max_rating >= 1 and max_rating <= 1.4 %}
+               {% if rating %}
+                  {% if rating == 1 %}
                      <p class="small ml-auto mb-0"><i class="icofont-bus mr-1 text-danger"></i> Likely to be Very Late</p>
-                  {% elif max_rating > 1.4 and max_rating <= 2.5 %}
+                  {% elif rating == 2 %}
                      <p class="small ml-auto mb-0"><i class="icofont-bus mr-1 text-warning"></i> Likely to be Somewhat Late</p>
-                  {% elif max_rating > 2.5 and max_rating <= 3.6 %}
+                  {% elif rating == 3 %}
                      <p class="small ml-auto mb-0"><i class="icofont-bus mr-1 text-success"></i> On Time</p>
-                  {% elif max_rating > 3.6 and max_rating <= 4.4 %}
+                  {% elif rating == 4 %}
                      <p class="small ml-auto mb-0"><i class="icofont-bus mr-1 text-warning"></i> Somewhat Early</p>
-                  {% elif max_rating > 4.4 and max_rating <= 5 %}
+                  {% elif rating == 5 %}
                      <p class="small ml-auto mb-0"><i class="icofont-bus mr-1 text-warning"></i> Likely to be Very Early</p>
                   {% endif %}
                {% else %}

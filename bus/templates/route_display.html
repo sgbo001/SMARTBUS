@@ -102,17 +102,17 @@
                               <img src="{% static 'img/logo.png' %}"  title="Click to Review" onclick="openLink('{{ leg.line_name }}', '{{ leg.from_point.place.smscode }}', '{{ leg.departure_time }}')" style="width: 18px; height: 18px;" />
                               <span style="display: inline-block; margin: 0 5px; font-size: 16px;">&rarr;</span>
                            </p>
-                           <input type="range" min="1" max="100" value="{{ leg.suggested_bus }}" class="slider" id="myRange" disabled>
+                           <input type="range" min="1" max="5" value="{{ leg.suggested_bus }}" class="slider" id="myRange" disabled>
                            {% if leg.suggested_bus %}
-                           {% if leg.suggested_bus >= 1 and leg.suggested_bus <= 39 %}
+                           {% if leg.suggested_bus == 1 %}
                                <p style="text-align: center;">Very Late</p>
-                           {% elif leg.suggested_bus >= 40 and leg.suggested_bus <= 49 %}
+                           {% elif leg.suggested_bus == 2 %}
                                <p style="text-align: center;">Somewhat Late</p>
-                           {% elif leg.suggested_bus >= 50 and leg.suggested_bus <= 60 %}
+                           {% elif leg.suggested_bus == 3 %}
                                <p style="text-align: center;">On Time</p>
-                           {% elif leg.suggested_bus >= 61 and leg.suggested_bus <= 69 %}
+                           {% elif leg.suggested_bus == 4 %}
                                <p style="text-align: center;">Somewhat Early</p>
-                           {% elif leg.suggested_bus >= 70 and leg.suggested_bus <= 100 %}
+                           {% elif leg.suggested_bus == 5 %}
                                <p style="text-align: center;">Early</p>
                                {% endif %}
                            {% else %}
@@ -131,15 +131,17 @@
                          {% if leg.mode != "bus" %}
                          <p class="small mb-1"><strong>{{ leg.departure_time }}</strong> : Walk for {{ leg.duration|slice:"3:" }} mins from {{ leg.from_point_name }} <span style="display: inline-block; margin: 0 5px; font-size: 16px;">&rarr;</span> {{ leg.to_point_name }}</p>
                          {% elif leg.mode == "bus" %}
-                         <p class="small mb-1" onclick="openLink1('{{ leg.line_name }}', '{{ leg.from_point.place.smscode }}')"><strong>{{ leg.departure_time }}</strong> : Ride 
+                         <p class="small mb-1" onclick="openLink1('{{ leg.line_name }}', '{{ leg.from_point.place.smscode }}', '{{ leg.departure_time }}')"><strong>{{ leg.departure_time }}</strong> : Ride 
                           {% if "FSYO" in leg.service.id %}
-                              <strong style="color: navy;">BUS {{ leg.line_name }}</strong> 
+                          <strong style="display: inline-block; width: 66px; height: 30px; border: 2px solid navy; padding: 5px; color: navy;">
+                           BUS {{ leg.line_name }}
+                         </strong> 
                             {% elif "SYRK" in leg.service.id %}
-                              <strong style="color: green;">BUS {{ leg.line_name }}</strong> 
+                            <strong style="display: inline-block; width: 66px; height: 30px; border: 2px solid green; padding: 5px; color: green;">BUS {{ leg.line_name }}</strong> 
                             {% elif "TMTL" in leg.service.id %}
-                              <strong style="color: darkred;">BUS {{ leg.line_name }}</strong> 
+                            <strong style="display: inline-block; width: 66px; height: 30px; border: 2px solid darkred; padding: 5px; color: darkred;">BUS {{ leg.line_name }}</strong> 
                             {% else %}
-                              <strong>BUS {{ leg.line_name }}</strong>
+                            <strong style="display: inline-block; width: 66px; height: 30px; border: 2px solid black; padding: 5px; color: black;">BUS {{ leg.line_name }}</strong>
                             {% endif %}
                             for {{ leg.duration|slice:"3:" }} mins from {{ leg.from_point_name }} <span style="display: inline-block; margin: 0 5px; font-size: 16px;">&rarr;</span> {{ leg.to_point_name }}</p>
                          {% endif %}
@@ -181,13 +183,13 @@
   </script>
 
   <script>
-   function openLink1(lineName, smscode) {
+   function openLink1(lineName, smscode, departureTime) {
        // Construct the URL with dynamic values
        var busName = lineName;
        var stopPoint = smscode;
-      
+       var arrivalTime = departureTime;
        // Construct the URL with the dynamic values
-       var url = "{% url 'bus_detail' %}?stop_name=" + stopPoint + "&bus_id=" + lineName;
+       var url = "{% url 'bus_detail' %}?stop_name=" + stopPoint + "&bus_id=" + lineName + "&arrival_time=" + arrivalTime;
 
        // Open the URL in a new tab or window
        window.open(url, '_blank');
