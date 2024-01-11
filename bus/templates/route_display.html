@@ -99,7 +99,7 @@
                               <strong>{{ leg.line_name }}</strong>
                                                          {% endif %}
                               
-                              <img src="{% static 'img/logo.png' %}"  title="Click to Review" onclick="openLink('{{ leg.line_name }}', '{{ leg.from_point.place.smscode }}', '{{ leg.departure_time }}')" style="width: 18px; height: 18px;" />
+                              <img src="{% static 'img/logo.png' %}"  title="Click to Review" onclick="openLink1('{{ leg.line_name }}', '{{ leg.from_point.place.smscode }}', '{{ leg.departure_time }}')" style="width: 18px; height: 18px;" />
                               <span style="display: inline-block; margin: 0 5px; font-size: 16px;">&rarr;</span>
                            </p>
                            <input type="range" min="1" max="5" value="{{ leg.suggested_bus }}" class="slider" id="myRange" disabled>
@@ -131,7 +131,7 @@
                          {% if leg.mode != "bus" %}
                          <p class="small mb-1"><strong>{{ leg.departure_time }}</strong> : Walk for {{ leg.duration|slice:"3:" }} mins from {{ leg.from_point_name }} <span style="display: inline-block; margin: 0 5px; font-size: 16px;">&rarr;</span> {{ leg.to_point_name }}</p>
                          {% elif leg.mode == "bus" %}
-                         <p class="small mb-1" onclick="openLink1('{{ leg.line_name }}', '{{ leg.from_point.place.smscode }}', '{{ leg.departure_time }}')"><strong>{{ leg.departure_time }}</strong> : Ride 
+                         <p class="small mb-1" onclick="openLink('{{ leg.line_name }}', '{{ leg.from_point.place.smscode }}', '{{ leg.departure_time }}')"><strong>{{ leg.departure_time }}</strong> : Ride 
                           {% if "FSYO" in leg.service.id %}
                           <strong style="display: inline-block; width: 66px; height: 30px; border: 2px solid navy; padding: 5px; color: navy;">
                            BUS {{ leg.line_name }}
